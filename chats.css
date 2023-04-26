@@ -1,0 +1,40 @@
+#chat_row_style{
+    height: 75%;
+}
+
+#chats_names{
+    height: 100%;
+}
+
+#message_box{
+    height: 85%;
+    background-color: bisque;
+}
+
+#chat_input{
+    height: 5%;
+
+}
+#input_message{
+    display: flex
+}
+
+.active_chats{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+.chat_row{
+    position: relative;
+    height: 10%;
+}
+
+.chat_img_thumbnail{
+    max-height: 100%;
+}
+
