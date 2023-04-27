@@ -38,3 +38,21 @@
     max-height: 100%;
 }
 
+.last_msg{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+}
+.contact_name{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.date{
+    font-size: 10px;
+    text-align: center;
+
+}
