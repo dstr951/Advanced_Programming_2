@@ -2,13 +2,31 @@
     height: 75%;
 }
 
+#chat_card{
+    border-radius: 10px 0 0 0;
+    border:2px solid #adb5bd;
+    padding-right: 0;
+    padding-left: 0;
+    background-color: #F6F5F5;
+}
+
 #panels_row{
     height: 100%;
 }
 
+#user_info{
+    border-radius: 10px 0 0 0;
+    background-color: rgb(215, 224, 230);
+}
+
+#conversation_info_row{
+    background-color: rgb(215, 224, 230);
+}
+
 #message_box{
     height: 85%;
-    background-color: bisque;
+    background-image:url(./pictures/MessagesBackground.jpg);
+    background-size: contain;
 }
 
 #chat_input{
