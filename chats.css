@@ -19,6 +19,11 @@
     display: flex
 }
 
+.chat-panel{
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
 .active_chats{
     position: absolute;
     top: 0;
