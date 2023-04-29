@@ -9,6 +9,7 @@
     padding-right: 0;
     padding-left: 0;
     background-color: #F6F5F5;
+    height: 100%;
 }
 
 #panels_row{
@@ -18,6 +19,7 @@
 .chat-panel{
     padding-right: 0px;
     padding-left: 0px;
+    height: 100%;
 }
 .chat-panel > * {
     margin: 0;
@@ -54,9 +56,12 @@
 }
 
 #message_box{
+    flex-direction: column;
     height: 85%;
     background-image:url(./pictures/MessagesBackground.jpg);
     background-size: contain;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #chat_input{
@@ -65,6 +70,45 @@
 }
 #input_message{
     display: flex
+}
+.messages-buffer{
+    min-height: 12px;
+    flex:1 1 auto;
+    width: auto;
+    padding: 0;
+}
+.messages{
+    display:block;
+}
+.message{
+    margin-bottom: 20px;
+    padding: 0 50px 0 50px;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5;
+}
+.message > [class^=message-]{
+    padding: 10px;
+}
+.message-in{
+    background-color: white;
+    align-self: flex-start;
+    border-radius: 10px 10px 10px 0;
+}
+.message-in > .message-time{
+    text-align: end;
+}
+.message-out{
+    background-color: rgb(217,253,211);
+    align-self: flex-end;
+    border-radius: 10px 10px 0 10px;
+}
+.message-text{
+    display: block;
+}
+.message-time{
+    display: block;
+    font-size: 0.75em;
 }
 
 /*shared componenets*/
