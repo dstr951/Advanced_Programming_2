@@ -13,6 +13,9 @@
 #panels_row{
     height: 100%;
 }
+#conversations_panel{
+    border-right: 2px solid #adb5bd;
+}
 
 #user_info{
     border-radius: 10px 0 0 0;
