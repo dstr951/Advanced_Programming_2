@@ -1,6 +1,9 @@
 /*outer design*/
 #chat_window{
-    height: 75%;
+    height: 90%;
+    width:90%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 #chat_card{
