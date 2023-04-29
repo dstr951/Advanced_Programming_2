@@ -44,6 +44,9 @@
     padding-right: 0px;
     padding-left: 0px;
 }
+.chat-panel > * {
+    margin: 0;
+}
 
 [class^=col-].profile-container{
     height: 100%;    
@@ -71,7 +74,6 @@
 
 .chat-row{
     height: 10%;
-    margin: 0;
 }
 
 .chat_img_thumbnail{
