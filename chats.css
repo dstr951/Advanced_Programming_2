@@ -139,21 +139,3 @@
     width: 55px;
     border-radius: 50%;    
 }
-
-/*not used*/
-.active_chats{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-.chat_img_thumbnail{
-    max-height: 100%;
-}
-.contact_name{
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    font-size: 14px;
-}
