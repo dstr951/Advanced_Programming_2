@@ -39,14 +39,26 @@
     background-color: rgb(215, 224, 230);
 }
 
+#conversations{
+    height: 90%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .chat-row{
     height: 10%;
+    margin: 0;
 }
 .chat-row .last_msg{
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     font-size: 14px;
+}
+
+.name-time-last-message-container{
+    align-content: space-around;
+    overflow: hidden;
 }
 
 /*messages panel*/
@@ -120,8 +132,8 @@
 }
 .profile-container img{
     object-fit: cover;
-    height: 60px;
-    width: 60px;
+    height: 55px;
+    width: 55px;
     border-radius: 50%;    
 }
 
