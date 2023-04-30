@@ -1,3 +1,7 @@
+body{
+    background-color: rgb(234, 230, 223)!important;
+}
+
 .d-contents{
     display:contents;
 }
@@ -7,4 +11,13 @@
     font-size: 40px;
     color: #080808;
     text-align: center;
+  }
+
+  .background-jumbo{
+    position:fixed;
+    top:0;
+    z-index: -1;
+    height: 150px;
+    width: 100%;
+    background-color: rgb(0,168,132);    
   }
