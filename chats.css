@@ -52,6 +52,9 @@
     height: 10%;
     margin: 0;
 }
+.active_chat{
+    background-color: #D3D3D3;
+}
 .chat-row .last_msg{
     text-overflow: ellipsis;
     overflow: hidden;
