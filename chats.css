@@ -59,6 +59,13 @@
     font-size: 14px;
 }
 
+.contact_name{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
 .name-time-last-message-container{
     align-content: space-around;
     overflow: hidden;
