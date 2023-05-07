@@ -1,17 +1,34 @@
-import { users } from "./db/users"
+import {users} from "./db/users"
 
 /***category login***/
 export function validateLogin(userName, password) {
   const user = users.filter((u) => u.userName === userName)
-  if (user.length === 0){
+  if (user.length === 0) {
     return {code: 401}
   }
-  if(user[0].password !== password){
+  if (user[0].password !== password) {
     return {code: 401}
   }
   return {
     code: 200,
-    body: {userId: user.userId}
+    body: {userId: user.userId},
+  }
+}
+/********************/
+/***category register***/
+export function registerUser(userName, password, displayName, picture) {
+  const id = users.length
+  const newUser = {
+    userId: id,
+    userName: userName,
+    password: password,
+    displayName: displayName,
+    picture: `/face1.png`,
+  }
+  users.push(newUser)
+  return {
+    code: 201,
+    body: {userId: id},
   }
 }
 /********************/
@@ -35,8 +52,7 @@ export function getUser(userId) {
 function getUserStatus(userId) {
   return {
     code: 200,
-    body: {status: "online"}
+    body: {status: "online"},
   }
 }
 /********************/
-
