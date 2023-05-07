@@ -1,5 +1,20 @@
 import { users } from "./db/users"
 
+/***category login***/
+export function validateLogin(userName, password) {
+  const user = users.filter((u) => u.userName === userName)
+  if (user.length === 0){
+    return {code: 401}
+  }
+  if(user[0].password !== password){
+    return {code: 401}
+  }
+  return {
+    code: 200,
+    body: {userId: user.userId}
+  }
+}
+/********************/
 /***category users***/
 export function getUser(userId) {
   const requestedUser = users.filter((u) => u.userId === userId)
