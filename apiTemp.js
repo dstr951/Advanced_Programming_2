@@ -56,3 +56,22 @@ function getUserStatus(userId) {
   }
 }
 /********************/
+/***category chat***/
+export function getAllChats(userId){
+  const myChats = chatUsers.filter(
+    c => (c.user1 === userId || c.user2 === userId)
+  ).map(
+    c => {
+      const user = c.user1 === userId ? c.user2 : c.user1
+      return {
+        chatId: c.chatId,
+        userId: user,
+      }
+    }
+  ) 
+  return {
+    code: 200,
+    body: myChats,
+  }
+}
+/********************/
