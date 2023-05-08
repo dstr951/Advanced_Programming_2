@@ -74,4 +74,14 @@ export function getAllChats(userId){
     body: myChats,
   }
 }
+export function getChatMessages(chatId){
+  const chat = chats.filter(c => c.chatId === chatId)
+  if (chat.length === 0) {
+    return {code: 404}
+  }
+  return {
+    code: 200,
+    body:{messages: chat[0].messages}
+  }
+}
 /********************/
