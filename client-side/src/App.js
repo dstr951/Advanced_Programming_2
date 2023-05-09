@@ -1,16 +1,5 @@
 import logo from './logo.svg';
-import { getUser, validateLogin, registerUser, getAllChats, getChatMessages, getLastChatMessage } from './api.js'
 import './App.css';
-
-function printMessage(message){
-  return(
-    <p>
-      sender: {message.senderId}<br/>
-      {message.content}<br/>
-      {message.timeSent.toDateString()}
-    </p>
-  )
-}
 
 function App() {
   return (
