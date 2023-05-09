@@ -1,4 +1,4 @@
-export default function userChatRow({}) {
+export default function userChatRow() {
   return (
     <div id="user_info" class="row chat-row text-start">
       <div class="col-2 profile-container">
