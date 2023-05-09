@@ -5,7 +5,7 @@ export default function OpenChatMessages({messages, myId}) {
     <div id="message_box" class="row">
       <div class="messages-buffer"></div>
       <div class="messages">
-		{messages.map(m => <Message message={m} myId={myId} />)}      
+		{messages.map((m, index) => <Message message={m} myId={myId} key={index} />)}      
       </div>
     </div>
   );
