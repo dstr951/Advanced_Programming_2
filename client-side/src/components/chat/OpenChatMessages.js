@@ -1,10 +1,11 @@
 import Message from "./Message"
-export default function OpenChatMessages() {
+
+export default function OpenChatMessages({messages, myId}) {
   return (
     <div id="message_box" class="row">
       <div class="messages-buffer"></div>
       <div class="messages">
-        <Message />        
+		{messages.map(m => <Message message={m} myId={myId} />)}      
       </div>
     </div>
   );
