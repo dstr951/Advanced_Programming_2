@@ -55,6 +55,18 @@ function getUserStatus(userId) {
     body: {status: "online"},
   }
 }
+export function getUserIdsByUserName(userName){
+  //use the toLowerCase fucntion to make include not case sensitive
+  const similiarUsers = users.filter(
+    u => u.userName.toLowerCase().includes(userName.toLowerCase())
+  ).map(
+    u => u.userId
+  )
+  return {
+    code: 200,
+    body: similiarUsers,
+  }
+}
 /********************/
 /***category chat***/
 export function getAllChats(userId){
