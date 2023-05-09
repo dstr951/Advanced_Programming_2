@@ -16,7 +16,19 @@ export function validateLogin(userName, password) {
 }
 /********************/
 /***category register***/
-export function registerUser(userName, password, displayName, picture) {
+function userNameExists(userName){
+  const sameNameUsers = users.filter(
+    u => u.userName === userName
+  )
+  return sameNameUsers.length > 0
+}
+export function registerUser(userName, password, displayName, picture){
+  if(userNameExists(userName)){
+    return {
+      code: 409,
+      body: "userName already exists"
+    }
+  }
   const id = users.length
   const newUser = {
     userId: id,
@@ -28,7 +40,7 @@ export function registerUser(userName, password, displayName, picture) {
   users.push(newUser)
   return {
     code: 201,
-    body: {userId: id},
+    body: {userId: id}
   }
 }
 /********************/
