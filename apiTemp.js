@@ -1,4 +1,6 @@
 import {users} from "./db/users"
+import {chatUsers} from "./db/chatUsers"
+import {chats} from "./db/chats"
 
 /***category login***/
 export function validateLogin(userName, password) {
