@@ -1,68 +1,34 @@
-import React, {useRef} from "react";
-import Input from "./Input";
-import {useState} from "react";
-import Alert from "./Alert";
+import {useNavigate, Link} from "react-router-dom";
 
-function validateUsername(username) {
-    if (username.length === 0) {
-        return -1
-    }
-    /**
-     * add check if not in DB
-     */
-    if (username.length <= 2) {
-        return 0
+import {useEffect, useState} from "react";
+
+
+
+function validateSignup(event, navigator, setterDisplayError, data) {
+
+    if (true) {
+        if (true) {
+
+            setterDisplayError(false)
+            navigator('/Chats')
+        } else {
+            event.preventDefault()
+            setterDisplayError(true)
+            return false
+        }
     } else {
-
-        return 1
+        event.preventDefault()
+        setterDisplayError(true)
+        return false
     }
 }
 
-function validatePassword(password) {
-    if(password.length === 0){
-        return -1
-    }
-    var digit = /.*[\d]{1,}.*[\d]{1,}.*[\d]{1,}.*[\d]{1,}.*/.test(password)
-    var capital = /[A-Z]/.test(password)
-    if (password.length >= 8 && digit && capital) {
-        console.log("here")
-        return 1
-    }
-    return 0
 
-
-}
 function RegisterPage() {
-    const [signUpDetails,setSignUpDetails] = useState({
-        username:'',
-        password:'',
-        confirmPassword:'',
-        displayName:'',
-        img:'',
-    })
-    const[username,setUserName] = useState('')
-    const[password,setPassword] = useState('')
-    const[confirmPassword,setConfirmPassword] = useState('')
-    const[displayName,setDisplayName] = useState('')
-    const[img,setImg] = useState('')
-    const[imgDisplay, setImgDisplay] = useState(false)
-    const lastImg = useRef(img)
-    const [messageConfirmPasswords, setMessageConfirmPasswords] = useState('')
-    const [alertClass, setAlertClass] = useState('')
-    function confirmPasswordValidator(p1, p2) {
-        if(p2.confirmPassword.length === 0){
-            return -1
-        }
-        else if(p1.password === p2.confirmPassword){
-
-            return 1
-        }
-
-        return 0
-    }
-
-
-
+    const navigate = useNavigate();
+    const [sendToServer, setSendToServer] = useState(false)
+    const [registerDisplayError, setRegisterDisplayError] = useState(false)
+    let userNameTest = "steve"
     return (
         <>
             <div className="background-jumbo"></div>
@@ -72,6 +38,7 @@ function RegisterPage() {
             <div className="row">
                 <div className="card col-8 container">
                     <form>
+<<<<<<< HEAD
                         <Input
                             label="Username"
                             type="text"
@@ -182,14 +149,73 @@ function RegisterPage() {
                             <div className="col-11 row justify-content-center align-content-center">
                                 <div className="d-contents">Already have an account?&nbsp;<a href="./login.html">Click
                                     here</a>&nbsp;to login.
+=======
+                        <div className="form-group row">
+                            <div className="col-12 mt-2">
+                                <label htmlFor="registerUsernameInput">Username</label>
+                                <input type="text" className="form-control" id="registerUsernameInput"
+                                       placeholder="Enter username"></input>
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <div className="col-12 mt-2">
+                                <label htmlFor="registerPasswordInput">Password</label>
+                                <input type="password" className="form-control" id="registerPasswordInput"
+                                       placeholder="Enter password"></input>
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <div className="col-12 mt-2">
+                                <label htmlFor="registerConfirmPasswordInput">Confirm Password</label>
+                                <input type="password" className="form-control" id="registerConfirmPasswordInput"
+                                       placeholder="Confirm password"></input>
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <div className="col-12 mt-2">
+                                <label htmlFor="registerDisplayNameInput">Display Name</label>
+                                <input type="text" className="form-control" id="registerDisplayNameInput"
+                                       placeholder="Enter display name"></input>
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <div className="col-12 mt-2">
+                                <label htmlFor="registerProfilePictureInput">Profile Picture</label>
+                                <input type="file" className="form-control" id="registerProfilePictureInput"
+                                       placeholder="Upload profile picture"></input>
+                            </div>
+                            <div className="col-2 mt-4">
+                                <img src="pictures/face2.jpg" alt="img"></img>
+                            </div>
+                        </div>
+
+                        <div className="row mt-2">
+                            <div className="col-1">
+                                <div className="d-contents">
+                                    <button
+                                        onClick={(event) => (validateSignup(event,navigate, setRegisterDisplayError, userNameTest))}
+                                        type="submit" className="btn btn-primary">Login
+                                    </button>
+
+                                </div>
+                            </div>
+                            {registerDisplayError && <div className="col-1 row justify-content-left align-content-center">error</div>}
+
+                            <div className="col-8 row justify-content-center align-content-center">
+                                <div className="d-contents">Already have an account <Link to="/">Click here</Link> to
+                                    login.
+>>>>>>> Routing
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> Routing
         </>
     )
 }

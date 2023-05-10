@@ -1,10 +1,19 @@
+import logo from './logo.svg';
 import './App.css';
 import LoginPage from "./LoginPage";
+import {Routes, Route, Link} from "react-router-dom"
+import RegisterPage from "./RegisterPage";
+import ChatsPage from "./ChatsPage";
 
 function App() {
   return (
-
-      <LoginPage/>
+      <>
+        <Routes>
+          <Route path="/" element={<LoginPage/>}></Route>
+          <Route path="/Register" element={<RegisterPage/>}></Route>
+          <Route path="/Chats" element={<ChatsPage/>}></Route>
+        </Routes>
+      </>
   );
 }
 
