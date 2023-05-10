@@ -1,28 +1,49 @@
-export default function ChatRow() {
+import { useEffect, useState } from "react";
+import { getLastChatMessage, getUser } from "../../apiTemp";
+export default function ChatRow({
+  userId,
+  chatId,
+  changeOpenChatId,
+  changeOpenUser,
+  active,
+}) {
+  function click() {
+    changeOpenChatId(chatId);
+    changeOpenUser(user);
+  }
+
+  const [user, setUser] = useState({});
+  //hook to get the user's data from the server
+  useEffect(() => {
+    const response = getUser(userId);
+    if (response.code === 200) {
+      setUser(response.body);
+    }
+  }, [userId]);
+
+  const [lastMessage, setLastMessage] = useState({});
+  //hook to get the lastMessage from the server
+  useEffect(() => {
+    const response = getLastChatMessage(chatId);
+    if (response.code === 200) {
+      setLastMessage(response.body.lastMessage);
+    }
+  }, [chatId]);
+
+  const activeClass = active ? " active_chat" : "";
   return (
-    <div className="row chat-row active_chat">
+    <div className={"row chat-row" + activeClass} onClick={click}>
       <div className="col-2 profile-container">
-        <img alt="img" src="pictures/face2.jpg" />
+        <img alt="img" src={user.picture} />
       </div>
       <div className="col-10 d-flex">
         <div className="row name-time-last-message-container">
-          <div className="col-7 contact_name fw-bold">
-            name another name and one more and even one more
-          </div>
+          <div className="col-7 contact_name fw-bold">{user.displayName}</div>
           <div className="col-5">
-            <div className="date">31/01/2023,10:56:34 PM</div>
+            <div className="date">{lastMessage?.timeSent?.toString()}</div>
           </div>
           <div className="col-12 last_msg fw-lighter fst-italic">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed enim
-            nisi, euismod eget elit et, rutrum placerat nunc. Vestibulum non
-            ligula ex. Donec congue iaculis consequat. Etiam dui risus, semper
-            vel feugiat eu, porttitor in tortor. Pellentesque vulputate mi
-            velit, eu mollis libero pharetra vel. Duis vitae massa nec sapien
-            fringilla ornare. Integer sed massa nec nunc condimentum lacinia.
-            Aenean malesuada nisi nec sem fringilla tincidunt. Aenean volutpat
-            elementum ante, facilisis ultrices tortor semper sed. Integer sit
-            amet purus vel dui luctus suscipit. In rhoncus finibus luctus. Nulla
-            nec eros eget tellus blandit sollicitudin quis at nulla.
+            {lastMessage.content}
           </div>
         </div>
       </div>
