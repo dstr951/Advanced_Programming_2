@@ -1,16 +1,20 @@
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {validateLogin} from "./apiTemp";
+import LoginAlert from "./Alert";
+import Alert from "./Alert";
 
 function LoginPage(){
     const errorMessage = 'Incorrect username or password. Please try again'
     const [password,setPassword] = useState('');
     const [userName,setUserName]  = useState('');
     const [displayError, setDisplayError] = useState(false)
+    const alertRef = useRef(null)
     const getInput = function (e,setter) {
         setter(e.target.value)
         //console.log("value is: "+e.target.value)
     }
     const buildResponse = function (e,userName,password){
+        setDisplayError(false)
         //stop the form default response
         e.preventDefault();
         if(validateLogin(userName,password).code  === 200){
@@ -52,7 +56,10 @@ function LoginPage(){
                                 <button onClick={(event) => buildResponse(event,userName,password)} type="submit" className="btn btn-primary">Login</button>
 
                             </div>
-                            {displayError &&<div className="col-5 row justify-content-center align-content-center" style={{ color: 'red' }}>{errorMessage}</div>}
+                            <Alert  condition={displayError} errorMessage={errorMessage}></Alert>
+
+
+
                             <div className="col-6 row justify-content-center align-content-center">
                                 <div className="d-contents">Don't have an account?&nbsp;<a href="./register.html">Click
                                     here</a>&nbsp;to register.
