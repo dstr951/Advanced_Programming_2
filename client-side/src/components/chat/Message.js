@@ -6,7 +6,7 @@ export default function Message({message, myId}){
           <div className="message col-12">
             <div className={messageClass}>
               <span className="message-text">{content}</span>
-              <span className="message-time">{timeSent.getHours()}:{timeSent.getMinutes()}</span>
+              <span className="message-time">{("00" + timeSent.getHours()).slice(-2)}:{("00" + timeSent.getMinutes()).slice(-2)}</span>
             </div>
           </div>
         </div>
