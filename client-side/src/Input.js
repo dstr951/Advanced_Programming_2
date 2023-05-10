@@ -3,7 +3,7 @@ import Alert from "./Alert";
 
 
 
-function Input({label, type, id, placeHolder, setter,validator, parameters,successMessage, errorMessage}) {
+function Input({label, type, id, placeHolder, setter, setOK,validator, parameters,successMessage, errorMessage}) {
     const [displaySuccess, setDisplaySuccess] = useState(false)
     const [displayError, setDisplayError] = useState(false)
     const[password,setPassword] = useState('')
@@ -22,7 +22,7 @@ function Input({label, type, id, placeHolder, setter,validator, parameters,succe
             returnVal = validator(e,setter)
         }
         else {
-            returnVal = validator(tempParam)
+            returnVal = validator(tempParam,setOK)
         }
         if(returnVal === 1){
             setDisplayError(false)

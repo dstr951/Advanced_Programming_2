@@ -1,17 +1,31 @@
 import {useNavigate, Link} from "react-router-dom";
-
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Input from "./Input";
 import Alert from "./Alert";
+import {userNameExists, registerUser} from "./apiTemp"
 
 
 function validateSignup(event, navigator, setterDisplayError, data) {
 
-    if (true) {
-        if (true) {
-
+    if (data.OK.usernameOK &&
+        data.OK.passwordOK &&
+        data.data.password === data.data.confirmPassword &&
+        data.OK.displayNameOK &&
+        data.OK.imgOK
+    ) {
+        if (!userNameExists(data.data.username)) {
             setterDisplayError(false)
-            navigator('/Chats')
+            const serverResponse = registerUser(data.data.username, data.data.password, data.data.displayName,data.data.profilePictue)
+            if(serverResponse.code === 409){
+                event.preventDefault()
+                setterDisplayError(true)
+                return false
+            }
+            else{
+
+                navigator('/Chats',{ state: { myParam: serverResponse.body.userId } })
+            }
+
         } else {
             event.preventDefault()
             setterDisplayError(true)
@@ -24,30 +38,52 @@ function validateSignup(event, navigator, setterDisplayError, data) {
     }
 }
 
-function validateUsername(username) {
+function validateUsername(username, setOK) {
     if (username.length === 0) {
+        setOK(false)
         return -1
     }
     /**
      * add check if not in DB
      */
     if (username.length <= 2) {
+        setOK(false)
         return 0
     } else {
-
+        setOK(true)
         return 1
     }
 }
 
-function validatePassword(password) {
+function validatePassword(password,setOK) {
+    if(password.length === 0){
+        setOK(false)
+        return -1
+    }
+    var digit = /.*[\d]{1,}.*[\d]{1,}.*[\d]{1,}.*[\d]{1,}.*/.test(password)
+    var capital = /[A-Z]/.test(password)
+    if (password.length >= 8 && digit && capital) {
+        setOK(true)
+        return 1
+    }
+    setOK(false)
+    return 0
+
 }
 
 function RegisterPage() {
     const[username,setUserName] = useState('')
+    const[OKUsername,setOKUsername] = useState(false)
     const[password,setPassword] = useState('')
+    const[OKPassword,setOKPassword] = useState(false)
     const[confirmPassword,setConfirmPassword] = useState('')
+    const[OKConfirmPassword,setOKConfirmPassword] = useState(false)
     const[displayName,setDisplayName] = useState('')
+    const[OKdisplayName,setOKDisplayName] = useState(false)
     const[img,setImg] = useState('')
+    const[OKimg,setOKImg] = useState(false)
+
+
     const[imgDisplay, setImgDisplay] = useState(false)
     const lastImg = useRef(img)
     const [messageConfirmPasswords, setMessageConfirmPasswords] = useState('')
@@ -56,16 +92,19 @@ function RegisterPage() {
     const [sendToServer, setSendToServer] = useState(false)
     const [registerDisplayError, setRegisterDisplayError] = useState(false)
     let userNameTest = "steve"
-
-    function confirmPasswordValidator(p1, p2) {
+    useEffect(()=>{
+        setRegisterDisplayError(false)
+    },[username,password,confirmPassword,displayName,img])
+    function confirmPasswordValidator(p1, p2,setOK) {
         if(p2.confirmPassword.length === 0){
+            //setOK(false)
             return -1
         }
         else if(p1.password === p2.confirmPassword){
-
+            //setOK(true)
             return 1
         }
-
+        //setOK(false)
         return 0
     }
     return (
@@ -84,8 +123,9 @@ function RegisterPage() {
                             id="registerUsernameInput"
                             placeHolder="Enter username"
                             setter={setUserName}
+                            setOK={setOKUsername}
                             validator={validateUsername}
-                            successMessage="username available"
+                            successMessage="username valid"
                             errorMessage="error with user name, taken or invalid"
                         />
                         <Input
@@ -94,6 +134,7 @@ function RegisterPage() {
                             id="registerPasswordInput"
                             placeHolder="Enter password"
                             setter={setPassword}
+                            setOK={setOKPassword}
                             validator={validatePassword}
                             successMessage="valid password"
                             errorMessage="invalid password"
@@ -126,12 +167,16 @@ function RegisterPage() {
                             id="registerDisplayNameInput"
                             placeHolder="Enter display name"
                             setter={setDisplayName}
-                            validator={(name) => {
+                            setOK={setOKDisplayName}
+                            validator={(name, setOK) => {
                                 if (name.length === 0) {
+                                    setOK(false)
                                     return -1
                                 } else if (name.length > 2) {
+                                    setOK(true)
                                     return 1
                                 } else {
+                                    setOK(false)
                                     return 0
                                 }
                             }}
@@ -148,6 +193,7 @@ function RegisterPage() {
                             validator={(event, setter) => {
                                 if (event.target.files.length === 0) {
                                     setImgDisplay(false)
+                                    setOKImg(false)
                                     return -1
 
                                 }
@@ -156,6 +202,7 @@ function RegisterPage() {
                                 //not image
                                 if (!file.type.startsWith('image/')) {
                                     setImgDisplay(false)
+                                    setOKImg(false)
                                     return 0;
                                 }
                                 const reader = new FileReader();
@@ -169,6 +216,7 @@ function RegisterPage() {
                                     }
                                 };
                                 setImgDisplay(true)
+                                setOKImg(true)
                                 return 1;
                             }
                             }
@@ -186,16 +234,33 @@ function RegisterPage() {
                             <div className="col-1">
                                 <div className="d-contents">
                                     <button
-                                        onClick={(event) => (validateSignup(event, navigate, setRegisterDisplayError, userNameTest))}
+                                        onClick={(event) => (validateSignup(event, navigate, setRegisterDisplayError, {
+                                            data:{
+                                                username: username,
+                                                password: password,
+                                                confirmPassword: confirmPassword,
+                                                displayName: displayName,
+                                                profilePictue: img
+
+                                            },
+                                            OK:{
+                                                usernameOK: OKUsername,
+                                                passwordOK: OKPassword,
+                                                displayNameOK:OKdisplayName,
+                                                imgOK: OKimg
+                                            }
+                                        }))}
                                         type="submit" className="btn btn-primary">Login
                                     </button>
 
                                 </div>
                             </div>
-                            {registerDisplayError && <div
-                                className="col-1 row justify-content-left align-content-center">error</div>}
+                            {registerDisplayError &&
+                                <Alert condition={registerDisplayError} alertClass="alert alert-danger col-3"
+                                       errorMessage="Detected errors, please fix before signup"/>
+                            }
 
-                            <div className="col-8 row justify-content-center align-content-center">
+                            <div className="col-4 row justify-content-center align-content-center">
                                 <div className="d-contents">Already have an account <Link to="/"> Click
                                     here </Link> to login.
 

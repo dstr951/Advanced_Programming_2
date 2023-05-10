@@ -13,12 +13,12 @@ export function validateLogin(userName, password) {
   }
   return {
     code: 200,
-    body: {userId: user.userId},
+    body: {userId: user[0].userId},
   }
 }
 /********************/
 /***category register***/
-function userNameExists(userName){
+export function userNameExists(userName){
   const sameNameUsers = users.filter(
     u => u.userName === userName
   )
@@ -40,6 +40,7 @@ export function registerUser(userName, password, displayName, picture){
     picture: `/face1.png`,
   }
   users.push(newUser)
+  console.log("the new user id is: "+id)
   return {
     code: 201,
     body: {userId: id}

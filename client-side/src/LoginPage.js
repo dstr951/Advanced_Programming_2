@@ -1,27 +1,21 @@
 import Alert from "./Alert";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {validateLogin} from "./apiTemp";
 import {useNavigate, Link} from "react-router-dom";
 
 
-function validateSignup(event, navigator, setterDisplayError, data) {
+function validateLoginPage(event, navigator, setterDisplayError, data) {
     //add code for checking data
-    if (true) {
-        // add code of checking server response
-        if (true) {
-
-            setterDisplayError(false)
-            navigator('/Chats')
-        } else {
-            event.preventDefault()
-            setterDisplayError(true)
-            return false
+    var serverResponse = validateLogin(data.userName, data.password)
+    if (serverResponse.code === 200) {
+        setterDisplayError(false)
+        navigator('/Chats', { state: { myParam: serverResponse.body.userId } })
         }
-    } else {
+    else {
         event.preventDefault()
         setterDisplayError(true)
         return false
-    }
+        }
 }
 
 function LoginPage() {
@@ -30,6 +24,10 @@ function LoginPage() {
     const [userName, setUserName] = useState('');
     const [displayError, setDisplayError] = useState(false)
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        setDisplayError(false)
+    },[userName,password])
 
 
     const getInput = function (e, setter) {
@@ -40,7 +38,7 @@ function LoginPage() {
         setDisplayError(false)
         //stop the form default response
         e.preventDefault();
-        if (validateLogin(userName, password).code === 200) {
+        if (validateLoginPage(userName, password).code === 200) {
             setDisplayError(false)
         } else {
             setDisplayError(true)
@@ -77,7 +75,7 @@ function LoginPage() {
                         </div>
                         <div className="row mt-2">
                             <div className="col-1">
-                                <button onClick={(event) => validateSignup(event, navigate, setDisplayError, {
+                                <button onClick={(event) => validateLoginPage(event, navigate, setDisplayError, {
                                     userName,
                                     password
                                 })}
@@ -86,7 +84,8 @@ function LoginPage() {
 
                             </div>
 
-                            <Alert  condition={displayError} errorMessage={errorMessage} alertClass={"alert alert-danger col-3"}></Alert>
+                            { displayError &&
+                                <Alert  condition={displayError} errorMessage={errorMessage} alertClass={"alert alert-danger col-3"}></Alert>}
                             <div className="col-6 row justify-content-center align-content-center">
                                 <div className="d-contents">Don't have an account? <Link to="/Register">  Click
                                     here </Link> to register.
