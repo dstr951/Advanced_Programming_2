@@ -1,7 +1,8 @@
 import {useNavigate, Link} from "react-router-dom";
 
-import {useEffect, useState} from "react";
-
+import {useRef, useState} from "react";
+import Input from "./Input";
+import Alert from "./Alert";
 
 
 function validateSignup(event, navigator, setterDisplayError, data) {
@@ -23,12 +24,50 @@ function validateSignup(event, navigator, setterDisplayError, data) {
     }
 }
 
+function validateUsername(username) {
+    if (username.length === 0) {
+        return -1
+    }
+    /**
+     * add check if not in DB
+     */
+    if (username.length <= 2) {
+        return 0
+    } else {
+
+        return 1
+    }
+}
+
+function validatePassword(password) {
+}
 
 function RegisterPage() {
+    const[username,setUserName] = useState('')
+    const[password,setPassword] = useState('')
+    const[confirmPassword,setConfirmPassword] = useState('')
+    const[displayName,setDisplayName] = useState('')
+    const[img,setImg] = useState('')
+    const[imgDisplay, setImgDisplay] = useState(false)
+    const lastImg = useRef(img)
+    const [messageConfirmPasswords, setMessageConfirmPasswords] = useState('')
+    const [alertClass, setAlertClass] = useState('')
     const navigate = useNavigate();
     const [sendToServer, setSendToServer] = useState(false)
     const [registerDisplayError, setRegisterDisplayError] = useState(false)
     let userNameTest = "steve"
+
+    function confirmPasswordValidator(p1, p2) {
+        if(p2.confirmPassword.length === 0){
+            return -1
+        }
+        else if(p1.password === p2.confirmPassword){
+
+            return 1
+        }
+
+        return 0
+    }
     return (
         <>
             <div className="background-jumbo"></div>
@@ -38,7 +77,7 @@ function RegisterPage() {
             <div className="row">
                 <div className="card col-8 container">
                     <form>
-<<<<<<< HEAD
+
                         <Input
                             label="Username"
                             type="text"
@@ -65,17 +104,20 @@ function RegisterPage() {
                             id="registerConfirmPasswordInput"
                             placeHolder="Confirm password"
                             setter={setConfirmPassword}
-                            validator={(p)=> function (){
-                                return -1}
+                            validator={(p) => function () {
+                                return -1
+                            }
                             }
                             successMessage="passwords are the same"
                             errorMessage="passwords are not the same"
                         />
-                        {((confirmPasswordValidator({password},{confirmPassword})) === 1 &&
-                            <Alert condition={true} alertClass="alert alert-success" errorMessage="passwords are identical" />
+                        {((confirmPasswordValidator({password}, {confirmPassword})) === 1 &&
+                            <Alert condition={true} alertClass="alert alert-success"
+                                   errorMessage="passwords are identical"/>
                             ||
-                            ((confirmPasswordValidator({password},{confirmPassword})) === 0 &&
-                                <Alert condition={true} alertClass="alert alert-danger" errorMessage="passwords don't match" />))
+                            ((confirmPasswordValidator({password}, {confirmPassword})) === 0 &&
+                                <Alert condition={true} alertClass="alert alert-danger"
+                                       errorMessage="passwords don't match"/>))
 
                         }
                         <Input
@@ -84,14 +126,12 @@ function RegisterPage() {
                             id="registerDisplayNameInput"
                             placeHolder="Enter display name"
                             setter={setDisplayName}
-                            validator={(name)=> {
-                                if(name.length === 0){
+                            validator={(name) => {
+                                if (name.length === 0) {
                                     return -1
-                                }
-                                else if(name.length > 2){
+                                } else if (name.length > 2) {
                                     return 1
-                                }
-                                else{
+                                } else {
                                     return 0
                                 }
                             }}
@@ -105,8 +145,8 @@ function RegisterPage() {
                             id="registerProfilePictureInput"
                             placeHolder="Upload profile picture"
                             setter={setImg}
-                            validator={(event, setter)=> {
-                                if(event.target.files.length === 0){
+                            validator={(event, setter) => {
+                                if (event.target.files.length === 0) {
                                     setImgDisplay(false)
                                     return -1
 
@@ -138,86 +178,35 @@ function RegisterPage() {
 
                         {imgDisplay && <div className="col-2 mt-4">
                             <img src={img} alt="img"
-                                 style={{maxWidth:"100%", maxHeight: "100%"}}></img>
+                                 style={{maxWidth: "100%", maxHeight: "100%"}}></img>
 
                         </div>}
 
                         <div className="row mt-2">
                             <div className="col-1">
-                                <button type="submit" className="btn btn-primary">Login</button>
-                            </div>
-                            <div className="col-11 row justify-content-center align-content-center">
-                                <div className="d-contents">Already have an account?&nbsp;<a href="./login.html">Click
-                                    here</a>&nbsp;to login.
-=======
-                        <div className="form-group row">
-                            <div className="col-12 mt-2">
-                                <label htmlFor="registerUsernameInput">Username</label>
-                                <input type="text" className="form-control" id="registerUsernameInput"
-                                       placeholder="Enter username"></input>
-                            </div>
-                        </div>
-                        <div className="form-group row">
-                            <div className="col-12 mt-2">
-                                <label htmlFor="registerPasswordInput">Password</label>
-                                <input type="password" className="form-control" id="registerPasswordInput"
-                                       placeholder="Enter password"></input>
-                            </div>
-                        </div>
-                        <div className="form-group row">
-                            <div className="col-12 mt-2">
-                                <label htmlFor="registerConfirmPasswordInput">Confirm Password</label>
-                                <input type="password" className="form-control" id="registerConfirmPasswordInput"
-                                       placeholder="Confirm password"></input>
-                            </div>
-                        </div>
-                        <div className="form-group row">
-                            <div className="col-12 mt-2">
-                                <label htmlFor="registerDisplayNameInput">Display Name</label>
-                                <input type="text" className="form-control" id="registerDisplayNameInput"
-                                       placeholder="Enter display name"></input>
-                            </div>
-                        </div>
-                        <div className="form-group row">
-                            <div className="col-12 mt-2">
-                                <label htmlFor="registerProfilePictureInput">Profile Picture</label>
-                                <input type="file" className="form-control" id="registerProfilePictureInput"
-                                       placeholder="Upload profile picture"></input>
-                            </div>
-                            <div className="col-2 mt-4">
-                                <img src="pictures/face2.jpg" alt="img"></img>
-                            </div>
-                        </div>
-
-                        <div className="row mt-2">
-                            <div className="col-1">
                                 <div className="d-contents">
                                     <button
-                                        onClick={(event) => (validateSignup(event,navigate, setRegisterDisplayError, userNameTest))}
+                                        onClick={(event) => (validateSignup(event, navigate, setRegisterDisplayError, userNameTest))}
                                         type="submit" className="btn btn-primary">Login
                                     </button>
 
                                 </div>
                             </div>
-                            {registerDisplayError && <div className="col-1 row justify-content-left align-content-center">error</div>}
+                            {registerDisplayError && <div
+                                className="col-1 row justify-content-left align-content-center">error</div>}
 
                             <div className="col-8 row justify-content-center align-content-center">
-                                <div className="d-contents">Already have an account <Link to="/">Click here</Link> to
-                                    login.
->>>>>>> Routing
+                                <div className="d-contents">Already have an account <Link to="/"> Click
+                                    here </Link> to login.
+
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-<<<<<<< HEAD
-
-
-=======
->>>>>>> Routing
-        </>
+            </>
     )
-}
 
+}
 export default RegisterPage
