@@ -1,10 +1,21 @@
-export default function userChatRow() {
+import { useEffect, useState } from 'react'
+import { getUser } from "../../apiTemp";
+
+export default function UserChatRow({ myId }) {
+  const [user, setUser] = useState({});
+  //hook to get the user's data from the server
+  useEffect(() => {
+    const response = getUser(myId);
+    if (response.code === 200) {
+      setUser(response.body);
+    }
+  }, [myId]);
   return (
     <div id="user_info" className="row chat-row text-start">
       <div className="col-2 profile-container">
-        <img alt="img" src="pictures/face_user.png" />
+        <img alt="img" src={user.picture} />
       </div>
-      <div className="col-6 text-start pt-2 fw-bold ">Alice Foo</div>
+      <div className="col-6 text-start pt-2 fw-bold ">{user.displayName}</div>
       <div className="col-4">
         <div className="text-right">
           <svg
