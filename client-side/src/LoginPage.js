@@ -56,7 +56,7 @@ function LoginPage(){
                                 <button onClick={(event) => buildResponse(event,userName,password)} type="submit" className="btn btn-primary">Login</button>
 
                             </div>
-                            <Alert  condition={displayError} errorMessage={errorMessage}></Alert>
+                            <Alert  condition={displayError} errorMessage={errorMessage} alertClass={"alert alert-danger col-3"}></Alert>
 
 
 

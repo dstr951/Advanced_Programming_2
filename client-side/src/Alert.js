@@ -1,6 +1,6 @@
-function Alert({condition, errorMessage}) {
+function Alert({condition, errorMessage, alertClass}) {
     return (
-        !!condition ? <div className="alert alert-danger col-3">
+        !!condition ? <div className={alertClass}>
             <strong>Error! </strong>{errorMessage}
         </div> : <></>
     )
