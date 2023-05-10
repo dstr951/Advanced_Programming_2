@@ -1,6 +1,7 @@
 import React, {useRef} from "react";
 import Input from "./Input";
 import {useState} from "react";
+import Alert from "./Alert";
 
 function validateUsername(username) {
     if (username.length === 0) {
@@ -46,12 +47,8 @@ function RegisterPage() {
     const[img,setImg] = useState('')
     const[imgDisplay, setImgDisplay] = useState(false)
     const lastImg = useRef(img)
-    const  passwordGetter = function(){
-        return password
-    }
-    const confirmPasswordGetter = function (){
-        return confirmPassword
-    }
+    const [messageConfirmPasswords, setMessageConfirmPasswords] = useState('')
+    const [alertClass, setAlertClass] = useState('')
     function confirmPasswordValidator(p1, p2) {
         if(p2.confirmPassword.length === 0){
             return -1
@@ -107,8 +104,12 @@ function RegisterPage() {
                             successMessage="passwords are the same"
                             errorMessage="passwords are not the same"
                         />
-                        {((confirmPasswordValidator({password},{confirmPassword})) === 1 &&  <div className={"success"}>passwords are the same</div>) ||
-                            ((confirmPasswordValidator({password},{confirmPassword})) === 0 &&  <div className={"success"}>passwords are not the same</div>)
+                        {((confirmPasswordValidator({password},{confirmPassword})) === 1 &&
+                            <Alert condition={true} alertClass="alert alert-success" errorMessage="passwords are identical" />
+                            ||
+                            ((confirmPasswordValidator({password},{confirmPassword})) === 0 &&
+                                <Alert condition={true} alertClass="alert alert-danger" errorMessage="passwords don't match" />))
+
                         }
                         <Input
                             label="Display Name"
@@ -116,7 +117,17 @@ function RegisterPage() {
                             id="registerDisplayNameInput"
                             placeHolder="Enter display name"
                             setter={setDisplayName}
-                            validator={()=> {return 1}}
+                            validator={(name)=> {
+                                if(name.length === 0){
+                                    return -1
+                                }
+                                else if(name.length > 2){
+                                    return 1
+                                }
+                                else{
+                                    return 0
+                                }
+                            }}
                             successMessage="valid display name"
                             errorMessage="invalid display name"
                         />

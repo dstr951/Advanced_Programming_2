@@ -1,4 +1,5 @@
 import {useRef, useState} from "react";
+import Alert from "./Alert";
 
 
 
@@ -45,8 +46,8 @@ function Input({label, type, id, placeHolder, setter,validator, parameters,succe
                     <label htmlFor={id}>{label}</label>
                     <input ref={inputBox} onChange={(e)=> getInput(e,id)} type={type} className="form-control" id={id}
                            placeholder={placeHolder}></input>
-                    {displaySuccess && <div className={"success"}>{successMessage}</div>}
-                    {displayError && <div className={"error"}>{errorMessage}</div>}
+                    <Alert condition={displaySuccess} errorMessage={successMessage} alertClass={"alert alert-success"}/>
+                    <Alert condition={displayError} errorMessage={errorMessage} alertClass={"alert alert-danger"}/>
                 </div>
             </div>
         </>)
