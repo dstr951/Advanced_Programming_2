@@ -1,6 +1,15 @@
-import Message from "./Message"
+import { useEffect, useState } from "react";
+import Message from "./Message";
+import { getChatMessages } from "../../apiTemp";
 
-export default function OpenChatMessages({messages, myId}) {
+export default function OpenChatMessages({ chatId, myId }) {
+  const [messages, setMessages] = useState([]);
+  useEffect(() => {
+    const response = getChatMessages(chatId);
+    if (response.code === 200) {
+      setMessages(response.body.messages);
+    }
+  }, [chatId]);
   return (
     <div id="message_box" className="row">
       <div className="messages-buffer"></div>
