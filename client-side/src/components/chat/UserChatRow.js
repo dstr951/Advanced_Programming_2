@@ -1,18 +1,18 @@
 export default function userChatRow() {
   return (
-    <div id="user_info" class="row chat-row text-start">
-      <div class="col-2 profile-container">
+    <div id="user_info" className="row chat-row text-start">
+      <div className="col-2 profile-container">
         <img alt="img" src="pictures/face_user.png" />
       </div>
-      <div class="col-6 text-start pt-2 fw-bold ">Alice Foo</div>
-      <div class="col-4">
-        <div class="text-right">
+      <div className="col-6 text-start pt-2 fw-bold ">Alice Foo</div>
+      <div className="col-4">
+        <div className="text-right">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-person-plus"
+            className="bi bi-person-plus"
             viewBox="0 0 16 16"
             data-toggle="modal"
             data-target="#addContact"
@@ -25,30 +25,30 @@ export default function userChatRow() {
           </svg>
         </div>
         {/*MODAL*/}
-        <div id="addContact" class="modal fade" role="dialog">
-          <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Modal title</h5>
+        <div id="addContact" className="modal fade" role="dialog">
+          <div className="modal-dialog modal-dialog-scrollable">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Modal title</h5>
                   <button
                     type="button"
-                    class="btn-close"
+                    className="btn-close"
                     data-bs-dismiss="modal"
                     aria-label="Close"
                   ></button>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     placeholder="Contact's identifier"
                     aria-label="Username"
                     aria-describedby="addon-wrapping"
                   />
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary">
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-primary">
                     Add
                   </button>
                 </div>

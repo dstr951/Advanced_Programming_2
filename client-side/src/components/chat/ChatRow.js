@@ -1,18 +1,18 @@
 export default function ChatRow() {
   return (
-    <div class="row chat-row active_chat">
-      <div class="col-2 profile-container">
+    <div className="row chat-row active_chat">
+      <div className="col-2 profile-container">
         <img alt="img" src="pictures/face2.jpg" />
       </div>
-      <div class="col-10 d-flex">
-        <div class="row name-time-last-message-container">
-          <div class="col-7 contact_name fw-bold">
+      <div className="col-10 d-flex">
+        <div className="row name-time-last-message-container">
+          <div className="col-7 contact_name fw-bold">
             name another name and one more and even one more
           </div>
-          <div class="col-5">
-            <div class="date">31/01/2023,10:56:34 PM</div>
+          <div className="col-5">
+            <div className="date">31/01/2023,10:56:34 PM</div>
           </div>
-          <div class="col-12 last_msg fw-lighter fst-italic">
+          <div className="col-12 last_msg fw-lighter fst-italic">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed enim
             nisi, euismod eget elit et, rutrum placerat nunc. Vestibulum non
             ligula ex. Donec congue iaculis consequat. Etiam dui risus, semper
