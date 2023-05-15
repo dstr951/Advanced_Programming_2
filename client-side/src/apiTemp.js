@@ -13,12 +13,12 @@ export function validateLogin(userName, password) {
   }
   return {
     code: 200,
-    body: {userId: user.userId},
+    body: {userId: user[0].userId},
   }
 }
 /********************/
 /***category register***/
-function userNameExists(userName){
+export function userNameExists(userName){
   const sameNameUsers = users.filter(
     u => u.userName === userName
   )
@@ -31,15 +31,16 @@ export function registerUser(userName, password, displayName, picture){
       body: "userName already exists"
     }
   }
-  const id = users.length
+  const id = users.length + 1
   const newUser = {
     userId: id,
     userName: userName,
     password: password,
     displayName: displayName,
-    picture: `/face1.png`,
+    picture: picture,
   }
   users.push(newUser)
+  console.log("the new user id is: "+id)
   return {
     code: 201,
     body: {userId: id}
@@ -63,7 +64,7 @@ export function getUser(userId) {
     body: frontUser,
   }
 }
-function getUserStatus(userId) {
+export function getUserStatus(userId) {
   return {
     code: 200,
     body: {status: "online"},
