@@ -5,7 +5,7 @@ const location = useLocation();
 
     return(
         <h1>Chats for ID number: {myParam}</h1>
-    )
+
  */
 
 import { useEffect, useState } from "react";
@@ -16,6 +16,10 @@ import OpenChat from "./components/chat/OpenChat.js";
 import { getAllChats } from "./apiTemp";
 
 export default function ChatsPage() {
+    //const location = useLocation();
+    //const userId = location.state?.myParam;
+    //console.log(userId)
+
 
     /*TEMP*/
     const [myId, setMyId] = useState(0);

@@ -7,9 +7,10 @@ import { getAllChats } from "./apiTemp";
 import ChatsPage from "./ChatsPage";
 
 function App() {
-  <div>
-    <ChatsPage/>
-  </div>
+  return(
+      <ChatsPage/>
+  )
+
 
 }
 
