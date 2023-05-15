@@ -87,8 +87,8 @@ function LoginPage() {
                             { displayError &&
                                 <Alert  condition={displayError} errorMessage={errorMessage} alertClass={"alert alert-danger col-3"}></Alert>}
                             <div className="col-6 row justify-content-center align-content-center">
-                                <div className="d-contents">Don't have an account? <Link to="/Register">  Click
-                                    here </Link> to register.
+                                <div className="d-contents">Don't have an account?&nbsp;<Link to="/Register">Click
+                                    here</Link>&nbsp;to register.
 
                                 </div>
 

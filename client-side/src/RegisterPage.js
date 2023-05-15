@@ -261,8 +261,8 @@ function RegisterPage() {
                             }
 
                             <div className="col-4 row justify-content-center align-content-center">
-                                <div className="d-contents">Already have an account <Link to="/"> Click
-                                    here </Link> to login.
+                                <div className="d-contents">Already have an account&nbsp;<Link to="/"> Click
+                                    here </Link>&nbsp;to login.
 
                                 </div>
                             </div>
