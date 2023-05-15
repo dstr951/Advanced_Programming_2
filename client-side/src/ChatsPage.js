@@ -7,16 +7,17 @@ import OpenChat from "./components/chat/OpenChat.js";
 import { getAllChats } from "./apiTemp";
 
 export default function ChatsPage() {
-    //const location = useLocation();
-    //const userId = location.state?.myParam;
-    //console.log(userId)
+    //const [myId, setMyId] = useState(0);
+    const location = useLocation();
+    const myId = location.state?.myParam;
+    //console.log("now logged in userId:"+userId)
 
 
     /*TEMP*/
-    const [myId, setMyId] = useState(0);
-    setTimeout(() => {
-        setMyId(1);
-    }, 100);
+
+    //setTimeout(() => {
+    //    setMyId(userId);
+    //}, 100);
     /*TEMP*/
     const [chatUsers, setChatUsers] = useState([]);
     //hook to get the chats data from the server
@@ -42,7 +43,7 @@ export default function ChatsPage() {
                 <div id="chat_card" className="col-12">
                     <div id="panels_row" className="row m-0">
                         <div id="conversations_panel" className=" col-5 chat-panel">
-                            <UserChatRow myId={1} />
+                            <UserChatRow myId={myId} />
                             <div id="conversations">
                                 {chatUsers.map((cu, index) => (
                                     <ChatRow

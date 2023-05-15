@@ -31,13 +31,13 @@ export function registerUser(userName, password, displayName, picture){
       body: "userName already exists"
     }
   }
-  const id = users.length
+  const id = users.length + 1
   const newUser = {
     userId: id,
     userName: userName,
     password: password,
     displayName: displayName,
-    picture: `/face1.png`,
+    picture: picture,
   }
   users.push(newUser)
   console.log("the new user id is: "+id)
