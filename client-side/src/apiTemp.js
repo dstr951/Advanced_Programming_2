@@ -64,7 +64,7 @@ export function getUser(userId) {
     body: frontUser,
   }
 }
-function getUserStatus(userId) {
+export function getUserStatus(userId) {
   return {
     code: 200,
     body: {status: "online"},
