@@ -44,7 +44,7 @@ export default function ChatsPage() {
                 <div id="chat_card" className="col-12">
                     <div id="panels_row" className="row m-0">
                         <div id="conversations_panel" className=" col-5 chat-panel">
-                            <UserChatRow myId={myId} />
+                            <UserChatRow myId={myId} setForceUpdateMessages={setForceUpdateMessages}/>
                             <div id="conversations">
                                 {chatUsers.map((cu, index) => (
                                     <ChatRow
