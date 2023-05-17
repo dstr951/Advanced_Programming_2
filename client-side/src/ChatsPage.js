@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./chats.css";
 import UserChatRow from "./components/chat/UserChatRow.js";
@@ -11,6 +11,11 @@ export default function ChatsPage() {
     const location = useLocation();
     const myId = location.state?.myParam;
     //console.log("now logged in userId:"+userId)
+    const navigate = useNavigate();
+    const logoutHandler = (e) => {
+        e.preventDefault()
+        navigate('/')
+    }
 
 
     /*TEMP*/
@@ -20,35 +25,46 @@ export default function ChatsPage() {
     //}, 100);
     /*TEMP*/
     const [chatUsers, setChatUsers] = useState([]);
+    //control the content displayed on screen
+    const [openChatId, setOpenChatId] = useState(0);
+    const [openUser, setOpenUser] = useState({});
+    //update messages and last message after sending a message
+    const [forceUpdateMessages, setForceUpdateMessages] = useState(false)
+
     //hook to get the chats data from the server
     useEffect(() => {
         const response = getAllChats(myId);
         if (response.code === 200) {
             setChatUsers(response.body);
         }
-    }, [myId]);
-    //control the content displayed on screen
-    const [openChatId, setOpenChatId] = useState(0);
-    const [openUser, setOpenUser] = useState({});
+    }, [myId, forceUpdateMessages]);
 
+	//hook to get the chats data from the server
+	useEffect(() => {
+		const response = getAllChats(myId);
+		if (response.code === 200) {
+			setChatUsers(response.body);
+		}
+	}, [myId, forceUpdateMessages]);
     return (
         <>
             <div className="background-jumbo"></div>
             <div className="row justify-content-end mt-2 mb-4">
                 <div className="col-1">
-                    <button className="btn btn-danger">Logout</button>
+                    <button className="btn btn-danger" onClick={logoutHandler}>Logout</button>
                 </div>
             </div>
             <div id="chat_window" className="row">
                 <div id="chat_card" className="col-12">
                     <div id="panels_row" className="row m-0">
                         <div id="conversations_panel" className=" col-5 chat-panel">
-                            <UserChatRow myId={myId} />
+                            <UserChatRow myId={myId} setForceUpdateMessages={setForceUpdateMessages}/>
                             <div id="conversations">
                                 {chatUsers.map((cu, index) => (
                                     <ChatRow
                                         userId={cu.userId}
                                         chatId={cu.chatId}
+                                        forceUpadteMessages={forceUpdateMessages}
                                         changeOpenChatId={setOpenChatId}
                                         changeOpenUser={setOpenUser}
                                         active={openUser.userId === cu.userId}
@@ -58,7 +74,7 @@ export default function ChatsPage() {
                             </div>
                         </div>
                         <div id="messages_panel" className=" col-7 chat-panel">
-                            <OpenChat user={openUser} chatId={openChatId} myId={myId} />
+                            <OpenChat user={openUser} chatId={openChatId} myId={myId} forceUpadteMessages={forceUpdateMessages} setForceUpdateMessages={setForceUpdateMessages} />
                         </div>
                     </div>
                 </div>
