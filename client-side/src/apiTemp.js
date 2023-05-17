@@ -122,13 +122,11 @@ export function getLastChatMessage(chatId){
   }
 }
 export function sendMessage(messageContent, myId, chatId){
-  console.log(messageContent, myId, chatId)
   const message = {
     content: messageContent,
     senderId: myId,
     timeSent: new Date()
   }
-  console.log(chats.find(e => e.chatId === chatId))
   const result = chats.find(e => e.chatId === chatId)?.messages.push(message)
   if(result === undefined){
     return {code: 404};
