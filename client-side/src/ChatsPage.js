@@ -20,17 +20,18 @@ export default function ChatsPage() {
     //}, 100);
     /*TEMP*/
     const [chatUsers, setChatUsers] = useState([]);
-    //hook to get the chats data from the server
-    useEffect(() => {
-        const response = getAllChats(myId);
-        if (response.code === 200) {
-            setChatUsers(response.body);
-        }
-    }, [myId]);
     //control the content displayed on screen
     const [openChatId, setOpenChatId] = useState(0);
     const [openUser, setOpenUser] = useState({});
+	const [forceUpdateMessages, setForceUpdateMessages] = useState(false)
 
+	//hook to get the chats data from the server
+	useEffect(() => {
+		const response = getAllChats(myId);
+		if (response.code === 200) {
+			setChatUsers(response.body);
+		}
+	}, [myId, forceUpdateMessages]);
     return (
         <>
             <div className="background-jumbo"></div>
