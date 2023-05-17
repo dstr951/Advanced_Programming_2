@@ -4,9 +4,8 @@ import OpenChatMessages from "./OpenChatMessages"
 import {useState} from "react"
 import {sendMessage} from "../../apiTemp"
 
-export default function OpenChat({user, chatId, myId}) {
+export default function OpenChat({user, chatId, myId, forceUpadteMessages, setForceUpdateMessages}) {
   const [messageContent, setMessageContent] = useState("")
-  const [forceUpadteMessages, setForceUpdateMessages] = useState(false)
 
   function inputChange(e) {
     setMessageContent(e.target.value)

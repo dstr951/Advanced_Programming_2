@@ -30,6 +30,8 @@ export default function ChatsPage() {
     //control the content displayed on screen
     const [openChatId, setOpenChatId] = useState(0);
     const [openUser, setOpenUser] = useState({});
+    //update messages and last message after sending a message
+    const [forceUpadteMessages, setForceUpdateMessages] = useState(false)
 
     return (
         <>
@@ -49,6 +51,7 @@ export default function ChatsPage() {
                                     <ChatRow
                                         userId={cu.userId}
                                         chatId={cu.chatId}
+                                        forceUpadteMessages={forceUpadteMessages}
                                         changeOpenChatId={setOpenChatId}
                                         changeOpenUser={setOpenUser}
                                         active={openUser.userId === cu.userId}
@@ -58,7 +61,7 @@ export default function ChatsPage() {
                             </div>
                         </div>
                         <div id="messages_panel" className=" col-7 chat-panel">
-                            <OpenChat user={openUser} chatId={openChatId} myId={myId} />
+                            <OpenChat user={openUser} chatId={openChatId} myId={myId} forceUpadteMessages={forceUpadteMessages} setForceUpdateMessages={setForceUpdateMessages} />
                         </div>
                     </div>
                 </div>
