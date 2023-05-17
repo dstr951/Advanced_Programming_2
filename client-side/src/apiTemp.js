@@ -96,6 +96,9 @@ export function getAllChats(userId){
       }
     }
   ) 
+  myChats.sort((c1, c2) => {
+    return getLastChatMessage(c2.chatId).body.lastMessage.timeSent - getLastChatMessage(c1.chatId).body.lastMessage.timeSent
+  })
   return {
     code: 200,
     body: myChats,

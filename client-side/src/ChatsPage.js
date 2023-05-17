@@ -20,18 +20,19 @@ export default function ChatsPage() {
     //}, 100);
     /*TEMP*/
     const [chatUsers, setChatUsers] = useState([]);
+    //control the content displayed on screen
+    const [openChatId, setOpenChatId] = useState(0);
+    const [openUser, setOpenUser] = useState({});
+    //update messages and last message after sending a message
+    const [forceUpadteMessages, setForceUpdateMessages] = useState(false)
+
     //hook to get the chats data from the server
     useEffect(() => {
         const response = getAllChats(myId);
         if (response.code === 200) {
             setChatUsers(response.body);
         }
-    }, [myId]);
-    //control the content displayed on screen
-    const [openChatId, setOpenChatId] = useState(0);
-    const [openUser, setOpenUser] = useState({});
-    //update messages and last message after sending a message
-    const [forceUpadteMessages, setForceUpdateMessages] = useState(false)
+    }, [myId, forceUpadteMessages]);
 
     return (
         <>
