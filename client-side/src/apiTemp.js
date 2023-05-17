@@ -141,6 +141,12 @@ export function getLastChatMessage(chatId) {
 }
 
 export function addContact(myId, userId) {
+  if(myId === userId){
+    return {
+      code: 409,
+      body: "Can't have chat with yourself"
+    }
+  }
   if(checkChatExists(myId, userId)){
     return{
       code: 409,
