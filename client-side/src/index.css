@@ -21,3 +21,7 @@ body{
   width: 100%;
   background-color: rgb(0,168,132);
 }
+#root{
+  overflow: auto;
+  height: 100%;
+}
