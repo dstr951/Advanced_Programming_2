@@ -148,7 +148,7 @@ export function addContact(myId, userId) {
     user2: user2,
     chatId: newChatId,
   };
-  chatUsers.push(newChatUsers);
+  chatUsers.unshift(newChatUsers);
   return {
 	code: 201,
 	body: "created"
