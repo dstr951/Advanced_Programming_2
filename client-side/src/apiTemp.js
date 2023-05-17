@@ -128,11 +128,7 @@ export function getLastChatMessage(chatId) {
   };
 }
 
-export function addContact(myId, userName) {
-  const user = users.find((u) => u.userName === userName);
-  if (user === -1) {
-    return { code: 404 };
-  }
+export function addContact(myId, userId) {
   const newChatId = chats.length + 1;
   const newChat = {
     chatId: newChatId,
@@ -145,8 +141,8 @@ export function addContact(myId, userName) {
 	],
   };
   chats.push(newChat);
-  const user1 = Math.min(myId, user.userId);
-  const user2 = Math.max(myId, user.userId);
+  const user1 = Math.min(myId, userId);
+  const user2 = Math.max(myId, userId);
   const newChatUsers = {
     user1: user1,
     user2: user2,
