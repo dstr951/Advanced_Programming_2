@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
-import { getUser } from "../../apiTemp";
+import { useEffect, useState } from "react";
+import { getUser, getUserIdsByUserName, addContact } from "../../apiTemp";
+import Input from "../../Input";
 
 export default function UserChatRow({ myId }) {
   const [user, setUser] = useState({});
@@ -10,6 +11,33 @@ export default function UserChatRow({ myId }) {
       setUser(response.body);
     }
   }, [myId]);
+
+  //MODAL LOGIC
+  const [modalUsername, setModalUsername] = useState("");
+  const [OKUsername, setOKUsernname] = useState(false);
+  const [modalChosenUserId, setModalChosenUserId] = useState(-1);
+  const validateUsername = (username, setOK) => {
+    if (modalChosenUserId !== -1) {
+      setModalChosenUserId(-1);
+    }
+    if (username.length <= 2) {
+      return;
+    }
+    const users = getUserIdsByUserName(username);
+    let similarIds = users.body;
+    if (similarIds.length === 0) {
+      return 0;
+    }
+    if (similarIds.length === 1) {
+      setModalChosenUserId(similarIds[0]);
+      return 1;
+    }
+  };
+
+  const handleModalAdd = (e) => {
+    e.preventDefault();
+    console.log(addContact(myId, modalChosenUserId))
+  };
   return (
     <div id="user_info" className="row chat-row text-start">
       <div className="col-2 profile-container">
@@ -47,19 +75,30 @@ export default function UserChatRow({ myId }) {
                     className="btn-close"
                     data-bs-dismiss="modal"
                     aria-label="Close"
+                    data-toggle="modal"
+                    data-target="#addContact"
                   ></button>
                 </div>
                 <div className="modal-body">
-                  <input
+                  <Input
+                    label="Username"
                     type="text"
-                    className="form-control"
-                    placeholder="Contact's identifier"
-                    aria-label="Username"
-                    aria-describedby="addon-wrapping"
+                    id="modalUsernameInput"
+                    placeHolder="Enter username"
+                    setter={setModalUsername}
+                    setOK={setOKUsernname}
+                    validator={validateUsername}
+                    successMessage="username exists"
+                    errorMessage="We couldn't find someone with this username :("
                   />
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-primary">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleModalAdd}
+                    disabled={modalChosenUserId === -1}
+                  >
                     Add
                   </button>
                 </div>
