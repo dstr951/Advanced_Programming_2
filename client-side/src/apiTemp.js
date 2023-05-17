@@ -79,9 +79,12 @@ export function getUserIdsByUserName(username) {
 	}
   }
   //use the toLowerCase fucntion to make include not case sensitive
-  const similiarUsers = users
-    .filter((u) => u.userName.toLowerCase().includes(userName.toLowerCase()))
+  let similiarUsers = users
+    .filter((u) => u.userName.toLowerCase().includes(username.toLowerCase()))
     .map((u) => u.userId);
+  if(similiarUsers.length > 3){
+	similiarUsers = similiarUsers.slice(0, 3)
+  }
   return {
     code: 200,
     body: similiarUsers,
