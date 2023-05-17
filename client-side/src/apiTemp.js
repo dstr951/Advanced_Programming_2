@@ -96,7 +96,7 @@ function checkChatExists(userId1, userId2){
   if(userId2 < userId1){
     const temp = userId1
     userId1 = userId2
-    userId1 = temp
+    userId2 = temp
   }
   const existingChatUser = chatUsers.filter(cu => cu.user1 === userId1 && cu.user2 === userId2)
   if(existingChatUser.length === 0){
