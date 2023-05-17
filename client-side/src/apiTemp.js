@@ -92,6 +92,18 @@ export function getUserIdsByUserName(username) {
 }
 /********************/
 /***category chat***/
+function checkChatExists(userId1, userId2){
+  if(userId2 < userId1){
+    const temp = userId1
+    userId1 = userId2
+    userId1 = temp
+  }
+  const existingChatUser = chatUsers.filter(cu => cu.user1 === userId1 && cu.user2 === userId2)
+  if(existingChatUser.length === 0){
+    return false;
+  }
+  return true;
+}
 export function getAllChats(userId) {
   const myChats = chatUsers
     .filter((c) => c.user1 === userId || c.user2 === userId)
@@ -129,6 +141,12 @@ export function getLastChatMessage(chatId) {
 }
 
 export function addContact(myId, userId) {
+  if(checkChatExists(myId, userId)){
+    return{
+      code: 409,
+      body: "Chat already exists"
+    }
+  }
   const newChatId = chats.length + 1;
   const newChat = {
     chatId: newChatId,
