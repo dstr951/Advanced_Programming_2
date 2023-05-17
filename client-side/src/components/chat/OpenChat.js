@@ -33,7 +33,11 @@ export default function OpenChat({user, chatId, myId, forceUpadteMessages, setFo
           value={messageContent}
           onChange={inputChange}
         />
-        <button className="col-2" onClick={sendMessageHandler}>
+        <button
+          className="col-2"
+          onClick={sendMessageHandler}
+          disabled={messageContent === ""}
+        >
           send
         </button>
       </div>
