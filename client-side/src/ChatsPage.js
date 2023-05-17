@@ -29,7 +29,7 @@ export default function ChatsPage() {
     const [openChatId, setOpenChatId] = useState(0);
     const [openUser, setOpenUser] = useState({});
     //update messages and last message after sending a message
-    const [forceUpadteMessages, setForceUpdateMessages] = useState(false)
+    const [forceUpdateMessages, setForceUpdateMessages] = useState(false)
 
     //hook to get the chats data from the server
     useEffect(() => {
@@ -37,7 +37,7 @@ export default function ChatsPage() {
         if (response.code === 200) {
             setChatUsers(response.body);
         }
-    }, [myId, forceUpadteMessages]);
+    }, [myId, forceUpdateMessages]);
 
 	//hook to get the chats data from the server
 	useEffect(() => {
@@ -64,7 +64,7 @@ export default function ChatsPage() {
                                     <ChatRow
                                         userId={cu.userId}
                                         chatId={cu.chatId}
-                                        forceUpadteMessages={forceUpadteMessages}
+                                        forceUpadteMessages={forceUpdateMessages}
                                         changeOpenChatId={setOpenChatId}
                                         changeOpenUser={setOpenUser}
                                         active={openUser.userId === cu.userId}
@@ -74,7 +74,7 @@ export default function ChatsPage() {
                             </div>
                         </div>
                         <div id="messages_panel" className=" col-7 chat-panel">
-                            <OpenChat user={openUser} chatId={openChatId} myId={myId} forceUpadteMessages={forceUpadteMessages} setForceUpdateMessages={setForceUpdateMessages} />
+                            <OpenChat user={openUser} chatId={openChatId} myId={myId} forceUpadteMessages={forceUpdateMessages} setForceUpdateMessages={setForceUpdateMessages} />
                         </div>
                     </div>
                 </div>
