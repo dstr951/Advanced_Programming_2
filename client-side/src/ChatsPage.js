@@ -28,7 +28,16 @@ export default function ChatsPage() {
     //control the content displayed on screen
     const [openChatId, setOpenChatId] = useState(0);
     const [openUser, setOpenUser] = useState({});
-	const [forceUpdateMessages, setForceUpdateMessages] = useState(false)
+    //update messages and last message after sending a message
+    const [forceUpadteMessages, setForceUpdateMessages] = useState(false)
+
+    //hook to get the chats data from the server
+    useEffect(() => {
+        const response = getAllChats(myId);
+        if (response.code === 200) {
+            setChatUsers(response.body);
+        }
+    }, [myId, forceUpadteMessages]);
 
 	//hook to get the chats data from the server
 	useEffect(() => {
@@ -55,6 +64,7 @@ export default function ChatsPage() {
                                     <ChatRow
                                         userId={cu.userId}
                                         chatId={cu.chatId}
+                                        forceUpadteMessages={forceUpadteMessages}
                                         changeOpenChatId={setOpenChatId}
                                         changeOpenUser={setOpenUser}
                                         active={openUser.userId === cu.userId}
@@ -64,7 +74,7 @@ export default function ChatsPage() {
                             </div>
                         </div>
                         <div id="messages_panel" className=" col-7 chat-panel">
-                            <OpenChat user={openUser} chatId={openChatId} myId={myId} />
+                            <OpenChat user={openUser} chatId={openChatId} myId={myId} forceUpadteMessages={forceUpadteMessages} setForceUpdateMessages={setForceUpdateMessages} />
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@ import { getLastChatMessage, getUser } from "../../apiTemp";
 export default function ChatRow({
   userId,
   chatId,
+  forceUpadteMessages,
   changeOpenChatId,
   changeOpenUser,
   active,
@@ -28,7 +29,7 @@ export default function ChatRow({
     if (response.code === 200) {
       setLastMessage(response.body.lastMessage);
     }
-  }, [chatId]);
+  }, [chatId, forceUpadteMessages]);
 
   const activeClass = active ? " active_chat" : "";
   return (

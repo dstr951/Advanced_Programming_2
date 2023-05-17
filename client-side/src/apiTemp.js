@@ -112,8 +112,12 @@ export function getAllChats(userId) {
       return {
         chatId: c.chatId,
         userId: user,
-      };
-    });
+      }
+    }
+  ) 
+  myChats.sort((c1, c2) => {
+    return getLastChatMessage(c2.chatId).body.lastMessage.timeSent - getLastChatMessage(c1.chatId).body.lastMessage.timeSent
+  })
   return {
     code: 200,
     body: myChats,
@@ -176,6 +180,21 @@ export function addContact(myId, userId) {
   return {
 	code: 201,
 	body: "created"
+  }
+}
+export function sendMessage(messageContent, myId, chatId){
+  const message = {
+    content: messageContent,
+    senderId: myId,
+    timeSent: new Date()
+  }
+  const result = chats.find(e => e.chatId === chatId)?.messages.push(message)
+  if(result === undefined){
+    return {code: 404};
+  }
+  return {
+    code: 201,
+    body: {message: "created"}
   }
 }
 /********************/
