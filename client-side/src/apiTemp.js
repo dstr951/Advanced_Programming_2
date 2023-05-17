@@ -68,7 +68,16 @@ export function getUserStatus(userId) {
     body: { status: "online" },
   };
 }
-export function getUserIdsByUserName(userName) {
+export function getUserIdsByUserName(username) {
+  const exactUser = users
+  .filter((u) => u.userName.toLowerCase() === username.toLowerCase())
+  .map((u) => u.userId)
+  if(exactUser.length === 1){
+	return {
+		code: 200,
+		body: exactUser,
+	}
+  }
   //use the toLowerCase fucntion to make include not case sensitive
   const similiarUsers = users
     .filter((u) => u.userName.toLowerCase().includes(userName.toLowerCase()))
