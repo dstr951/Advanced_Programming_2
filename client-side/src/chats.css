@@ -42,6 +42,7 @@ body {
 #conversation_panel .date {
   font-size: 10px;
   text-align: center;
+
 }
 
 #user_info {
@@ -154,4 +155,9 @@ body {
   height: 55px;
   width: 55px;
   border-radius: 50%;
+}
+.date{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
