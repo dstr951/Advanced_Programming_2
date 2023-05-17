@@ -92,7 +92,7 @@ body {
   height: 85%;
   background-image: url(/public/pictures/MessagesBackground.jpg);
   background-size: contain;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
