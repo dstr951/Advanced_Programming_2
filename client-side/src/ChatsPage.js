@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./chats.css";
 import UserChatRow from "./components/chat/UserChatRow.js";
@@ -11,6 +11,11 @@ export default function ChatsPage() {
     const location = useLocation();
     const myId = location.state?.myParam;
     //console.log("now logged in userId:"+userId)
+    const navigate = useNavigate();
+    const logoutHandler = (e) => {
+        e.preventDefault()
+        navigate('/')
+    }
 
 
     /*TEMP*/
@@ -36,7 +41,7 @@ export default function ChatsPage() {
             <div className="background-jumbo"></div>
             <div className="row justify-content-end mt-2 mb-4">
                 <div className="col-1">
-                    <button className="btn btn-danger">Logout</button>
+                    <button className="btn btn-danger" onClick={logoutHandler}>Logout</button>
                 </div>
             </div>
             <div id="chat_window" className="row">
