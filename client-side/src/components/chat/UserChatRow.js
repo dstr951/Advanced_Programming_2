@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getUser, getUserIdsByUserName, addContact } from "../../apiTemp";
-import Input from "../../Input";
+import Input from "../Input";
 
 export default function UserChatRow({ myId, setForceUpdateMessages }) {
   const [user, setUser] = useState({});
