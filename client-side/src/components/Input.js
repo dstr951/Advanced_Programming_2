@@ -1,9 +1,13 @@
 import {useRef, useState} from "react";
 import Alert from "./Alert";
 
+export const NO_DISPLAY = -1
+export const ERROR_DISPLAY = 0
+export const SUCCESS_DISPLAY = 1
 
 
-function Input({label, type, id, placeHolder, setter, setOK,validator, parameters,successMessage, errorMessage}) {
+
+export function Input({label, type, id, placeHolder, setter, setOK,validator, parameters,successMessage, errorMessage}) {
     const [displaySuccess, setDisplaySuccess] = useState(false)
     const [displayError, setDisplayError] = useState(false)
     const[password,setPassword] = useState('')
@@ -24,11 +28,11 @@ function Input({label, type, id, placeHolder, setter, setOK,validator, parameter
         else {
             returnVal = validator(tempParam,setOK)
         }
-        if(returnVal === 1){
+        if(returnVal === SUCCESS_DISPLAY){
             setDisplayError(false)
             setDisplaySuccess(true)
         }
-        else if(returnVal === 0){
+        else if(returnVal === ERROR_DISPLAY){
             setDisplaySuccess(false)
             setDisplayError(true)
         }
