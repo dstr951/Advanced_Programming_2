@@ -1,4 +1,4 @@
-import Alert from "./Alert";
+import Alert from "./components/Alert";
 import {useEffect, useState} from "react";
 import {validateLogin} from "./apiTemp";
 import {useNavigate, Link} from "react-router-dom";
