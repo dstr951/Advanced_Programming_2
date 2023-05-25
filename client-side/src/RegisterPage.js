@@ -2,40 +2,27 @@ import {useNavigate, Link} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {Input, NO_DISPLAY, ERROR_DISPLAY, SUCCESS_DISPLAY} from "./components/Input";
 import Alert from "./components/Alert";
-import {userNameExists, registerUser} from "./apiTemp"
+import {registerUser} from "./api"
 
 
-function validateSignup(event, navigator, setterDisplayError, data) {
 
-    if (data.OK.usernameOK &&
-        data.OK.passwordOK &&
-        data.data.password === data.data.confirmPassword &&
-        data.OK.displayNameOK &&
-        data.OK.imgOK
+async function validateSignup(event, navigator, setterDisplayError, data) {
+    event.preventDefault()
+    if (!data.OK.usernameOK ||
+        !data.OK.passwordOK ||
+        data.data.password !== data.data.confirmPassword ||
+        !data.OK.displayNameOK ||
+        !data.OK.imgOK
     ) {
-        if (!userNameExists(data.data.username)) {
-            setterDisplayError(false)
-            const serverResponse = registerUser(data.data.username, data.data.password, data.data.displayName,data.data.profilePictue)
-            if(serverResponse.code === 409){
-                event.preventDefault()
-                setterDisplayError(true)
-                return false
-            }
-            else{
-
-                navigator('/Chats',{ state: { myParam: serverResponse.body.userId } })
-            }
-
-        } else {
-            event.preventDefault()
-            setterDisplayError(true)
-            return false
-        }
-    } else {
-        event.preventDefault()
         setterDisplayError(true)
         return false
     }
+    const serverResponse = await registerUser(data.data.username, data.data.password, data.data.displayName,data.data.profilePictue)    
+    if(serverResponse.status === 409){
+        setterDisplayError(true)
+        return false
+    }
+    navigator('/')        
 }
 
 function validateUsername(username, setOK) {
