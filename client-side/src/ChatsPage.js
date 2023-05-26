@@ -29,14 +29,6 @@ export default function ChatsPage() {
     //update messages and last message after sending a message
     const [forceUpdateMessages, setForceUpdateMessages] = useState(false)
 
-    //hook to get the chats data from the server
-    useEffect(() => {
-        const response = getAllChats(myId);
-        if (response.code === 200) {
-            setChatUsers(response.body);
-        }
-    }, [myId, forceUpdateMessages]);
-
 	//hook to get the chats data from the server
 	useEffect(() => {
 		const response = getAllChats(myId);
