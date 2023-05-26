@@ -36,6 +36,20 @@ async function registerUser(userPassName) {
 }
 
 async function getUserInfo(username){
-    return UserPassName.find({username});
+    const temp = await UserPassName.find({username});
+
+    if(!temp.length){
+        return {
+            tittle: "Unauthorized",
+            status: 401
+        }
+    }
+    return{
+        username:temp[0].username,
+        displayName:temp[0].displayName,
+        profilePic:temp[0].profilePic
+    }
 }
 
+
+getUserInfo("tomferr").then(r => console.log(r));
