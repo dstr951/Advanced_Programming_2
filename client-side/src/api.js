@@ -1,4 +1,9 @@
 const apiPrefix = "http://localhost:5000/api/"
+export const HttpCodes = {
+    SUCCESS: 200,
+    UNAUTHERIZED:  401,
+    CONFLICT: 409,
+}
 
 //a solution for the empty body response we get in the api after user was created
 //https://github.com/github/fetch/issues/268#issuecomment-176544728
@@ -66,6 +71,5 @@ export async function getAllChats(token) {
   } catch (error) {
     console.error("Error:", error)
   }
-  const data = await myParse(response)
-  return data
+  return response
 }

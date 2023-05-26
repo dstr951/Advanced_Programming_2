@@ -4,7 +4,7 @@ import "./chats.css";
 import UserChatRow from "./components/chat/UserChatRow.js";
 import ChatRow from "./components/chat/ChatRow.js";
 import OpenChat from "./components/chat/OpenChat.js";
-import { getAllChats } from "./api";
+import { getAllChats, HttpCodes } from "./api";
 
 export default function ChatsPage() {
     //const [myId, setMyId] = useState(0);
@@ -22,23 +22,35 @@ export default function ChatsPage() {
         setToken(location.state?.token)
     }, [location])
 
-    const [chatUsers, setChatUsers] = useState([]);
+    const [chats, setChats] = useState([]);
     //control the content displayed on screen
     const [openChatId, setOpenChatId] = useState(0);
     const [openUser, setOpenUser] = useState({});
     //update messages and last message after sending a message
     const [forceUpdateMessages, setForceUpdateMessages] = useState(false)
 
-	//hook to get the chats data from the server
+
+    const updateChats = async () => {
+        const response = await getAllChats(token);
+        switch(response.status){
+            case HttpCodes.SUCCESS:
+                const data = await response.json()
+                setChats(data)
+                break;
+            case HttpCodes.UNAUTHERIZED:
+                navigate('/')
+                break;
+            default:
+                console.log("unexpected HTTP code on response from getAllChats:", response.status)
+        }      
+    }
+
 	useEffect(() => {        
         if(token == "") {
+            console.log("no token render")
             return
         }
-        const fetchChats = async () => {
-            const response = await getAllChats(token);
-            console.log(response)
-        }
-        fetchChats()
+        updateChats()
 	}, [token]);
     return (
         <>
@@ -54,14 +66,15 @@ export default function ChatsPage() {
                         <div id="conversations_panel" className=" col-5 chat-panel">
                             <UserChatRow myId={myId} setForceUpdateMessages={setForceUpdateMessages}/>
                             <div id="conversations">
-                                {chatUsers.map((cu, index) => (
+                                {chats.map((chat, index) => (
                                     <ChatRow
-                                        userId={cu.userId}
-                                        chatId={cu.chatId}
+                                        user={chat.user}
+                                        chatId={chat.id}
+                                        lastMessage={chat.lastMessage}
                                         forceUpadteMessages={forceUpdateMessages}
                                         changeOpenChatId={setOpenChatId}
                                         changeOpenUser={setOpenUser}
-                                        active={openUser.userId === cu.userId}
+                                        active={openUser.username === chat.user.username}
                                         key={index}
                                     />
                                 ))}
