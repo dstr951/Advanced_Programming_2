@@ -12,7 +12,8 @@ async function validateLoginPage(event, navigator, setterDisplayError, data) {
         setterDisplayError(true)
         return false
     }
-    navigator('/Chats', { state: { myParam: 1 } })
+    const token = await serverResponse.text()
+    navigator('/Chats', { state: { myParam: 1, token: token } })
 }
 
 function LoginPage() {

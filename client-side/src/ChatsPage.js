@@ -17,13 +17,11 @@ export default function ChatsPage() {
         navigate('/')
     }
 
+    const [token, setToken] = useState('')
+    useEffect(() => {
+        setToken(location.state?.token)
+    }, [location])
 
-    /*TEMP*/
-
-    //setTimeout(() => {
-    //    setMyId(userId);
-    //}, 100);
-    /*TEMP*/
     const [chatUsers, setChatUsers] = useState([]);
     //control the content displayed on screen
     const [openChatId, setOpenChatId] = useState(0);
