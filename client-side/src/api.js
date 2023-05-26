@@ -32,3 +32,23 @@ export async function registerUser(userName, password, displayName, picture) {
   const data = await myParse(response)
   return data
 }
+
+export async function validateLogin(userName, password) {
+    const userPass = {
+        username: userName,
+        password: password,
+    }
+    let response = {}
+    try {
+      response = await fetch(apiPrefix + "Tokens", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userPass),
+      })
+    } catch (error) {
+      console.error("Error:", error)
+    }
+    return response
+  }
