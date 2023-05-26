@@ -10,6 +10,10 @@ export default function ChatsPage() {
     //const [myId, setMyId] = useState(0);
     const location = useLocation();
     const myId = location.state?.myParam;
+    const [token, setToken] = useState(location.state?.token)
+    useEffect(() => {
+        setToken(location.state?.token)
+    }, [location])
     //console.log("now logged in userId:"+userId)
     const navigate = useNavigate();
     const logoutHandler = (e) => {
@@ -17,10 +21,7 @@ export default function ChatsPage() {
         navigate('/')
     }
 
-    const [token, setToken] = useState('')
-    useEffect(() => {
-        setToken(location.state?.token)
-    }, [location])
+    
 
     const [chats, setChats] = useState([]);
     //control the content displayed on screen
@@ -45,13 +46,10 @@ export default function ChatsPage() {
         }      
     }
 
-	useEffect(() => {        
-        if(token == "") {
-            console.log("no token render")
-            return
-        }
+    //get all chats after first render
+	useEffect(() => {
         updateChats()
-	}, [token]);
+	}, []);
     return (
         <>
             <div className="background-jumbo"></div>
