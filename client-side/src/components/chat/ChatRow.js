@@ -41,7 +41,7 @@ export default function ChatRow({
   return (
     <div className={"row chat-row" + activeClass} onClick={click}>
       <div className="col-2 profile-container">
-        <img alt="img" src={user.picture} />
+        <img alt="img" src={user.profilePic} />
       </div>
       <div className="col-10 d-flex">
         <div className="row name-time-last-message-container">
