@@ -4,7 +4,7 @@ import "./chats.css";
 import UserChatRow from "./components/chat/UserChatRow.js";
 import ChatRow from "./components/chat/ChatRow.js";
 import OpenChat from "./components/chat/OpenChat.js";
-import { getAllChats } from "./apiTemp";
+import { getAllChats } from "./api";
 
 export default function ChatsPage() {
     //const [myId, setMyId] = useState(0);
@@ -30,12 +30,16 @@ export default function ChatsPage() {
     const [forceUpdateMessages, setForceUpdateMessages] = useState(false)
 
 	//hook to get the chats data from the server
-	useEffect(() => {
-		const response = getAllChats(myId);
-		if (response.code === 200) {
-			setChatUsers(response.body);
-		}
-	}, [myId, forceUpdateMessages]);
+	useEffect(() => {        
+        if(token == "") {
+            return
+        }
+        const fetchChats = async () => {
+            const response = await getAllChats(token);
+            console.log(response)
+        }
+        fetchChats()
+	}, [token]);
     return (
         <>
             <div className="background-jumbo"></div>

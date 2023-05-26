@@ -52,3 +52,20 @@ export async function validateLogin(userName, password) {
   }
   return response
 }
+
+export async function getAllChats(token) {
+  let response = {}
+  try {
+    response = await fetch(apiPrefix + "Chats", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    })
+  } catch (error) {
+    console.error("Error:", error)
+  }
+  const data = await myParse(response)
+  return data
+}
