@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { getLastChatMessage, getUser } from "../../apiTemp";
+import {useEffect, useState} from "react"
+import {getLastChatMessage, getUser} from "../../apiTemp"
+
 export default function ChatRow({
   user,
   chatId,
@@ -22,6 +23,9 @@ export default function ChatRow({
     )
   }
 
+  function click() {
+    changeOpenChatId(chatId)
+    changeOpenUser(user)
   }
 
   // const [lastMessage, setLastMessage] = useState({});
@@ -33,7 +37,7 @@ export default function ChatRow({
   //   }
   // }, [chatId, forceUpadteMessages]);
 
-  const activeClass = active ? " active_chat" : "";
+  const activeClass = active ? " active_chat" : ""
   return (
     <div className={"row chat-row" + activeClass} onClick={click}>
       <div className="col-2 profile-container">
