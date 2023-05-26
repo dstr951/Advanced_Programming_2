@@ -34,3 +34,8 @@ async function registerUser(userPassName) {
          await mongoose.disconnect()
     }
 }
+
+async function getUserInfo(username){
+    return UserPassName.find({username});
+}
+
