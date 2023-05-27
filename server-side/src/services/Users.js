@@ -1,5 +1,5 @@
 const {mongoose} = require('../app')
-const {User, UserPassName} = require('../models/Users')
+const {UserPassName} = require('../models/Users')
 /*
 todo-
 GET: api/Users/{username} get information about the current logged-in user (req={username}) (res={code,body{User}})
@@ -52,4 +52,3 @@ async function getUserInfo(username){
 }
 
 
-getUserInfo("tomferr").then(r => console.log(r));

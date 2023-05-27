@@ -1,3 +1,24 @@
-import express from "express";
+/*
+const {mongoose} = require('../app')
 
-//todo add scheme for UserPass
+const Schema = mongoose.Schema
+
+const UserPassSchema = new Schema({
+    username:{
+        type:String,
+        default:null,
+        unique:true,
+        required:true
+    },
+    password:{
+        type:String,
+        default:null,
+        required:true
+    }
+})
+
+const UserPass = mongoose.model('UserPass', UserPassSchema)
+
+module.exports = {UserPass}
+
+ */
