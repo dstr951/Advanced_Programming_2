@@ -14,7 +14,7 @@ export const chatContext = createContext({
 export default function ChatsPage() {
     //const [myId, setMyId] = useState(0);
     const location = useLocation();
-    const myId = location.state?.myParam;
+    const [myUsername] = useState(location.state?.myUsername)
     const [token, setToken] = useState(location.state?.token)
     useEffect(() => {
         setToken(location.state?.token)

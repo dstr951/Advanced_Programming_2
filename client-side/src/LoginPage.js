@@ -13,7 +13,7 @@ async function validateLoginPage(event, navigator, setterDisplayError, data) {
         return false
     }
     const token = await serverResponse.text()
-    navigator('/Chats', { state: { myParam: 1, token: token } })
+    navigator('/Chats', { state: { myUsername: data.userName, token: token } })
 }
 
 function LoginPage() {
