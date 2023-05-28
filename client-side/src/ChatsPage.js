@@ -4,7 +4,7 @@ import "./chats.css";
 import UserChatRow from "./components/chat/UserChatRow.js";
 import ChatRow from "./components/chat/ChatRow.js";
 import OpenChat from "./components/chat/OpenChat.js";
-import { getAllChats, getUser, HttpCodes } from "./api";
+import { getAllChats, HttpCodes } from "./api";
 
 export const chatContext = createContext({
     messages: [],
@@ -69,7 +69,7 @@ export default function ChatsPage() {
                 <div id="chat_card" className="col-12">
                     <div id="panels_row" className="row m-0">
                         <div id="conversations_panel" className=" col-5 chat-panel">
-                            <UserChatRow myUsername={myUsername} token={token} />
+                            <UserChatRow myUsername={myUsername} token={token} updateChats={updateChats} />
                             <div id="conversations">
                                 {chats.map((chat, index) => (
                                     <ChatRow

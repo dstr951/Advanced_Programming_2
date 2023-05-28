@@ -1,6 +1,7 @@
 const apiPrefix = "http://localhost:5000/api/"
 export const HttpCodes = {
   SUCCESS: 200,
+  BAD_REQUEST: 400,
   UNAUTHERIZED: 401,
   CONFLICT: 409,
 }
@@ -104,4 +105,24 @@ export async function getUser(token, username) {
     console.error("Error:", error)
   }
   return response
+}
+
+export async function createChat(token, otherUser) {
+    const username = {
+        username: otherUser,
+    }
+    let response = {}
+    try {
+    response = await fetch(apiPrefix + "Chats", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(username),
+    })
+    } catch (error) {
+    console.error("Error:", error)
+    }
+    return response
 }

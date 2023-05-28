@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserIdsByUserName, addContact } from "../../apiTemp";
-import { HttpCodes, getUser } from "../../api"
-import Input from "../Input";
+import { HttpCodes, getUser, createChat } from "../../api"
 
-export default function UserChatRow({ myUsername, token }) {
+export default function UserChatRow({ myUsername, token, updateChats }) {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
 
@@ -31,27 +29,28 @@ export default function UserChatRow({ myUsername, token }) {
   const [modalUsername, setModalUsername] = useState("");
   const [OKUsername, setOKUsernname] = useState(false);
   const [modalChosenUserId, setModalChosenUserId] = useState(-1);
-  const validateUsername = (username, setOK) => {
-    if (modalChosenUserId !== -1) {
-      setModalChosenUserId(-1);
-    }
-    if (username.length <= 2) {
-      return;
-    }
-    const users = getUserIdsByUserName(username);
-    let similarIds = users.body;
-    if (similarIds.length === 0) {
-      return 0;
-    }
-    if (similarIds.length === 1) {
-      setModalChosenUserId(similarIds[0]);
-      return 1;
-    }
-  };
 
-  const handleModalAdd = (e) => {
+  const handleModalChange = (e) => {
+    setModalUsername(e.target.value)
+  }
+  const handleModalAdd = async (e) => {
     e.preventDefault();
-    addContact(myUsername, modalChosenUserId)
+    const response = await createChat(token, modalUsername)
+    switch(response.status){
+      case HttpCodes.SUCCESS:
+        updateChats()
+        break;
+      case HttpCodes.BAD_REQUEST:
+        alert("there is an error with that username")
+        break;
+      case HttpCodes.UNAUTHERIZED:
+        navigate('/')
+        break;
+      default:
+        console.log("unexpected HTTP code on response from getMyUser:", response.status)
+    }
+    updateChats()
+    //addContact(myUsername, modalChosenUserId)
   };
   return (
     <div id="user_info" className="row chat-row text-start">
@@ -95,16 +94,13 @@ export default function UserChatRow({ myUsername, token }) {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  <Input
+                  <input
                     label="Username"
                     type="text"
                     id="modalUsernameInput"
-                    placeHolder="Enter username"
-                    setter={setModalUsername}
-                    setOK={setOKUsernname}
-                    validator={validateUsername}
-                    successMessage="username exists"
-                    errorMessage="We couldn't find someone with this username :("
+                    placeholder="Enter username"
+                    value={modalUsername}
+                    onChange={handleModalChange}
                   />
                 </div>
                 <div className="modal-footer">
@@ -112,7 +108,6 @@ export default function UserChatRow({ myUsername, token }) {
                     type="button"
                     className="btn btn-primary"
                     onClick={handleModalAdd}
-                    disabled={modalChosenUserId === -1}
                   >
                     Add
                   </button>
