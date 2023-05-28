@@ -76,6 +76,7 @@ export default function ChatsPage() {
                                         user={chat.user}
                                         chatId={chat.id}
                                         lastMessage={chat.lastMessage}
+                                        openChatId={openChatId}
                                         token={token}
                                         changeOpenMessages={setOpenMessages}
                                         changeOpenChatId={setOpenChatId}
@@ -87,7 +88,7 @@ export default function ChatsPage() {
                             </div>
                         </div>
                         <div id="messages_panel" className=" col-7 chat-panel">
-                            <OpenChat user={openUser} chatId={openChatId} myId={myUsername} />
+                            <OpenChat user={openUser} chatId={openChatId} token={token} updateChats={updateChats} />
                         </div>
                     </div>
                 </div>

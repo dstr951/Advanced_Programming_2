@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react"
+import {useEffect, useRef, useState} from "react"
 import {useNavigate} from "react-router-dom";
 import {HttpCodes, getChat} from "../../api"
 
@@ -6,20 +6,30 @@ export default function ChatRow({
   user,
   chatId,
   lastMessage,
+  openChatId,
   token,
   changeOpenMessages,
   changeOpenChatId,
   changeOpenUser,
   active,
 }) {
-  const [messages, setMessages] = useState([])
+  const messages = useRef([])
+  const [prevLastMessageId, setPrevLastMessageId] = useState(-1)
   const navigate = useNavigate();
   async function updateMessages(){
+    if(!lastMessage || lastMessage.id === prevLastMessageId) {
+      console.log("same id", lastMessage?.id, prevLastMessageId)
+      return
+    }
+    setPrevLastMessageId(lastMessage.id)
     const response = await getChat(token, chatId)
     switch(response.status){
       case HttpCodes.SUCCESS:
           const data = await response.json()
-          setMessages(data)
+          messages.current = data
+          if(openChatId === chatId){
+            changeOpenMessages(messages.current)
+          }
           break;
       case HttpCodes.UNAUTHERIZED:
           navigate('/')
@@ -30,7 +40,7 @@ export default function ChatRow({
   }
   useEffect(() => {
     updateMessages()
-  }, [])
+  }, [lastMessage])  
 
   function displayLastMessage() {
     return (
@@ -45,8 +55,12 @@ export default function ChatRow({
     )
   }
 
+  function updateOpenMessages(newMessagesArray) {
+    changeOpenMessages(newMessagesArray)
+  }
+
   function click() {
-    changeOpenMessages(messages)
+    changeOpenMessages(messages.current)
     changeOpenChatId(chatId)
     changeOpenUser(user)
   }

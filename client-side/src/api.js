@@ -126,3 +126,23 @@ export async function createChat(token, otherUser) {
     }
     return response
 }
+
+export async function sendMessage(token, chatId, content) {
+    const message = {
+        msg: content,
+    }
+    let response = {}
+    try {
+    response = await fetch(`${apiPrefix}Chats/${chatId}/Messages`, {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(message),
+    })
+    } catch (error) {
+    console.error("Error:", error)
+    }
+    return response
+}
