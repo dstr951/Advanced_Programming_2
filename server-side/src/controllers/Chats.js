@@ -32,7 +32,7 @@ async function deleteChat(req,res){
 //deleteChat({params:{chatID:2}},{})
 async function sendMessageToChat(req,res){
     //todo add function that extracts username from token
-            res.json(await ChatsServices.sendMessageToChat(req.params.id,req.body.sender,req.body.msg))
+            res.json(await ChatsServices.sendMessageToChat(req.params.id,req.body.username,req.body.msg))
     //const toRes = await ChatsServices.sendMessageToChat(req.params.chatID,req.params.sender,req.params.content)
     //console.log(toRes)
 }
