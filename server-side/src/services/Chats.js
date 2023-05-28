@@ -3,11 +3,7 @@ const {Message, Chat} = require('../models/Chats')
 const {UserPassName} = require("../models/Users");
 const {getUserInfo} = require("../services/Users");
 
-/*
-    todo add functionality for
-    -GET: api/Chats/{id}/Messages use web socket to get incoming messages content req{} res={code, bod{yMessage}
 
- */
 
 /*  GET: api/Chats get list of all chats with logged-in user (from token extract username) req{} res = {code,body{[]}} (req, should automatically send token)(body has- array of Chat objects.)
     return array of chats. if there are no chats return empty array, if error returns null
@@ -205,6 +201,7 @@ async function addMessage(sender,message){
 
 }
 
+//TODO add function to get all messages of a specific chatID -GET: api/Chats/{id}/Messages get all messages  for specific chatID req{} res={code, body{Message}
 module.exports = {
     createChat,getAllChats,getChat,deleteChat,sendMessageToChat
 };

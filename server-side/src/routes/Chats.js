@@ -17,3 +17,4 @@ router.post('/',TokensController.TokenService.isLoggedIn,ChatsController.createC
 router.get('/:id',TokensController.TokenService.isLoggedIn,ChatsController.getChat);
 router.delete('/:id',TokensController.TokenService.isLoggedIn,ChatsController.deleteChat);
 router.post('/:id/Messages',TokensController.TokenService.isLoggedIn,ChatsController.sendMessageToChat);
+//TODO add- -GET: api/Chats/{id}/Messages get all messages  for specific chatID req{} res={code, body{Message}
