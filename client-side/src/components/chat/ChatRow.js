@@ -10,6 +10,25 @@ export default function ChatRow({
   changeOpenUser,
   active,
 }) {
+  const [messages, setMessages] = useState([])
+  const navigate = useNavigate();
+  async function updateMessages(){
+    const response = await getChat(token, chatId)
+    switch(response.status){
+      case HttpCodes.SUCCESS:
+          const data = await response.json()
+          setMessages(data)
+          break;
+      case HttpCodes.UNAUTHERIZED:
+          navigate('/')
+          break;
+      default:
+          console.log("unexpected HTTP code on response from getChat:", response.status)
+    }
+  }
+  useEffect(() => {
+    updateMessages()
+  }, [])
   function displayLastMessage() {
     return (
       <>

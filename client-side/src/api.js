@@ -1,8 +1,8 @@
 const apiPrefix = "http://localhost:5000/api/"
 export const HttpCodes = {
-    SUCCESS: 200,
-    UNAUTHERIZED:  401,
-    CONFLICT: 409,
+  SUCCESS: 200,
+  UNAUTHERIZED: 401,
+  CONFLICT: 409,
 }
 
 //a solution for the empty body response we get in the api after user was created
@@ -62,6 +62,22 @@ export async function getAllChats(token) {
   let response = {}
   try {
     response = await fetch(apiPrefix + "Chats", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    })
+  } catch (error) {
+    console.error("Error:", error)
+  }
+  return response
+}
+
+export async function getChat(token, chatId) {
+  let response = {}
+  try {
+    response = await fetch(`${apiPrefix}Chats/${chatId}/Messages`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
