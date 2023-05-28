@@ -34,8 +34,6 @@ export default function ChatsPage() {
     const [openUser, setOpenUser] = useState({});
     const [openMessages, setOpenMessages] = useState([]);
     //update messages and last message after sending a message
-    const [forceUpdateMessages, setForceUpdateMessages] = useState(false)
-
 
     const updateChats = async () => {
         const response = await getAllChats(token);
@@ -73,7 +71,7 @@ export default function ChatsPage() {
                 <div id="chat_card" className="col-12">
                     <div id="panels_row" className="row m-0">
                         <div id="conversations_panel" className=" col-5 chat-panel">
-                            <UserChatRow myId={myId} setForceUpdateMessages={setForceUpdateMessages}/>
+                            <UserChatRow myId={myId} />
                             <div id="conversations">
                                 {chats.map((chat, index) => (
                                     <ChatRow
@@ -81,7 +79,6 @@ export default function ChatsPage() {
                                         chatId={chat.id}
                                         lastMessage={chat.lastMessage}
                                         token={token}
-                                        forceUpadteMessages={forceUpdateMessages}
                                         changeOpenMessages={setOpenMessages}
                                         changeOpenChatId={setOpenChatId}
                                         changeOpenUser={setOpenUser}
@@ -92,7 +89,7 @@ export default function ChatsPage() {
                             </div>
                         </div>
                         <div id="messages_panel" className=" col-7 chat-panel">
-                            <OpenChat user={openUser} chatId={openChatId} myId={myId} forceUpadteMessages={forceUpdateMessages} setForceUpdateMessages={setForceUpdateMessages} />
+                            <OpenChat user={openUser} chatId={openChatId} myId={myId} />
                         </div>
                     </div>
                 </div>

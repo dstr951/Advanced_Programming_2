@@ -7,7 +7,6 @@ export default function ChatRow({
   chatId,
   lastMessage,
   token,
-  forceUpadteMessages,
   changeOpenMessages,
   changeOpenChatId,
   changeOpenUser,
@@ -51,15 +50,6 @@ export default function ChatRow({
     changeOpenChatId(chatId)
     changeOpenUser(user)
   }
-
-  // const [lastMessage, setLastMessage] = useState({});
-  // //hook to get the lastMessage from the server
-  // useEffect(() => {
-  //   const response = getLastChatMessage(chatId);
-  //   if (response.code === 200) {
-  //     setLastMessage(response.body.lastMessage);
-  //   }
-  // }, [chatId, forceUpadteMessages]);
 
   const activeClass = active ? " active_chat" : ""
   return (

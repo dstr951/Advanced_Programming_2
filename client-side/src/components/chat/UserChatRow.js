@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getUser, getUserIdsByUserName, addContact } from "../../apiTemp";
 import Input from "../Input";
 
-export default function UserChatRow({ myId, setForceUpdateMessages }) {
+export default function UserChatRow({ myId }) {
   const [user, setUser] = useState({});
   //hook to get the user's data from the server
   useEffect(() => {
@@ -37,7 +37,6 @@ export default function UserChatRow({ myId, setForceUpdateMessages }) {
   const handleModalAdd = (e) => {
     e.preventDefault();
     addContact(myId, modalChosenUserId)
-	setForceUpdateMessages((value) => !value)
   };
   return (
     <div id="user_info" className="row chat-row text-start">
