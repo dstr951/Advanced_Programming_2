@@ -89,3 +89,19 @@ export async function getChat(token, chatId) {
   }
   return response
 }
+
+export async function getUser(token, username) {
+    let response = {}
+  try {
+    response = await fetch(`${apiPrefix}Users/${username}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    })
+  } catch (error) {
+    console.error("Error:", error)
+  }
+  return response
+}
