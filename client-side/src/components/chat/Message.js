@@ -4,8 +4,8 @@ import { chatContext } from "../../ChatsPage"
 export default function Message({message}){
 	const {content, created, sender} = message
   const timeSent = new Date(created)
-  const {myUser} = useContext(chatContext)
-	const messageClass = sender.username === myUser.username ? "message-out" : "message-in"
+  const {myUsername} = useContext(chatContext)
+	const messageClass = sender.username === myUsername ? "message-out" : "message-in"
 	return(
 		<div className="row m-0">
           <div className="message col-12">

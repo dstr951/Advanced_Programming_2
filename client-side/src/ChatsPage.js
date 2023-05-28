@@ -73,7 +73,7 @@ export default function ChatsPage() {
 
     const context = {
         messages: openMessages,
-        myUser: myUser,
+        myUsername: myUsername,
     }
     return (
         <chatContext.Provider value={context}>
