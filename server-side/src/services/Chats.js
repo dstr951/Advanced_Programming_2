@@ -137,7 +137,7 @@ async function deleteChat(chatID) {
 async function sendMessageToChat(chatID,sender,content){
     const chatRes = await getChat(chatID);
     //if chat exists
-    if(chatRes && chatRes.status === 200) {
+    if(chatRes && chatRes.status === 200 && (chatRes.body.users[0] === sender || chatRes.body.users[1] === sender)) {
         const updatedChat = chatRes.body
         const messageTemp = await addMessage(sender, content)
         //if message was successfully added to db
