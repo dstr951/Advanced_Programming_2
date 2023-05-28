@@ -1,16 +1,31 @@
 import { useEffect, useState } from "react";
-import { getUser, getUserIdsByUserName, addContact } from "../../apiTemp";
+import { useNavigate } from "react-router-dom";
+import { getUserIdsByUserName, addContact } from "../../apiTemp";
+import { HttpCodes, getUser } from "../../api"
 import Input from "../Input";
 
-export default function UserChatRow({ myId }) {
+export default function UserChatRow({ myUsername, token }) {
   const [user, setUser] = useState({});
+  const navigate = useNavigate();
+
+  const updateMyUser = async () => {
+    const response = await getUser(token, myUsername);
+    switch(response.status){
+        case HttpCodes.SUCCESS:
+            const data = await response.json()
+            setUser(data)
+            break;
+        case HttpCodes.UNAUTHERIZED:
+            navigate('/')
+            break;
+        default:
+            console.log("unexpected HTTP code on response from getMyUser:", response.status)
+    }   
+}
   //hook to get the user's data from the server
   useEffect(() => {
-    const response = getUser(myId);
-    if (response.code === 200) {
-      setUser(response.body);
-    }
-  }, [myId]);
+    updateMyUser()
+  }, [myUsername]);
 
   //MODAL LOGIC
   const [modalUsername, setModalUsername] = useState("");
@@ -36,12 +51,12 @@ export default function UserChatRow({ myId }) {
 
   const handleModalAdd = (e) => {
     e.preventDefault();
-    addContact(myId, modalChosenUserId)
+    addContact(myUsername, modalChosenUserId)
   };
   return (
     <div id="user_info" className="row chat-row text-start">
       <div className="col-2 profile-container">
-        <img alt="img" src={user.picture} />
+        <img alt="img" src={user.profilePic} />
       </div>
       <div className="col-6 text-start pt-2 fw-bold ">{user.displayName}</div>
       <div className="col-4">
