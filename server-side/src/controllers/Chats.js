@@ -2,7 +2,7 @@ const ChatsServices = require("../services/Chats")
 
 async function createChat(req,res){
     //todo add function that extracts username from token
-    res.json(await ChatsServices.createChat(req.body.myUsername, req.body.otherUsername))
+    res.json(await ChatsServices.createChat(req.body.myUsername, req.body.username))
     //const toRes = await ChatsServices.createChat(req.myUsername, req.otherUsername)
     //console.log(toRes)
 }
@@ -11,7 +11,7 @@ async function createChat(req,res){
 
 async function getAllChats(req,res){
     //todo add function that extracts username from token
-    res.json(await ChatsServices.getAllChats(req.params.username))
+    res.json(await ChatsServices.getAllChats(req.body.username))
     //const toRes = await ChatsServices.getAllChats(req.params.username)
     //console.log(toRes)
 }
@@ -31,7 +31,8 @@ async function deleteChat(req,res){
 }
 //deleteChat({params:{chatID:2}},{})
 async function sendMessageToChat(req,res){
-    res.json(await ChatsServices.sendMessageToChat(req.params.id,req.body.sender,req.body.content))
+    //todo add function that extracts username from token
+            res.json(await ChatsServices.sendMessageToChat(req.params.id,req.body.sender,req.body.msg))
     //const toRes = await ChatsServices.sendMessageToChat(req.params.chatID,req.params.sender,req.params.content)
     //console.log(toRes)
 }
