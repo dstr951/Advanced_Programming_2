@@ -202,6 +202,29 @@ async function addMessage(sender,message){
 }
 
 //TODO add function to get all messages of a specific chatID -GET: api/Chats/{id}/Messages get all messages  for specific chatID req{} res={code, body{Message}
+async function getAllMessages(chatID) {
+    const chat = await getChat(chatID);
+    if (chat.status === 200) {
+        const messages = await Promise.all(chat.body.messages.map(async (messageID) => {
+            const temp = await Message.findOne({ id: messageID });
+            return {
+                id: temp.id,
+                sender: temp.sender,
+                content: temp.content
+            };
+        }));
+
+        return {
+            status: 200,
+            body: messages
+        };
+    } else {
+        return { status: 404 };
+    }
+}
+
+
+
 module.exports = {
     createChat,getAllChats,getChat,deleteChat,sendMessageToChat
 };
