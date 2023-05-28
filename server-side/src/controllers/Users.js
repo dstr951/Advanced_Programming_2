@@ -14,7 +14,7 @@ async function registerUser(req,res){
 }
 
 async function getUserInfo(req,res){
-    //res.json( await userService.registerUser(req.username, req.password, req.displayName, req.profilePic))
+    //res.json(await UserService.getUserInfo(req.username))
     const toRes = await UserService.getUserInfo(req.username)
     console.log(toRes)
 }
