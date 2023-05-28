@@ -76,7 +76,6 @@ export default function ChatsPage() {
                                         user={chat.user}
                                         chatId={chat.id}
                                         lastMessage={chat.lastMessage}
-                                        openChatId={openChatId}
                                         token={token}
                                         changeOpenMessages={setOpenMessages}
                                         changeOpenChatId={setOpenChatId}

@@ -6,7 +6,6 @@ export default function ChatRow({
   user,
   chatId,
   lastMessage,
-  openChatId,
   token,
   changeOpenMessages,
   changeOpenChatId,
@@ -18,7 +17,6 @@ export default function ChatRow({
   const navigate = useNavigate();
   async function updateMessages(){
     if(!lastMessage || lastMessage.id === prevLastMessageId) {
-      console.log("same id", lastMessage?.id, prevLastMessageId)
       return
     }
     setPrevLastMessageId(lastMessage.id)
@@ -27,7 +25,7 @@ export default function ChatRow({
       case HttpCodes.SUCCESS:
           const data = await response.json()
           messages.current = data
-          if(openChatId === chatId){
+          if(active){
             changeOpenMessages(messages.current)
           }
           break;
