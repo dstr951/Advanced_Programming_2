@@ -35,9 +35,11 @@ async function sendMessageToChat(req,res){
     //const toRes = await ChatsServices.sendMessageToChat(req.params.chatID,req.params.sender,req.params.content)
     //console.log(toRes)
 }
-//TODO add get all messages of specific chatID
+async function getAllMessages(req,res){
+    res.json(await ChatsServices.getAllMessages(req.params.id))
+}
 
 
 module.exports = {
-    createChat,getAllChats,getChat,deleteChat,sendMessageToChat
+    createChat,getAllChats,getChat,deleteChat,sendMessageToChat, getAllMessages
 }
