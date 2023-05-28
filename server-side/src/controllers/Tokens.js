@@ -1,5 +1,6 @@
 const TokenService = require("../services/Tokens")
 
+
 async function processLogin(req,res){
     const response = TokenService.processLogin(req.body.username, req.body.password)
     if((await response).status === 201){
@@ -10,4 +11,4 @@ async function processLogin(req,res){
     }
 }
 
-module.exports = {processLogin}
+module.exports = {processLogin, TokenService}
