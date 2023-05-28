@@ -1,5 +1,7 @@
 const {mongoose} = require('../app')
 const {Message, Chat} = require('../models/Chats')
+const {UserPassName} = require("../models/Users");
+const {getUserInfo} = require("../services/Users");
 
 /*
     todo add functionality for
@@ -10,25 +12,32 @@ const {Message, Chat} = require('../models/Chats')
 /*  GET: api/Chats get list of all chats with logged-in user (from token extract username) req{} res = {code,body{[]}} (req, should automatically send token)(body has- array of Chat objects.)
     return array of chats. if there are no chats return empty array, if error returns null
  */
-async function getAllChats(myUsername){
-    let chatList = [];
-    return Chat.find({ users: myUsername })
-        .then(chats => {
-            chats.map(chat => {
-                if (chat) {
-                    chatList.push({ id: chat.id, users: chat.users, messages: chat.messages });
-                }
-            });
-            return chatList;
-        })
-        .then(result => {
-            console.log('Chat List:', result);
-            return result;
-        })
-        .catch(error => {
-            console.error('Error retrieving chats:', error);
-            return null
-        });
+async function getAllChats(myUsername) {
+    const userExists = await getUserInfo(myUsername);
+    if(userExists.status !== 200){
+        return {
+            status:userExists.status
+        }
+    }
+    try {
+        const chats = await Chat.find({ users: myUsername });
+        const chatList = chats.map(chat => ({
+            id: chat.id,
+            users: chat.users,
+            messages: chat.messages
+        }));
+        return {
+            status: 200,
+            body: chatList
+        };
+    }
+    catch (error) {
+        console.error('Error retrieving chats:', error);
+        return {
+            status: 500,
+            body: error
+        };
+    }
 }
 
 /*  POST: api/Chats add a chat with a specific user req={username} res = {code, body{id, User}}
