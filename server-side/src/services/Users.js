@@ -6,7 +6,7 @@ GET: api/Users/{username} get information about the current logged-in user (req=
 POST: api/Users register a user (req = {UserPassName}) (res={code, body{User})
  */
 
-async function registerUser({username: username, password:password, displayName:displayName, profilePic:profilePic}) {
+async function registerUser(username,password, displayName,profilePic) {
     const newUser = new UserPassName({
         username: username,
         password: password,
@@ -37,7 +37,6 @@ async function registerUser({username: username, password:password, displayName:
 }
 
 async function getUserInfo(username) {
-    console.log("at start of function");
     try {
 
         const tempUser = await UserPassName.findOne({ username: username });
