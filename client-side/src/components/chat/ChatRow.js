@@ -1,11 +1,14 @@
 import {useEffect, useState} from "react"
-import {getLastChatMessage, getUser} from "../../apiTemp"
+import {useNavigate} from "react-router-dom";
+import {HttpCodes, getChat} from "../../api"
 
 export default function ChatRow({
   user,
   chatId,
   lastMessage,
+  token,
   forceUpadteMessages,
+  changeOpenMessages,
   changeOpenChatId,
   changeOpenUser,
   active,
@@ -29,6 +32,7 @@ export default function ChatRow({
   useEffect(() => {
     updateMessages()
   }, [])
+
   function displayLastMessage() {
     return (
       <>
@@ -43,6 +47,7 @@ export default function ChatRow({
   }
 
   function click() {
+    changeOpenMessages(messages)
     changeOpenChatId(chatId)
     changeOpenUser(user)
   }

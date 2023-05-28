@@ -1,10 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
 import "./chats.css";
 import UserChatRow from "./components/chat/UserChatRow.js";
 import ChatRow from "./components/chat/ChatRow.js";
 import OpenChat from "./components/chat/OpenChat.js";
 import { getAllChats, HttpCodes } from "./api";
+
+export const messagesContext = createContext([]);
 
 export default function ChatsPage() {
     //const [myId, setMyId] = useState(0);
@@ -27,6 +29,7 @@ export default function ChatsPage() {
     //control the content displayed on screen
     const [openChatId, setOpenChatId] = useState(0);
     const [openUser, setOpenUser] = useState({});
+    const [openMessages, setOpenMessages] = useState([]);
     //update messages and last message after sending a message
     const [forceUpdateMessages, setForceUpdateMessages] = useState(false)
 
@@ -51,7 +54,7 @@ export default function ChatsPage() {
         updateChats()
 	}, []);
     return (
-        <>
+        <messagesContext.Provider value={openMessages}>
             <div className="background-jumbo"></div>
             <div className="row justify-content-end mt-2 mb-4">
                 <div className="col-1">
@@ -69,7 +72,9 @@ export default function ChatsPage() {
                                         user={chat.user}
                                         chatId={chat.id}
                                         lastMessage={chat.lastMessage}
+                                        token={token}
                                         forceUpadteMessages={forceUpdateMessages}
+                                        changeOpenMessages={setOpenMessages}
                                         changeOpenChatId={setOpenChatId}
                                         changeOpenUser={setOpenUser}
                                         active={openUser.username === chat.user.username}
@@ -84,7 +89,7 @@ export default function ChatsPage() {
                     </div>
                 </div>
             </div>
-        </>
+        </messagesContext.Provider>
     );
 }
 
