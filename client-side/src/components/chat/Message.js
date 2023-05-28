@@ -1,5 +1,6 @@
 export default function Message({message, myId}){
-	const {content, timeSent, senderId} = message
+	const {content, created, senderId} = message
+  const timeSent = new Date(created)
 	const messageClass = senderId === myId ? "message-out" : "message-in"
 	return(
 		<div className="row m-0">
