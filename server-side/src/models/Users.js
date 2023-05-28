@@ -1,7 +1,8 @@
-const {mongoose} = require('../app')
-//todo here-  create scheme for UserPassName, User (register user).
+//const mongoose = require('../app')
+const mongoose = require('mongoose').default;
 
-const Schema = mongoose.Schema
+//const Schema = mongoose.Schema
+
 /*
 const UserSchema = new Schema({
     username:{
@@ -22,7 +23,7 @@ const UserSchema = new Schema({
 
  */
 
-const UserPassNameSchema = new Schema({
+const UserPassNameSchema = new mongoose.Schema({
     username:{
         type:String,
         unique: true,
