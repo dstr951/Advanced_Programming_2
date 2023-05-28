@@ -66,4 +66,9 @@ async function getUserInfo(username) {
 }
 
 
+module.exports = {
+        registerUser,
+        getUserInfo
+
+};
 

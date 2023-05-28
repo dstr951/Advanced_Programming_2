@@ -40,15 +40,22 @@ async function createChat(myUsername, otherUsername){
     })
     try{
         await chatTemp.save()
-        const chat = {
-            id: chatTemp.id,
-            users: [chatTemp.users[0],chatTemp.users[1]]
-        }
-        return chat;
+
+        return {
+            status:200,
+            body:{
+                id: chatTemp.id,
+                users: [chatTemp.users[0],chatTemp.users[1]],
+                messages: chatTemp.messages
+            }
+        };
     }
     catch (e) {
         console.log(e)
-        return null;
+        return {
+            status:500,
+            body:e
+        }
     }
 
 }
@@ -188,4 +195,8 @@ async function addMessage(sender,message){
     }
 
 }
+
+module.exports = {
+    createChat,getAllChats,getChat,deleteChat,sendMessageToChat
+};
 
