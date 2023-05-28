@@ -6,19 +6,22 @@ GET: api/Users/{username} get information about the current logged-in user (req=
 POST: api/Users register a user (req = {UserPassName}) (res={code, body{User})
  */
 
-async function registerUser(userPassName) {
+async function registerUser({username: username, password:password, displayName:displayName, profilePic:profilePic}) {
     const newUser = new UserPassName({
-        username: userPassName.username,
-        password: userPassName.password,
-        displayName:userPassName.displayName,
-        profilePic: userPassName.profilePic
+        username: username,
+        password: password,
+        displayName:displayName,
+        profilePic: profilePic
     })
     try {
         await newUser.save();
         console.log('User saved successfully:', newUser);
         return {
-            body: {
-                status:200
+            status:200,
+            body:{
+                username:username,
+                displayName:displayName,
+                profilePic:profilePic
             }
         };
 
@@ -27,28 +30,40 @@ async function registerUser(userPassName) {
         console.log(error);
         return {
             title:"conflict",
-            status:200
+            status:500
         }
     }
-    finally {
-         await mongoose.disconnect()
-    }
+
 }
 
-async function getUserInfo(username){
-    const temp = await UserPassName.find({username});
+async function getUserInfo(username) {
+    console.log("at start of function");
+    try {
 
-    if(!temp.length){
+        const tempUser = await UserPassName.findOne({ username: username });
+        if (tempUser !== null) {
+            console.log("here")
+            return {
+                status: 200,
+                body: {
+                    username: tempUser.username,
+                    displayName: tempUser.displayName,
+                    profilePic: tempUser.profilePic
+                }
+            };
+        } else {
+            return {
+                status: 401,
+                title: "Unauthorized",
+            };
+        }
+    } catch (error) {
         return {
-            tittle: "Unauthorized",
-            status: 401
-        }
-    }
-    return{
-        username:temp[0].username,
-        displayName:temp[0].displayName,
-        profilePic:temp[0].profilePic
+            status: 500,
+            body: error
+        };
     }
 }
+
 
 

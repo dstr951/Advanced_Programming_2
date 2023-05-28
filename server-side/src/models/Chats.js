@@ -57,15 +57,23 @@ const ChatSchema = new Schema({
         type: [
             {
                 type: String,
-                unique: true
+
+                required:true
             }
         ],
         validate: {
             validator: async function (users) {
                 if (users.length === 2 && users[0] !== users[1]) {
+                    //check the users exist
                     const user1 = await UserPassName.findOne({ username: users[0] }).exec();
                     const user2 = await UserPassName.findOne({ username: users[1] }).exec();
-                    return (user1 && user2) ;
+                    //check there isn't a chat already between the two users
+                    let chatExist = await Chat.findOne({users: users})
+
+                    if(!chatExist){
+                        chatExist = await Chat.findOne({users: [users[1],users[0]]})
+                    }
+                    return (user1 && user2 && !chatExist) ;
                 }
                 return false;
             },
@@ -74,7 +82,6 @@ const ChatSchema = new Schema({
     },
     messages: [{
         type:Number,
-        unique:true,
         required:true,
     }]
 
@@ -94,7 +101,7 @@ ChatSchema.pre('save', async function (next) {
     }
     return next();
 });
-ChatSchema.index({ users: 1 }, { unique: true });
+//ChatSchema.index({ users: 1 }, { unique: true, sparse: true});
 const Chat = mongoose.model('Chat',ChatSchema)
 
 
