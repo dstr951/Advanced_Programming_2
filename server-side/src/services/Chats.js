@@ -226,6 +226,6 @@ async function getAllMessages(chatID) {
 
 
 module.exports = {
-    createChat,getAllChats,getChat,deleteChat,sendMessageToChat
+    createChat,getAllChats,getChat,deleteChat,sendMessageToChat,getAllMessages
 };
 
