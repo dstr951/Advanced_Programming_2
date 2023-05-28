@@ -21,9 +21,7 @@ export default function OpenChat({user, chatId, myId, forceUpadteMessages, setFo
   return (
     <>
       <OpenChatContactRow user={user} />
-      <OpenChatMessages
-        myId={myId}
-      />
+      <OpenChatMessages />
       <div id="chat_input" className="chat_row row ms-0 me-0">
         <input
           id="input_message"

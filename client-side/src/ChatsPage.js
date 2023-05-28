@@ -6,7 +6,10 @@ import ChatRow from "./components/chat/ChatRow.js";
 import OpenChat from "./components/chat/OpenChat.js";
 import { getAllChats, HttpCodes } from "./api";
 
-export const messagesContext = createContext([]);
+export const chatContext = createContext({
+    messages: [],
+    username: ""
+});
 
 export default function ChatsPage() {
     //const [myId, setMyId] = useState(0);
@@ -23,8 +26,8 @@ export default function ChatsPage() {
         navigate('/')
     }
 
-    
-
+    //TEMP VALUE
+    const [myUsername, setMyUsername] = useState("user1")
     const [chats, setChats] = useState([]);
     //control the content displayed on screen
     const [openChatId, setOpenChatId] = useState(0);
@@ -53,8 +56,13 @@ export default function ChatsPage() {
 	useEffect(() => {
         updateChats()
 	}, []);
+
+    const context = {
+        messages: openMessages,
+        myUsername: myUsername,
+    }
     return (
-        <messagesContext.Provider value={openMessages}>
+        <chatContext.Provider value={context}>
             <div className="background-jumbo"></div>
             <div className="row justify-content-end mt-2 mb-4">
                 <div className="col-1">
@@ -89,7 +97,7 @@ export default function ChatsPage() {
                     </div>
                 </div>
             </div>
-        </messagesContext.Provider>
+        </chatContext.Provider>
     );
 }
 
