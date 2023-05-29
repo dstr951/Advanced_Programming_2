@@ -17,11 +17,14 @@ async function getAllChats(myUsername) {
     }
     try {
         const chats = await Chat.find({ users: myUsername });
-        const chatList = chats.map(chat => ({
-            id: chat.id,
-            users: chat.users,
-            messages: chat.messages
-        }));
+        const chatList = chats.map((chat) => {
+            const user = chat.users.filter((user) => user !== myUsername)[0];
+            return {
+                id: chat.id,
+                user: user,
+                messages: chat.messages,
+            };
+        });
         return {
             status: 200,
             body: chatList
@@ -146,7 +149,7 @@ async function sendMessageToChat(chatID,sender,content){
             updatedChat.messages.push(messageTemp.body.id)
 
             try{
-                Chat.updateOne({id: chatID}, updatedChat)
+                await Chat.updateOne({id: chatID}, updatedChat)
                 return{
                     status: 200,
                     body: updatedChat

@@ -1,4 +1,5 @@
 const {UserPassName} = require("../models/Users");
+const modelChats = require("../models/Chats")
 
 async function getAllUsers(fromDB){
     if(fromDB.status !== 200){
@@ -8,23 +9,32 @@ async function getAllUsers(fromDB){
         var response = { status: 200, body: [] };
 
         for (const chat of fromDB.body) {
-            const userPromises = chat.users.map(async (username) => {
-                const user = await UserPassName.findOne({ username });
-                return {
-                    username: user.username,
-                    displayName: user.displayName,
-                    profilePic: user.profilePic,
-                };
-            });
+                const user = await UserPassName.findOne({ username:chat.user });
+                let lastMessage = await modelChats.Message.findOne({id:Math.max(...chat.messages)})
+                if(lastMessage){
+                    lastMessage = {
+                        id:lastMessage.id,
+                        created: lastMessage.created,
+                        content:lastMessage.content
+                    }
+                }
 
-            const users = await Promise.all(userPromises);
+
+
 
             response.body.push({
                 id: chat.id,
-                users: users,
+                user: {
+                    username:user.username,
+                    displayName:user.displayName,
+                    profilePic:user.profilePic
+                },
+                lastMessage: lastMessage
+
             });
         }
     }
+
     return response
 }
 

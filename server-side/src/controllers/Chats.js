@@ -14,7 +14,7 @@ async function createChat(req,res){
 
 async function getAllChats(req,res){
     const temp = (await ChatsServices.getAllChats(extractUserName(req)))
-    //es.status(temp.status).send(temp.body)
+    //res.status(temp.status).send(temp.body)
     const response = await responseChat.getAllUsers(temp)
     res.status(response.status).send(response.body)
 
