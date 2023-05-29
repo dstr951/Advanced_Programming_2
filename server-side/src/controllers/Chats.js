@@ -1,10 +1,12 @@
 const ChatsServices = require("../services/Chats")
 const {extractUserName} = require("../services/Tokens");
+const {getUserInfo} = require("../services/Users");
 
 async function createChat(req,res){
-    res.json(await ChatsServices.createChat(extractUserName(req), req.body.username))
-    //const toRes = await ChatsServices.createChat(req.myUsername, req.otherUsername)
-    //console.log(toRes)
+    const temp = await ChatsServices.createChat(extractUserName(req), req.body.username)
+    const moreTemp = (await getUserInfo(temp.body.username)).body
+    res.status(temp.status).send({id:temp.body.id,user:moreTemp})
+
 }
 
 

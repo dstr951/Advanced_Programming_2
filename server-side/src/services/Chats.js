@@ -50,8 +50,7 @@ async function createChat(myUsername, otherUsername){
             status:200,
             body:{
                 id: chatTemp.id,
-                users: [chatTemp.users[0],chatTemp.users[1]],
-                messages: chatTemp.messages
+                username: otherUsername,
             }
         };
     }
