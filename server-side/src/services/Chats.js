@@ -141,9 +141,7 @@ async function sendMessageToChat(chatID,sender,content){
             updatedChat.messages.push(messageTemp.body.id)
 
             try{
-                Chat.updateOne({id: chatID}, updatedChat).then((r)=>{
-                    console.log(r);
-                })
+                Chat.updateOne({id: chatID}, updatedChat)
                 return{
                     status: 200,
                     body: updatedChat
@@ -201,7 +199,6 @@ async function addMessage(sender,message){
 
 }
 
-//TODO add function to get all messages of a specific chatID -GET: api/Chats/{id}/Messages get all messages  for specific chatID req{} res={code, body{Message}
 async function getAllMessages(chatID) {
     const chat = await getChat(chatID);
     if (chat.status === 200) {

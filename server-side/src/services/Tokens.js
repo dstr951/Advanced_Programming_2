@@ -1,5 +1,10 @@
 const {UserPassName} = require("../models/Users")
+const checkParams = require("./checkParams")
 async function processLogin(username, password) {
+    var errors = checkParams({username:username,password:password},["username","password"])
+    if(errors){
+        return errors
+    }
     try {
         const userExists = await UserPassName.findOne({username: username, password: password})
         if(userExists){
@@ -36,14 +41,13 @@ function isLoggedIn(req, res, next) {
         try {
 // Verify the token is valid
             const data = jwt.verify(token, key);
-            console.log('The logged in user is: ' + data.username);
-// Token validation was successful. Continue to the actual function (index)
             return next()
+
         } catch (err) {
             return res.status(401).send("Invalid Token");
         }
     } else
-        return res.status(403).send('Token required');
+        return res.status(401).end();
 }
 
 function extractUserName(req) {

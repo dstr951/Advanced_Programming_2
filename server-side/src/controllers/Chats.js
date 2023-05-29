@@ -10,7 +10,8 @@ async function createChat(req,res){
 
 
 async function getAllChats(req,res){
-    res.json(await ChatsServices.getAllChats(extractUserName(req)))
+    const temp = (await ChatsServices.getAllChats(extractUserName(req)))
+    res.status(temp.status).send(temp.body)
     //const toRes = await ChatsServices.getAllChats(req.params.username)
     //console.log(toRes)
 }

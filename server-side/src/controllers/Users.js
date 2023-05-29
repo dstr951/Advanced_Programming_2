@@ -1,26 +1,24 @@
 const UserService  = require("../services/Users");
-
+const responseUser = require("../responses/Users")
+const TokenService = require("../services/Tokens");
 
 
 
 async function registerUser(req,res){
-    res.json( await UserService.registerUser(
+    const toSend = await responseUser.registerUser(await UserService.registerUser(
         req.body.username,
         req.body.password,
         req.body.displayName,
         req.body.profilePic))
-    //const toRes = await UserService.registerUser(
-    //    {username:req.username,
-    //        password:req.password,
-    //        displayName:req.displayName,
-    //        profilePic:req.profilePic})
-    //console.log(toRes)
+
+    res.status(toSend.status).send(toSend.body)
 }
 
 async function getUserInfo(req,res){
-    res.json(await UserService.getUserInfo(req.params.username))
-    //const toRes = await UserService.getUserInfo(req.username)
-    //console.log(toRes)
+    const token = req.headers.authorization.split(" ")[1];
+    const data = TokenService.jwt.verify(token, TokenService.key);
+    const toSend = await UserService.getUserInfo(data,req.params.username);
+    res.status(toSend.status).send(toSend.body)
 }
 
 

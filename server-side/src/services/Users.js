@@ -1,5 +1,6 @@
 const {mongoose} = require('../app')
 const {UserPassName} = require('../models/Users')
+const checkParams = require("./checkParams")
 /*
 todo-
 GET: api/Users/{username} get information about the current logged-in user (req={username}) (res={code,body{User}})
@@ -13,6 +14,16 @@ async function registerUser(username,password, displayName,profilePic) {
         displayName:displayName,
         profilePic: profilePic
     })
+    var errors = checkParams({
+        username: username,
+        password: password,
+        displayName:displayName,
+        profilePic: profilePic
+    },["username","password","displayName","profilePic"])
+    if(errors){
+        return errors;
+    }
+
     try {
         await newUser.save();
         console.log('User saved successfully:', newUser);
@@ -36,12 +47,17 @@ async function registerUser(username,password, displayName,profilePic) {
 
 }
 
-async function getUserInfo(username) {
+async function getUserInfo(username,data) {
+    if(data && data.username !== username){
+        return {
+            status:401,
+            body: {title:"Unauthorized",
+            status:401}
+        };
+    }
     try {
-
         const tempUser = await UserPassName.findOne({ username: username });
         if (tempUser !== null) {
-            console.log("here")
             return {
                 status: 200,
                 body: {
@@ -53,7 +69,11 @@ async function getUserInfo(username) {
         } else {
             return {
                 status: 401,
-                title: "Unauthorized",
+                body:{
+                    status: 401,
+                    title: "Unauthorized",
+                }
+
             };
         }
     } catch (error) {
