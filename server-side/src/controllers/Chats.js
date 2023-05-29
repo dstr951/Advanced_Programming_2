@@ -1,6 +1,7 @@
 const ChatsServices = require("../services/Chats")
 const {extractUserName} = require("../services/Tokens");
 const {getUserInfo} = require("../services/Users");
+const responseChat = require("../responses/Chats")
 
 async function createChat(req,res){
     const temp = await ChatsServices.createChat(extractUserName(req), req.body.username)
@@ -13,7 +14,10 @@ async function createChat(req,res){
 
 async function getAllChats(req,res){
     const temp = (await ChatsServices.getAllChats(extractUserName(req)))
-    res.status(temp.status).send(temp.body)
+    //es.status(temp.status).send(temp.body)
+    const response = await responseChat.getAllUsers(temp)
+    res.status(response.status).send(response.body)
+
     //const toRes = await ChatsServices.getAllChats(req.params.username)
     //console.log(toRes)
 }

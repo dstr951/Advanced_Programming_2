@@ -1,5 +1,6 @@
 
 
+
 async function registerUser(fromDB){
     if(fromDB.status === 200){
         return {
@@ -20,6 +21,9 @@ async function registerUser(fromDB){
     }
 }
 
+
+
 module.exports = {
     registerUser
+
 }
