@@ -1,6 +1,29 @@
 const {UserPassName} = require("../models/Users");
 const modelChats = require("../models/Chats")
 
+async function createChat(fromDB){
+    if(fromDB.status === 200){
+        const user = await UserPassName.findOne({username:fromDB.body.user.username})
+        return{
+            status:fromDB.status,
+            body:{
+                id: fromDB.body.id,
+                user: {
+                    username: user.username,
+                    displayName: user.displayName,
+                    profilePic: user.profilePic
+                }
+            }
+        }
+    }
+    else{
+        return {
+            status:400,
+            body:"No such user or chat with user already exists"
+        }
+    }
+}
+
 async function getAllUsers(fromDB){
     if(fromDB.status !== 200){
         return fromDB
@@ -39,5 +62,6 @@ async function getAllUsers(fromDB){
 }
 
 module.exports = {
-    getAllUsers
+    getAllUsers,
+    createChat
 }

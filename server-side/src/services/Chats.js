@@ -53,7 +53,7 @@ async function createChat(myUsername, otherUsername){
             status:200,
             body:{
                 id: chatTemp.id,
-                username: otherUsername,
+                username: otherUsername
             }
         };
     }

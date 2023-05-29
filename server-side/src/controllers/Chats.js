@@ -5,8 +5,8 @@ const responseChat = require("../responses/Chats")
 
 async function createChat(req,res){
     const temp = await ChatsServices.createChat(extractUserName(req), req.body.username)
-    const moreTemp = (await getUserInfo(temp.body.username)).body
-    res.status(temp.status).send({id:temp.body.id,user:moreTemp})
+    const response = await responseChat.createChat(temp)
+    res.status(response.status).send(response.body)
 
 }
 
