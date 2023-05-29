@@ -21,7 +21,9 @@ async function getAllChats(req,res){
 
 
 async function getChat(req,res){
-    res.json(await ChatsServices.getChat(req.params.id))
+    const temp = await ChatsServices.getChat(req.params.id)
+    res.status(temp.status).send(temp.body)
+
     //const toRes = await ChatsServices.getChat(req.params.chatID)
     //console.log(toRes)
 }

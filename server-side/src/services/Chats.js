@@ -81,7 +81,13 @@ async function getChat(chatID) {
         }
         else{
             {
-                return {status: 404}
+                return {
+                    status: 401,
+                    body:{
+                        status: 401,
+                        title: "Unauthorized"
+                    }
+                        }
             }
         }
     } catch (error) {
