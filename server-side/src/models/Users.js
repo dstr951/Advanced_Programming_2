@@ -1,28 +1,6 @@
 //const mongoose = require('../app')
 const mongoose = require('mongoose').default;
 
-//const Schema = mongoose.Schema
-
-/*
-const UserSchema = new Schema({
-    username:{
-        type:String,
-        unique: true,
-        default: null
-
-    },
-    displayName:{
-        type:String,
-        default: null
-    },
-    profilePic:{
-        type:String,
-        default: null
-    }
-})
-
- */
-
 const UserPassNameSchema = new mongoose.Schema({
     username:{
         type:String,

@@ -28,12 +28,3 @@ app.use('/api/Users',routerUsers)
 app.use('/api/Chats',routerChats)
 app.use('/api/Tokens',routerToken)
 app.listen(3001)
-
-
-
-
-
-
-module.exports = {
-    //isLoggedIn
-}

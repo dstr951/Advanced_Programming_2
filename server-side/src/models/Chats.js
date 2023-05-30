@@ -1,8 +1,6 @@
 const  mongoose  = require('mongoose')
 const {User, UserPassName} = require("./Users");
 
-//todo add scheme for Chat, Message
-
 const Schema = mongoose.Schema
 
 const MessageSchema = new Schema({

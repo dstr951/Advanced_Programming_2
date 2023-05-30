@@ -3,14 +3,7 @@ const ChatsController = require('../controllers/Chats')
 const TokensController = require("../controllers/Tokens")
 const router = express.Router();
 
-// router.get('/',ChatsController.getAllChats);
-// router.post('/',ChatsController.createChat);
-// router.get('/:id',ChatsController.getChat);
-// router.delete('/:id',ChatsController.deleteChat);
-// router.post('/:id/Messages',ChatsController.sendMessageToChat);
-
 module.exports = router;
-
 
 router.get('/',TokensController.TokenService.isLoggedIn,ChatsController.getAllChats);
 router.post('/',TokensController.TokenService.isLoggedIn,ChatsController.createChat);

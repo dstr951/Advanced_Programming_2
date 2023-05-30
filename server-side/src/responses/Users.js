@@ -1,6 +1,3 @@
-
-
-
 async function registerUser(fromDB){
     if(fromDB.status === 200){
         return {

@@ -2,7 +2,6 @@ const {mongoose} = require('../app')
 const {UserPassName} = require('../models/Users')
 const checkParams = require("./checkParams")
 /*
-todo-
 GET: api/Users/{username} get information about the current logged-in user (req={username}) (res={code,body{User}})
 POST: api/Users register a user (req = {UserPassName}) (res={code, body{User})
  */

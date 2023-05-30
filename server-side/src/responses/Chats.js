@@ -32,19 +32,15 @@ async function getAllUsers(fromDB){
         var response = { status: 200, body: [] };
 
         for (const chat of fromDB.body) {
-                const user = await UserPassName.findOne({ username:chat.user });
-                let lastMessage = await modelChats.Message.findOne({id:Math.max(...chat.messages)})
-                if(lastMessage){
-                    lastMessage = {
-                        id:lastMessage.id,
-                        created: lastMessage.created,
-                        content:lastMessage.content
-                    }
-                }
-
-
-
-
+			const user = await UserPassName.findOne({ username:chat.user });
+			let lastMessage = await modelChats.Message.findOne({id:Math.max(...chat.messages)})
+			if(lastMessage){
+				lastMessage = {
+					id:lastMessage.id,
+					created: lastMessage.created,
+					content:lastMessage.content
+				}
+			}
             response.body.push({
                 id: chat.id,
                 user: {
@@ -53,7 +49,6 @@ async function getAllUsers(fromDB){
                     profilePic:user.profilePic
                 },
                 lastMessage: lastMessage
-
             });
         }
     }
@@ -156,8 +151,6 @@ async function getAllMessages(fromDB){
 }
 async function getUserFromUsername(username){
     const user = await UserPassName.findOne({username: username})
-    //console.log("from here")
-    //console.log(user)
     return{
         username:user.username,
         displayName:user.displayName,
