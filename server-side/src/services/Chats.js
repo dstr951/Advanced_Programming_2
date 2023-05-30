@@ -223,6 +223,7 @@ async function getAllMessages(chatID,username) {
             const temp = await Message.findOne({ id: messageID });
             return {
                 id: temp.id,
+                created:temp.created,
                 sender: temp.sender,
                 content: temp.content
             };
@@ -233,7 +234,13 @@ async function getAllMessages(chatID,username) {
             body: messages
         };
     } else {
-        return { status: 404 };
+        return {
+            status: 401,
+            body:{
+                title: "Unauthorized",
+                status: 401
+            }
+        };
     }
 }
 

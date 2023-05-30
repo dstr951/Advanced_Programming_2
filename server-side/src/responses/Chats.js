@@ -125,6 +125,32 @@ async function sendMessageToChat(fromDB){
         return  fromDB
     }
 }
+
+async function getAllMessages(fromDB){
+    if(fromDB.status === 200){
+        const promises = Object.keys(fromDB.body).map(message => {
+            return getUserFromUsername(fromDB.body[message].sender)
+                .then(sender => {
+                    fromDB.body[message].sender = sender;
+                    console.log("Updated sender:");
+                    console.log(fromDB.body[message].sender);
+                })
+                .catch(error => {
+                    // Handle any errors that occur during the promise resolution
+                    console.error(error);
+                });
+        });
+
+        return Promise.all(promises).then(() => {
+            // All promises have resolved, return the updated fromDB object
+            return fromDB;
+        });
+    }
+    else{
+        return fromDB
+    }
+
+}
 async function getUserFromUsername(username){
     const user = await UserPassName.findOne({username: username})
     //console.log("from here")
@@ -141,5 +167,6 @@ module.exports = {
     createChat,
     getChat,
     deleteChat,
-    sendMessageToChat
+    sendMessageToChat,
+    getAllMessages
 }

@@ -50,7 +50,9 @@ async function sendMessageToChat(req,res){
     //console.log(toRes)
 }
 async function getAllMessages(req,res){
-    res.json(await ChatsServices.getAllMessages(req.params.id,extractUserName(req)))
+    const temp  = await ChatsServices.getAllMessages(req.params.id,extractUserName(req))
+    const response = await responseChat.getAllMessages(temp)
+    res.status(response.status).send(response.body)
 }
 
 module.exports = {
