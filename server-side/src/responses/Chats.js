@@ -61,7 +61,62 @@ async function getAllUsers(fromDB){
     return response
 }
 
+async function getChat(fromDB){
+    const response = {status:fromDB.status,body:{id:fromDB.body.id,users:[],messages:[]}}
+    if(fromDB.status === 200){
+        for(const username of fromDB.body.users){
+            console.log(username)
+            const user = await getUserFromUsername(username)
+            console.log(user)
+            response.body.users.push(user)
+        }
+        for(const messageID of fromDB.body.messages){
+            const message = await modelChats.Message.findOne({id: messageID})
+            if(message) {
+                const sender = await getUserFromUsername(message.sender)
+                response.body.messages.push({
+                    id: message.id,
+                    created: message.created,
+                    sender: sender,
+                    content: message.content
+                })
+            }
+        }
+
+    }
+    else{
+        response.status = fromDB.status
+        response.body = fromDB.body
+    }
+    return response
+}
+
+async function deleteChat(fromDB){
+    if(fromDB.status === 204){
+        return {status:fromDB.status, body:undefined}
+    }
+    else if(fromDB.status === 404){
+        return fromDB
+    }
+    //status === 500 error in db
+    else{
+        return fromDB
+    }
+}
+async function getUserFromUsername(username){
+    const user = await UserPassName.findOne({username: username})
+    //console.log("from here")
+    //console.log(user)
+    return{
+        username:user.username,
+        displayName:user.displayName,
+        profilePic:user.profilePic
+    }
+}
+
 module.exports = {
     getAllUsers,
-    createChat
+    createChat,
+    getChat,
+    deleteChat
 }

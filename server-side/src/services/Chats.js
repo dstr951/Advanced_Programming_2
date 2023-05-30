@@ -70,9 +70,9 @@ async function createChat(myUsername, otherUsername){
 /*  GET: api/Chats/{id} get a specific chat with a user using the chatID req={id}, res={code,body{id,users[],messages[]}}(array of type User, array of type Message )
     return if chat exists {status,body-Chat} else if chat doesn't exist returns {status}, if there is an error returns {status,body-error}
  */
-async function getChat(chatID) {
+async function getChat(chatID, username) {
     try {
-        const chat = await Chat.findOne({ id: chatID });
+        const chat = await Chat.findOne({ id: chatID, users:username });
         if (chat) {
             return {
             status: 200,
@@ -106,20 +106,24 @@ async function getChat(chatID) {
     if chat exist and no error accured, return status 200 and body Chat, if error return status 500 and body Chat, else,
      chat doesn't exist and return status 404
  */
-async function deleteChat(chatID) {
-    const chatTemp = await getChat(chatID); // Await the promise to get the resolved value
+async function deleteChat(chatID,username) {
+    const chatTemp = await getChat(chatID,username); // Await the promise to get the resolved value
     // check if chat exists
     if (chatTemp && chatTemp.status === 200) { // Check if chatTemp is defined before accessing its properties
         try {
             const deleted = await Chat.deleteOne({ id: chatID });
             if (deleted.deletedCount > 0) {
                 return {
-                    status: 200,
+                    status: 204,
                     body: chatTemp.body
                 };
             } else {
                 return {
-                    status: 404
+                    status: 404,
+                    body:{
+                        title: "Not Found",
+                        status: 404
+                    }
                 };
             }
         } catch (error) {
@@ -130,7 +134,11 @@ async function deleteChat(chatID) {
         }
     } else {
         return {
-            status: 404
+            status: 404,
+            body:{
+                title: "Not Found",
+                status: 404
+            }
         };
     }
 }
@@ -139,7 +147,7 @@ async function deleteChat(chatID) {
 
  */
 async function sendMessageToChat(chatID,sender,content){
-    const chatRes = await getChat(chatID);
+    const chatRes = await getChat(chatID,sender);
     //if chat exists
     if(chatRes && chatRes.status === 200 && (chatRes.body.users[0] === sender || chatRes.body.users[1] === sender)) {
         const updatedChat = chatRes.body
@@ -207,8 +215,8 @@ async function addMessage(sender,message){
 
 }
 
-async function getAllMessages(chatID) {
-    const chat = await getChat(chatID);
+async function getAllMessages(chatID,username) {
+    const chat = await getChat(chatID,username);
     if (chat.status === 200) {
         const messages = await Promise.all(chat.body.messages.map(async (messageID) => {
             const temp = await Message.findOne({ id: messageID });

@@ -2,6 +2,9 @@ const ChatsServices = require("../services/Chats")
 const {extractUserName} = require("../services/Tokens");
 const {getUserInfo} = require("../services/Users");
 const responseChat = require("../responses/Chats")
+const TokenService = require("../services/Tokens");
+
+
 
 async function createChat(req,res){
     const temp = await ChatsServices.createChat(extractUserName(req), req.body.username)
@@ -25,17 +28,17 @@ async function getAllChats(req,res){
 
 
 async function getChat(req,res){
-    const temp = await ChatsServices.getChat(req.params.id)
-    res.status(temp.status).send(temp.body)
 
-    //const toRes = await ChatsServices.getChat(req.params.chatID)
-    //console.log(toRes)
+    const temp = await ChatsServices.getChat(req.params.id,extractUserName(req))
+    const response = await responseChat.getChat(temp)
+    res.status(response.status).send(response.body)
+
 }
 
 async function deleteChat(req,res){
-    res.json(await ChatsServices.deleteChat(req.params.id))
-    //const toRes = await ChatsServices.deleteChat(req.params.chatID)
-    //console.log(toRes)
+    const temp = await ChatsServices.deleteChat(req.params.id,extractUserName(req))
+    const response = await responseChat.deleteChat(temp)
+    res.status(response.status).send(response.body)
 }
 
 async function sendMessageToChat(req,res){
@@ -45,9 +48,8 @@ async function sendMessageToChat(req,res){
     //console.log(toRes)
 }
 async function getAllMessages(req,res){
-    res.json(await ChatsServices.getAllMessages(req.params.id))
+    res.json(await ChatsServices.getAllMessages(req.params.id,extractUserName(req)))
 }
-
 
 module.exports = {
     createChat,getAllChats,getChat,deleteChat,sendMessageToChat, getAllMessages
