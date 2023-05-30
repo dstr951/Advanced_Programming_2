@@ -47,8 +47,8 @@ async function registerUser(username,password, displayName,profilePic) {
 
 }
 
-async function getUserInfo(username,data) {
-    if(data && data.username !== username){
+async function getUserInfo(username,data=null) {
+    if(data && data !== username){
         return {
             status:401,
             body: {title:"Unauthorized",

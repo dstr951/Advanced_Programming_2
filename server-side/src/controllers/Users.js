@@ -1,6 +1,7 @@
 const UserService  = require("../services/Users");
 const responseUser = require("../responses/Users")
 const TokenService = require("../services/Tokens");
+const {extractUserName} = require("../services/Tokens");
 
 
 
@@ -17,7 +18,7 @@ async function registerUser(req,res){
 async function getUserInfo(req,res){
     const token = req.headers.authorization.split(" ")[1];
     const data = TokenService.jwt.verify(token, TokenService.key);
-    const toSend = await UserService.getUserInfo(data,req.params.username);
+    const toSend = await UserService.getUserInfo(req.params.username,extractUserName(req));
     res.status(toSend.status).send(toSend.body)
 }
 

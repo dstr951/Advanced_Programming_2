@@ -3,7 +3,7 @@ const modelChats = require("../models/Chats")
 
 async function createChat(fromDB){
     if(fromDB.status === 200){
-        const user = await UserPassName.findOne({username:fromDB.body.user.username})
+        const user = await UserPassName.findOne({username:fromDB.body.username})
         return{
             status:fromDB.status,
             body:{
@@ -143,7 +143,10 @@ async function getAllMessages(fromDB){
 
         return Promise.all(promises).then(() => {
             // All promises have resolved, return the updated fromDB object
-            return fromDB;
+            fromDB.body.sort((a, b) => {
+                return b.created - a.created;
+            });
+            return fromDB
         });
     }
     else{
