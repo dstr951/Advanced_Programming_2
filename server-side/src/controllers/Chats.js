@@ -43,7 +43,9 @@ async function deleteChat(req,res){
 
 async function sendMessageToChat(req,res){
 
-            res.json(await ChatsServices.sendMessageToChat(req.params.id,extractUserName(req),req.body.msg))
+    const temp  = await ChatsServices.sendMessageToChat(req.params.id,extractUserName(req),req.body.msg)
+    const response = await responseChat.sendMessageToChat(temp)
+    res.status(response.status).send(response.body)
     //const toRes = await ChatsServices.sendMessageToChat(req.params.chatID,req.params.sender,req.params.content)
     //console.log(toRes)
 }

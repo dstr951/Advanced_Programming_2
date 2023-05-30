@@ -103,6 +103,28 @@ async function deleteChat(fromDB){
         return fromDB
     }
 }
+
+async function sendMessageToChat(fromDB){
+    if(fromDB.status === 200){
+        return{
+            status:200,
+            body:
+                {
+                    id: fromDB.body.id,
+                    created: fromDB.body.created,
+                    sender: await getUserFromUsername(fromDB.body.sender),
+                    content: fromDB.body.content
+                }
+        }
+    }
+    else if(fromDB.status === 401){
+        return  fromDB
+    }
+    //db error status === 500
+    else{
+        return  fromDB
+    }
+}
 async function getUserFromUsername(username){
     const user = await UserPassName.findOne({username: username})
     //console.log("from here")
@@ -118,5 +140,6 @@ module.exports = {
     getAllUsers,
     createChat,
     getChat,
-    deleteChat
+    deleteChat,
+    sendMessageToChat
 }

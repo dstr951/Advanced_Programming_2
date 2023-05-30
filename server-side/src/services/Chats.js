@@ -156,11 +156,12 @@ async function sendMessageToChat(chatID,sender,content){
         if(messageTemp.status === 200){
             updatedChat.messages.push(messageTemp.body.id)
 
+
             try{
                 await Chat.updateOne({id: chatID}, updatedChat)
                 return{
                     status: 200,
-                    body: updatedChat
+                    body: messageTemp.body
                 }
             }
             catch (error) {
@@ -206,10 +207,10 @@ async function addMessage(sender,message){
             body: message
         };
     }
-    catch (e) {
+    catch (error) {
         return {
             status:500,
-            body:e
+            body:error
         }
     }
 
