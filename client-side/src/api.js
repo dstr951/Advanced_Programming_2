@@ -1,4 +1,4 @@
-const apiPrefix = "http://localhost:5000/api/"
+const apiPrefix = "http://localhost:3001/api/"
 export const HttpCodes = {
   SUCCESS: 200,
   BAD_REQUEST: 400,
