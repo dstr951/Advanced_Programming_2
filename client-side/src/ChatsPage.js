@@ -37,8 +37,12 @@ export default function ChatsPage() {
         const response = await getAllChats(token);
         switch(response.status){
             case HttpCodes.SUCCESS:
-                const data = await response.json()
-                setChats(data)
+                let data = await response.json()
+				if(data.length > 0)
+                data = data.sort((c1, c2) => {
+					return new Date(c2.lastMessage?.created) - new Date(c1.lastMessage?.created)
+				  })
+				  setChats(data)
                 break;
             case HttpCodes.UNAUTHERIZED:
                 navigate('/')
