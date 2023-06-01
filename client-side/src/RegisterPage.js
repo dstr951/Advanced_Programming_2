@@ -6,6 +6,7 @@ import {registerUser} from "./api"
 
 
 
+
 async function validateSignup(event, navigator, setterDisplayError, data) {
     event.preventDefault()
     if (!data.OK.usernameOK ||
