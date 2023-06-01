@@ -6,14 +6,16 @@ async function processLogin(username, password) {
         return errors
     }
     try {
+		console.log(username, password)
         const userExists = await UserPassName.findOne({username: username, password: password})
         if(userExists){
+			console.log("In if")
             const data = {username: username}
             // Generate the token.
             const token = jwt.sign(data, key)
             // Return the token to the browser
             return{
-                status: 201,
+                status: 200,
                 body: token
             }
         }
