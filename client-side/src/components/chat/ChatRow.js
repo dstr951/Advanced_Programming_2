@@ -1,53 +1,80 @@
-import { useEffect, useState } from "react";
-import { getLastChatMessage, getUser } from "../../apiTemp";
+import {useEffect, useRef, useState} from "react"
+import {useNavigate} from "react-router-dom";
+import {HttpCodes, getChat} from "../../api"
+
 export default function ChatRow({
-  userId,
+  user,
   chatId,
-  forceUpadteMessages,
+  lastMessage,
+  token,
+  changeOpenMessages,
   changeOpenChatId,
   changeOpenUser,
   active,
 }) {
-  function click() {
-    changeOpenChatId(chatId);
-    changeOpenUser(user);
+  const messages = useRef([])
+  const [prevLastMessageId, setPrevLastMessageId] = useState(-1)
+  const navigate = useNavigate();
+  async function updateMessages(){
+    if(!lastMessage || lastMessage.id === prevLastMessageId) {
+      return
+    }
+    setPrevLastMessageId(lastMessage.id)
+    const response = await getChat(token, chatId)
+    switch(response.status){
+      case HttpCodes.SUCCESS:
+          const data = await response.json()
+          messages.current = data
+          if(active){
+            changeOpenMessages(messages.current)
+          }
+          break;
+      case HttpCodes.UNAUTHERIZED:
+          navigate('/')
+          break;
+      default:
+          console.log("unexpected HTTP code on response from getChat:", response.status)
+    }
+  }
+  useEffect(() => {
+    updateMessages()
+  }, [lastMessage])  
+
+  function displayLastMessage() {
+    return (
+      <>
+        <div className="col-5">
+          <div className="date">{lastMessage?.created?.toString()}</div>
+        </div>
+        <div className="col-12 last_msg fw-lighter fst-italic">
+          {lastMessage?.content}
+        </div>
+      </>
+    )
   }
 
-  const [user, setUser] = useState({});
-  //hook to get the user's data from the server
-  useEffect(() => {
-    const response = getUser(userId);
-    if (response.code === 200) {
-      setUser(response.body);
-    }
-  }, [userId]);
+  function updateOpenMessages(newMessagesArray) {
+    changeOpenMessages(newMessagesArray)
+  }
 
-  const [lastMessage, setLastMessage] = useState({});
-  //hook to get the lastMessage from the server
-  useEffect(() => {
-    const response = getLastChatMessage(chatId);
-    if (response.code === 200) {
-      setLastMessage(response.body.lastMessage);
-    }
-  }, [chatId, forceUpadteMessages]);
+  function click() {
+    changeOpenMessages(messages.current)
+    changeOpenChatId(chatId)
+    changeOpenUser(user)
+  }
 
-  const activeClass = active ? " active_chat" : "";
+  const activeClass = active ? " active_chat" : ""
   return (
     <div className={"row chat-row" + activeClass} onClick={click}>
       <div className="col-2 profile-container">
-        <img alt="img" src={user.picture} />
+        <img alt="img" src={user.profilePic} />
       </div>
       <div className="col-10 d-flex">
         <div className="row name-time-last-message-container">
           <div className="col-7 contact_name fw-bold">{user.displayName}</div>
-          <div className="col-5">
-            <div className="date">{lastMessage?.timeSent?.toString()}</div>
-          </div>
-          <div className="col-12 last_msg fw-lighter fst-italic">
-            {lastMessage.content}
-          </div>
+          {displayLastMessage()}
         </div>
       </div>
     </div>
-  );
+  )
 }

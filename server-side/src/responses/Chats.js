@@ -139,7 +139,7 @@ async function getAllMessages(fromDB){
         return Promise.all(promises).then(() => {
             // All promises have resolved, return the updated fromDB object
             fromDB.body.sort((a, b) => {
-                return b.created - a.created;
+                return a.created - b.created;
             });
             return fromDB
         });

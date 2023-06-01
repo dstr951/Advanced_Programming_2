@@ -1,73 +1,58 @@
 import {useNavigate, Link} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
-import Input from "./components/Input";
+import {Input, NO_DISPLAY, ERROR_DISPLAY, SUCCESS_DISPLAY} from "./components/Input";
 import Alert from "./components/Alert";
-import {userNameExists, registerUser} from "./apiTemp"
+import {registerUser} from "./api"
 
 
-function validateSignup(event, navigator, setterDisplayError, data) {
 
-    if (data.OK.usernameOK &&
-        data.OK.passwordOK &&
-        data.data.password === data.data.confirmPassword &&
-        data.OK.displayNameOK &&
-        data.OK.imgOK
+
+async function validateSignup(event, navigator, setterDisplayError, data) {
+    event.preventDefault()
+    if (!data.OK.usernameOK ||
+        !data.OK.passwordOK ||
+        data.data.password !== data.data.confirmPassword ||
+        !data.OK.displayNameOK ||
+        !data.OK.imgOK
     ) {
-        if (!userNameExists(data.data.username)) {
-            setterDisplayError(false)
-            const serverResponse = registerUser(data.data.username, data.data.password, data.data.displayName,data.data.profilePictue)
-            if(serverResponse.code === 409){
-                event.preventDefault()
-                setterDisplayError(true)
-                return false
-            }
-            else{
-
-                navigator('/Chats',{ state: { myParam: serverResponse.body.userId } })
-            }
-
-        } else {
-            event.preventDefault()
-            setterDisplayError(true)
-            return false
-        }
-    } else {
-        event.preventDefault()
         setterDisplayError(true)
         return false
     }
+    const serverResponse = await registerUser(data.data.username, data.data.password, data.data.displayName,data.data.profilePictue)    
+    if(serverResponse.status === 409){
+        setterDisplayError(true)
+        return false
+    }
+    navigator('/')        
 }
 
 function validateUsername(username, setOK) {
     if (username.length === 0) {
         setOK(false)
-        return -1
+        return NO_DISPLAY
     }
-    /**
-     * add check if not in DB
-     */
     if (username.length <= 2) {
         setOK(false)
-        return 0
+        return ERROR_DISPLAY
     } else {
         setOK(true)
-        return 1
+        return SUCCESS_DISPLAY
     }
 }
 
 function validatePassword(password,setOK) {
     if(password.length === 0){
         setOK(false)
-        return -1
+        return NO_DISPLAY
     }
     var digit = /.*[\d]{1,}.*[\d]{1,}.*[\d]{1,}.*[\d]{1,}.*/.test(password)
     var capital = /[A-Z]/.test(password)
     if (password.length >= 8 && digit && capital) {
         setOK(true)
-        return 1
+        return SUCCESS_DISPLAY
     }
     setOK(false)
-    return 0
+    return ERROR_DISPLAY
 
 }
 
@@ -98,14 +83,14 @@ function RegisterPage() {
     function confirmPasswordValidator(p1, p2,setOK) {
         if(p2.confirmPassword.length === 0){
             //setOK(false)
-            return -1
+            return NO_DISPLAY
         }
         else if(p1.password === p2.confirmPassword){
             //setOK(true)
-            return 1
+            return SUCCESS_DISPLAY
         }
         //setOK(false)
-        return 0
+        return ERROR_DISPLAY
     }
     return (
         <>
@@ -146,7 +131,7 @@ function RegisterPage() {
                             placeHolder="Confirm password"
                             setter={setConfirmPassword}
                             validator={(p) => function () {
-                                return -1
+                                return NO_DISPLAY
                             }
                             }
                             successMessage="passwords are the same"
@@ -171,13 +156,13 @@ function RegisterPage() {
                             validator={(name, setOK) => {
                                 if (name.length === 0) {
                                     setOK(false)
-                                    return -1
+                                    return NO_DISPLAY
                                 } else if (name.length > 2) {
                                     setOK(true)
-                                    return 1
+                                    return SUCCESS_DISPLAY
                                 } else {
                                     setOK(false)
-                                    return 0
+                                    return ERROR_DISPLAY
                                 }
                             }}
                             successMessage="valid display name"
@@ -194,7 +179,7 @@ function RegisterPage() {
                                 if (event.target.files.length === 0) {
                                     setImgDisplay(false)
                                     setOKImg(false)
-                                    return -1
+                                    return NO_DISPLAY
 
                                 }
                                 const file = event.target.files[0];
@@ -203,7 +188,7 @@ function RegisterPage() {
                                 if (!file.type.startsWith('image/')) {
                                     setImgDisplay(false)
                                     setOKImg(false)
-                                    return 0;
+                                    return ERROR_DISPLAY;
                                 }
                                 const reader = new FileReader();
                                 reader.readAsDataURL(file);
@@ -217,7 +202,7 @@ function RegisterPage() {
                                 };
                                 setImgDisplay(true)
                                 setOKImg(true)
-                                return 1;
+                                return SUCCESS_DISPLAY;
                             }
                             }
                             successMessage="looks good!"

@@ -1,6 +1,11 @@
-export default function Message({message, myId}){
-	const {content, timeSent, senderId} = message
-	const messageClass = senderId === myId ? "message-out" : "message-in"
+import {useContext} from "react"
+import { chatContext } from "../../ChatsPage"
+
+export default function Message({message}){
+	const {content, created, sender} = message
+  const timeSent = new Date(created)
+  const {myUsername} = useContext(chatContext)
+	const messageClass = sender.username === myUsername ? "message-out" : "message-in"
 	return(
 		<div className="row m-0">
           <div className="message col-12">

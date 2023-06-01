@@ -1,21 +1,19 @@
 import Alert from "./components/Alert";
 import {useEffect, useState} from "react";
-import {validateLogin} from "./apiTemp";
+import {validateLogin} from "./api";
 import {useNavigate, Link} from "react-router-dom";
 
 
-function validateLoginPage(event, navigator, setterDisplayError, data) {
-    //add code for checking data
-    var serverResponse = validateLogin(data.userName, data.password)
-    if (serverResponse.code === 200) {
-        setterDisplayError(false)
-        navigator('/Chats', { state: { myParam: serverResponse.body.userId } })
-        }
-    else {
-        event.preventDefault()
+async function validateLoginPage(event, navigator, setterDisplayError, data) {
+    event.preventDefault()
+    setterDisplayError(false)
+    const serverResponse = await validateLogin(data.userName, data.password)
+    if(serverResponse.status !== 200) {
         setterDisplayError(true)
         return false
-        }
+    }
+    const token = await serverResponse.text()
+    navigator('/Chats', { state: { myUsername: data.userName, token: token } })
 }
 
 function LoginPage() {

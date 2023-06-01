@@ -1,31 +1,37 @@
 import OpenChatContactRow from "./OpenChatContactRow"
 import OpenChatMessages from "./OpenChatMessages"
-
+import { useNavigate } from "react-router-dom";
 import {useState} from "react"
-import {sendMessage} from "../../apiTemp"
+import {HttpCodes, sendMessage} from "../../api"
 
-export default function OpenChat({user, chatId, myId, forceUpadteMessages, setForceUpdateMessages}) {
+export default function OpenChat({user, chatId, token, updateChats}) {
   const [messageContent, setMessageContent] = useState("")
+  const navigate = useNavigate();
 
   function inputChange(e) {
     setMessageContent(e.target.value)
   }
 
-  function sendMessageHandler(e) {
+  async function sendMessageHandler(e) {
     e.preventDefault()
-    sendMessage(messageContent, myId, chatId)
-    setForceUpdateMessages((value) => !value)
     setMessageContent("")
+    const response = await sendMessage(token, chatId, messageContent)
+    switch(response.status){
+      case HttpCodes.SUCCESS:
+        updateChats()
+        break;
+      case HttpCodes.UNAUTHERIZED:
+        navigate('/')
+        break;
+      default:
+        console.log("unexpected HTTP code on response from sendMessage:", response.status)
+    }
   }
 
   return (
     <>
       <OpenChatContactRow user={user} />
-      <OpenChatMessages
-        chatId={chatId}
-        myId={myId}
-        forceUpadteMessages={forceUpadteMessages}
-      />
+      <OpenChatMessages />
       <div id="chat_input" className="chat_row row ms-0 me-0">
         <input
           id="input_message"

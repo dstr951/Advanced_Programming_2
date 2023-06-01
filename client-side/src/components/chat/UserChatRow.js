@@ -1,48 +1,61 @@
 import { useEffect, useState } from "react";
-import { getUser, getUserIdsByUserName, addContact } from "../../apiTemp";
-import Input from "../Input";
+import { useNavigate } from "react-router-dom";
+import { HttpCodes, getUser, createChat } from "../../api"
 
-export default function UserChatRow({ myId, setForceUpdateMessages }) {
+export default function UserChatRow({ myUsername, token, updateChats }) {
   const [user, setUser] = useState({});
+  const navigate = useNavigate();
+
+  const updateMyUser = async () => {
+    const response = await getUser(token, myUsername);
+    switch(response.status){
+        case HttpCodes.SUCCESS:
+            const data = await response.json()
+            setUser(data)
+            break;
+        case HttpCodes.UNAUTHERIZED:
+            navigate('/')
+            break;
+        default:
+            console.log("unexpected HTTP code on response from getMyUser:", response.status)
+    }   
+}
   //hook to get the user's data from the server
   useEffect(() => {
-    const response = getUser(myId);
-    if (response.code === 200) {
-      setUser(response.body);
-    }
-  }, [myId]);
+    updateMyUser()
+  }, [myUsername]);
 
   //MODAL LOGIC
   const [modalUsername, setModalUsername] = useState("");
   const [OKUsername, setOKUsernname] = useState(false);
   const [modalChosenUserId, setModalChosenUserId] = useState(-1);
-  const validateUsername = (username, setOK) => {
-    if (modalChosenUserId !== -1) {
-      setModalChosenUserId(-1);
-    }
-    if (username.length <= 2) {
-      return;
-    }
-    const users = getUserIdsByUserName(username);
-    let similarIds = users.body;
-    if (similarIds.length === 0) {
-      return 0;
-    }
-    if (similarIds.length === 1) {
-      setModalChosenUserId(similarIds[0]);
-      return 1;
-    }
-  };
 
-  const handleModalAdd = (e) => {
+  const handleModalChange = (e) => {
+    setModalUsername(e.target.value)
+  }
+  const handleModalAdd = async (e) => {
     e.preventDefault();
-    addContact(myId, modalChosenUserId)
-	setForceUpdateMessages((value) => !value)
+    const response = await createChat(token, modalUsername)
+    switch(response.status){
+      case HttpCodes.SUCCESS:
+        updateChats()
+        break;
+      case HttpCodes.BAD_REQUEST:
+        alert("there is an error with that username")
+        break;
+      case HttpCodes.UNAUTHERIZED:
+        navigate('/')
+        break;
+      default:
+        console.log("unexpected HTTP code on response from getMyUser:", response.status)
+    }
+    updateChats()
+    //addContact(myUsername, modalChosenUserId)
   };
   return (
     <div id="user_info" className="row chat-row text-start">
       <div className="col-2 profile-container">
-        <img alt="img" src={user.picture} />
+        <img alt="img" src={user.profilePic} />
       </div>
       <div className="col-6 text-start pt-2 fw-bold ">{user.displayName}</div>
       <div className="col-4">
@@ -81,16 +94,13 @@ export default function UserChatRow({ myId, setForceUpdateMessages }) {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  <Input
+                  <input
                     label="Username"
                     type="text"
                     id="modalUsernameInput"
-                    placeHolder="Enter username"
-                    setter={setModalUsername}
-                    setOK={setOKUsernname}
-                    validator={validateUsername}
-                    successMessage="username exists"
-                    errorMessage="We couldn't find someone with this username :("
+                    placeholder="Enter username"
+                    value={modalUsername}
+                    onChange={handleModalChange}
                   />
                 </div>
                 <div className="modal-footer">
@@ -98,7 +108,6 @@ export default function UserChatRow({ myId, setForceUpdateMessages }) {
                     type="button"
                     className="btn btn-primary"
                     onClick={handleModalAdd}
-                    disabled={modalChosenUserId === -1}
                   >
                     Add
                   </button>
