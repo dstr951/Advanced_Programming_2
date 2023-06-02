@@ -151,10 +151,46 @@ body {
   justify-content: center;
 }
 .profile-container img {
-  object-fit: cover;
-  height: 55px;
-  width: 55px;
   border-radius: 50%;
+  object-fit: cover;
+  /*xs size*/
+  height: 25px;
+  width: 25px;
+}
+/*small*/
+@media (min-width: 576px){
+	.profile-container img {
+		height: 30px;
+		width: 30px;
+	}
+}
+/*medium*/
+@media (min-width: 768px){
+	.profile-container img {
+		height: 35px;
+		width: 35px;
+	}
+}
+/*large*/
+@media (min-width: 992px){
+	.profile-container img {
+		height: 40px;
+		width: 40px;
+	}
+}
+/*xl*/
+@media (min-width: 1200px){
+	.profile-container img {
+		height: 45px;
+		width: 45px;
+	}
+}
+/*xxl*/
+@media (min-width: 1400px){
+	.profile-container img {
+		height: 50px;
+		width: 50px;
+	}
 }
 .date{
   overflow: hidden;
