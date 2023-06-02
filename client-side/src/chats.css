@@ -80,6 +80,7 @@ body {
 .name-time-last-message-container {
   align-content: space-around;
   overflow: hidden;
+  width:100%;
 }
 
 /*messages panel*/
