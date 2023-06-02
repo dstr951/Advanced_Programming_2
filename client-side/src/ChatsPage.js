@@ -64,7 +64,7 @@ export default function ChatsPage() {
     return (
         <chatContext.Provider value={context}>
             <div className="background-jumbo"></div>
-            <div className="row justify-content-end mt-2 mb-4">
+            <div className="row justify-content-end mt-2 mb-4 me-0">
                 <div className="col-1">
                     <button className="btn btn-danger" onClick={logoutHandler}>Logout</button>
                 </div>
