@@ -61,7 +61,12 @@ export default function ChatsPage() {
 	useEffect(() => {
 		socket.connect();
 
-		socket.on('connect', () => console.log("socket connected"))
+		socket.on("connect", () => {
+			console.log("sent username", myUsername)
+			socket.emit("username", {
+				username: myUsername
+			})
+		})
 	  
 		return () => {
 		  socket.disconnect();
