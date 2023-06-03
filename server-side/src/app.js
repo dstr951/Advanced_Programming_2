@@ -11,14 +11,12 @@ const app = express()
 const http = require('http')
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const socketEvents = require("./services/SocketEvents")
 const io = new Server(server, {
 	cors: {
 	  origin: "http://localhost:3000"
-	}
+	},
   });
-
-io.on('connection');
-
 
 mongoose.connect('mongodb://0.0.0.0:27017/latestDB', {
     useNewUrlParser: true,
@@ -37,4 +35,6 @@ app.use(express.json())
 app.use('/api/Users',routerUsers)
 app.use('/api/Chats',routerChats)
 app.use('/api/Tokens',routerToken)
+socketEvents.setIO(io)
+socketEvents.setupEvents()
 server.listen(3001)
