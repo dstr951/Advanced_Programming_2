@@ -33,11 +33,11 @@ class SocketEvents {
       socket.on("disconnect", () => {
         const usersCount = this.connectedUsers.length;
         if (debugSockets) {
-        console.log("at dissconnect", this.connectedUsers);
+          console.log("at dissconnect", this.connectedUsers);
         }
         for (let i = 0; i < usersCount; i++) {
           if (debugSockets) {
-          console.log("at dissconnect", this.connectedUsers[i]);
+            console.log("at dissconnect", this.connectedUsers[i]);
           }
           if (this.connectedUsers[i].id === socket.id) {
             this.connectedUsers.splice(i, 1);
@@ -47,8 +47,7 @@ class SocketEvents {
       });
     });
   }
-  updateUsersMessage(users, chatId) {
-    console.log("sending update to username, users: ", users);
+  getIdOfOnlineUsers(users) {
     const usersToUpdate = this.connectedUsers
       .filter((socketUser) => {
         if (users.find((u) => socketUser.username === u) !== undefined) {
@@ -57,13 +56,29 @@ class SocketEvents {
         return false;
       })
       .map((socketUser) => socketUser.id);
-	console.log("All users:", this.connectedUsers)
-    console.log("users:", usersToUpdate);
+    if (debugSockets) {
+      console.log("All online users:", this.connectedUsers);
+      console.log("users:", usersToUpdate);
+    }
+    return usersToUpdate;
+  }
+  updateUsersMessage(users, chatId) {
+    const usersToUpdate = this.getIdOfOnlineUsers(users);
     //user not online
     if (!usersToUpdate) {
       return;
     }
     this.io.to(usersToUpdate).emit("newMessage", {
+      chatId: chatId,
+    });
+  }
+  updateUsersChat(users, chatId) {
+    const usersToUpdate = this.getIdOfOnlineUsers(users);
+    //user not online
+    if (!usersToUpdate) {
+      return;
+    }
+    this.io.to(usersToUpdate).emit("newChat", {
       chatId: chatId,
     });
   }

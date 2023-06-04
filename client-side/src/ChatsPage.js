@@ -70,10 +70,12 @@ export default function ChatsPage() {
 
 		socket.on("connect", sendUsername)
 		socket.on("newMessage", updateChats)
+		socket.on("newChat", updateChats)
 	  
 		return () => {
 		  socket.off("connect", sendUsername)
 		  socket.off("newMEssage", updateChats)
+		  socket.off("newChat", updateChats)
 		  socket.disconnect();
 		};
 	  }, []);

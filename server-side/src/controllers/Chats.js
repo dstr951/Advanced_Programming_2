@@ -8,9 +8,14 @@ const TokenService = require("../services/Tokens");
 
 
 async function createChat(req,res){
-    const temp = await ChatsServices.createChat(extractUserName(req), req.body.username)
+	const currentUsername = extractUserName(req)
+    const temp = await ChatsServices.createChat(currentUsername, req.body.username)
     const response = await responseChat.createChat(temp)
     res.status(response.status).send(response.body)
+	if(200 === response.status){
+		const usersToUpdate = [response.body.user.username]
+		socketEvents.updateUsersMessage(usersToUpdate, response.body.id)
+	}
 
 }
 
