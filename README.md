@@ -6,7 +6,15 @@ We got you with the latest Whatapp lookalike app.
 This app is a fully functional chatting app, the server is made with node.JS, the front is made with react and we store our data using MongoDB
 
 ### How can you run our app?
-To run our app please clone our repository and then run the server from the repository's folder:
+To run our app please clone our repository and then install the packagkes in two folders:
+```
+cd client-side
+npm install
+cd ../server-side
+npm install
+cd ../
+```
+After that you can run the server from the repository's folder:
 ```
 node server-side/src/app.js
 ```
