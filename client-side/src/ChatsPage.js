@@ -4,6 +4,7 @@ import "./chats.css";
 import UserChatRow from "./components/chat/UserChatRow.js";
 import ChatRow from "./components/chat/ChatRow.js";
 import OpenChat from "./components/chat/OpenChat.js";
+import { socket } from "./socket";
 import { getAllChats, HttpCodes } from "./api";
 
 export const chatContext = createContext({
@@ -56,6 +57,28 @@ export default function ChatsPage() {
 	useEffect(() => {
         updateChats()
 	}, []);
+	//setup sockets
+	useEffect(() => {
+
+		function sendUsername() {
+			console.log("sent username", myUsername)
+			socket.emit("username", {
+				username: myUsername
+			})
+		}
+		socket.connect();
+
+		socket.on("connect", sendUsername)
+		socket.on("newMessage", updateChats)
+		socket.on("newChat", updateChats)
+	  
+		return () => {
+		  socket.off("connect", sendUsername)
+		  socket.off("newMEssage", updateChats)
+		  socket.off("newChat", updateChats)
+		  socket.disconnect();
+		};
+	  }, []);
 
     const context = {
         messages: openMessages,
