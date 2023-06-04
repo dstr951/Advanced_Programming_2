@@ -137,6 +137,7 @@ body {
   border-radius: 10px 10px 0 10px;
 }
 .message-text {
+  word-break: break-word;
   display: block;
 }
 .message-time {
