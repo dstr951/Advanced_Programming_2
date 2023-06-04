@@ -1,3 +1,5 @@
+const debugSockets = false;
+
 class SocketEvents {
   constructor() {
     this.io = undefined;
@@ -11,6 +13,9 @@ class SocketEvents {
   setupEvents() {
     this.io.on("connection", (socket) => {
       socket.on("username", ({ username }) => {
+        if (debugSockets) {
+          console.log("got event username, ", username);
+        }
         if (
           this.connectedUsers.length > 0 &&
           this.connectedUsers.find((u) => {
@@ -27,9 +32,13 @@ class SocketEvents {
 
       socket.on("disconnect", () => {
         const usersCount = this.connectedUsers.length;
+        if (debugSockets) {
         console.log("at dissconnect", this.connectedUsers);
+        }
         for (let i = 0; i < usersCount; i++) {
+          if (debugSockets) {
           console.log("at dissconnect", this.connectedUsers[i]);
+          }
           if (this.connectedUsers[i].id === socket.id) {
             this.connectedUsers.splice(i, 1);
             break;
