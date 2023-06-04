@@ -38,6 +38,26 @@ class SocketEvents {
       });
     });
   }
+  updateUsersMessage(users, chatId) {
+    console.log("sending update to username, users: ", users);
+    const usersToUpdate = this.connectedUsers
+      .filter((socketUser) => {
+        if (users.find((u) => socketUser.username === u) !== undefined) {
+          return true;
+        }
+        return false;
+      })
+      .map((socketUser) => socketUser.id);
+	console.log("All users:", this.connectedUsers)
+    console.log("users:", usersToUpdate);
+    //user not online
+    if (!usersToUpdate) {
+      return;
+    }
+    this.io.to(usersToUpdate).emit("newMessage", {
+      chatId: chatId,
+    });
+  }
 }
 
 const socketEvents = new SocketEvents();
