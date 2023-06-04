@@ -59,17 +59,20 @@ export default function ChatsPage() {
 	}, []);
 	//setup sockets
 	useEffect(() => {
-		socket.connect();
 
-		socket.on("connect", () => {
+		function sendUsername() {
 			console.log("sent username", myUsername)
 			socket.emit("username", {
 				username: myUsername
 			})
-		})
+		}
+		socket.connect();
+
+		socket.on("connect", sendUsername)
 		socket.on("newMessage", updateChats)
 	  
 		return () => {
+		  socket.off("connect", sendUsername)
 		  socket.off("newMEssage", updateChats)
 		  socket.disconnect();
 		};
