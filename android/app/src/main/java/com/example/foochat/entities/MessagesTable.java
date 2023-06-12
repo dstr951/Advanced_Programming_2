@@ -6,26 +6,34 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = "Messages", foreignKeys = @ForeignKey(entity = PersonTable.class,
+@Entity(tableName = "Messages", foreignKeys = {@ForeignKey(entity = PersonTable.class,
         parentColumns = "username",
         childColumns = "sender",
         //if the username from the personTable is deleted, delete the message.
-        onDelete = ForeignKey.CASCADE))
+        onDelete = ForeignKey.CASCADE),
+        @ForeignKey(entity = ChatsTable.class,
+        parentColumns = "chatID",
+        childColumns = "chatID",
+        onDelete = ForeignKey.CASCADE)
+        })
+
 public class MessagesTable {
     @PrimaryKey
     private int messageID;
 
-    private Date created;
+    private int chatID;
 
     private String sender;
 
     private String content;
+    private Date created;
 
-    public MessagesTable(int messageID, Date created, String sender, String content) {
+    public MessagesTable(int messageID, int chatID, String sender, String content, Date created) {
         this.messageID = messageID;
-        this.created = created;
+        this.chatID = chatID;
         this.sender = sender;
         this.content = content;
+        this.created = created;
     }
 
     public int getMessageID() {
@@ -34,6 +42,14 @@ public class MessagesTable {
 
     public void setMessageID(int messageID) {
         this.messageID = messageID;
+    }
+
+    public int getChatID() {
+        return chatID;
+    }
+
+    public void setChatID(int chatID) {
+        this.chatID = chatID;
     }
 
     public Date getCreated() {
