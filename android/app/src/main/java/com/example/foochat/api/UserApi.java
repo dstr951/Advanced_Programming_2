@@ -41,7 +41,8 @@ public class UserApi {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     //register was successful, save user information to local db.
-                    userDao.insert(new UserTable(username, displayName, password, 1, null, ""));
+
+                    //userDao.insert(new UserTable(username, displayName, password, 1, null, ""));
                 }
                 //register failed.
                 else {
@@ -82,11 +83,11 @@ public class UserApi {
                     //userDao.updateServerToken(username,customResponse.getResponse());
                     try {
                         String token = customResponse.string();
-                        new Thread(()->{
-                            userDao.updateServerToken(username,token);
-                        }).start();
+//                        new Thread(()->{
+//                            userDao.updateServerToken(username,token);
+//                        }).start();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        //throw new RuntimeException(e);
                     }
                     // Access and use the properties of the CustomResponse object
                     // ...

@@ -24,4 +24,6 @@ public interface UserDao {
 
     @Delete
     void delete(UserTable... user);
+
+
 }

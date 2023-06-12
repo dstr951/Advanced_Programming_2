@@ -3,16 +3,21 @@ package com.example.foochat.api;
 import com.example.foochat.requestObjects.CreateChatReq;
 import com.example.foochat.requestObjects.LoginUserReq;
 import com.example.foochat.requestObjects.RegisterUserReq;
+import com.example.foochat.requestObjects.SendMessageReq;
 import com.example.foochat.responseObjects.CreateChatRes;
+import com.example.foochat.responseObjects.GetAllChatsRes;
+import com.example.foochat.responseObjects.GetAllMessagesRes;
+import com.example.foochat.responseObjects.GetChatRes;
 import com.example.foochat.responseObjects.GetUserInfoRes;
-import com.example.foochat.responseObjects.LoginUserRes;
+import com.example.foochat.responseObjects.SendMessageToChatRes;
 
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -31,4 +36,21 @@ public interface WebServiceApi {
 
     @POST("api/Chats/")
     Call<CreateChatRes> createChat(@Header("Authorization") String token, @Body CreateChatReq req);
+
+    @GET("api/Chats/")
+    Call<List<GetAllChatsRes>> getAllChats(@Header("Authorization") String token);
+
+    @GET("api/Chats/{id}")
+    Call<GetChatRes> getChat(@Header("Authorization") String token, @Path("id") int id);
+
+    @DELETE("api/Chats/{id}")
+    Call<ResponseBody> deleteChat(@Header("Authorization") String token, @Path("id") int id);
+
+    @POST("/api/Chats/{id}/Messages")
+    Call<SendMessageToChatRes> sendMessageToChat(@Header("Authorization") String token, @Path("id") int id, @Body SendMessageReq req);
+
+    @GET("/api/Chats/{id}/Messages")
+    Call<List<GetAllMessagesRes>> getAllMessages(@Header("Authorization") String token, @Path("id") int id);
+
+
 }

@@ -5,12 +5,18 @@ import com.example.foochat.entities.UserTable;
 import com.example.foochat.requestObjects.CreateChatReq;
 import com.example.foochat.requestObjects.LoginUserReq;
 import com.example.foochat.requestObjects.RegisterUserReq;
+import com.example.foochat.requestObjects.SendMessageReq;
 import com.example.foochat.responseObjects.CreateChatRes;
+import com.example.foochat.responseObjects.GetAllChatsRes;
+import com.example.foochat.responseObjects.GetAllMessagesRes;
+import com.example.foochat.responseObjects.GetChatRes;
 import com.example.foochat.responseObjects.GetUserInfoRes;
+import com.example.foochat.responseObjects.SendMessageToChatRes;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -56,6 +62,108 @@ public class ChatsApi {
             }
         });
     }
+
+    public void getAllChats(String token){
+        Call<List<GetAllChatsRes>> call = webServiceApi.getAllChats("Bearer "+token);
+        call.enqueue(new Callback<List<GetAllChatsRes>>() {
+            @Override
+            public void onResponse(Call<List<GetAllChatsRes>> call, Response<List<GetAllChatsRes>> response) {
+
+                if(response.isSuccessful()){
+                    List<GetAllChatsRes> allChatsRes = response.body();
+                    //rest of logic with array of chats
+                }
+                else{
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<GetAllChatsRes>> call, Throwable t) {
+                System.out.println("dsfghdf");
+            }
+        });
+    }
+
+    public void getChat(String token, int id){
+        Call<GetChatRes> call = webServiceApi.getChat("Bearer "+token,id);
+        call.enqueue(new Callback<GetChatRes>() {
+            @Override
+            public void onResponse(Call<GetChatRes> call, Response<GetChatRes> response) {
+                if(response.isSuccessful()) {
+                    GetChatRes chatRes = response.body();
+
+                }
+                else{
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetChatRes> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void deleteChat(String token, int id){
+        Call<ResponseBody> call = webServiceApi.deleteChat("Bearer "+token, id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ResponseBody deletedChatRes = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void sendMessageToChat(String token, int id, String msg){
+        Call<SendMessageToChatRes> call = webServiceApi.sendMessageToChat("Bearer "+token,id, new SendMessageReq(msg));
+        call.enqueue(new Callback<SendMessageToChatRes>() {
+            @Override
+            public void onResponse(Call<SendMessageToChatRes> call, Response<SendMessageToChatRes> response) {
+                if (response.isSuccessful()){
+                    SendMessageToChatRes sentMessageRes = response.body();
+                }
+                else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SendMessageToChatRes> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getAllMessages(String token, int id){
+        Call<List<GetAllMessagesRes>> call = webServiceApi.getAllMessages("Bearer "+token, id);
+        call.enqueue(new Callback<List<GetAllMessagesRes>>() {
+            @Override
+            public void onResponse(Call<List<GetAllMessagesRes>> call, Response<List<GetAllMessagesRes>> response) {
+                if(response.isSuccessful()){
+                    List<GetAllMessagesRes> allMessagesRes = response.body();
+                }
+                else{
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GetAllMessagesRes>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
 
 
 
