@@ -1,4 +1,4 @@
 package com.example.foochat.entities;
 
-public interface Messagesdao {
+public interface MessagesDao {
 }
