@@ -32,24 +32,6 @@ public class ChatsApi {
                 .build();
         webServiceApi = retrofit.create(WebServiceApi.class);
     }
-    public void getUserInfo(String token, String username){
-        Call<GetUserInfoRes> call = webServiceApi.getUserInfo("Bearer "+token, username);
-        call.enqueue(new Callback<GetUserInfoRes>() {
-            @Override
-            public void onResponse(Call<GetUserInfoRes> call, Response<GetUserInfoRes> response) {
-                if(response.isSuccessful()){
-                    GetUserInfoRes userInfoRes = response.body();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetUserInfoRes> call, Throwable t) {
-                System.out.println("sdfgs");
-
-            }
-        });
-    }
 
     public void createChat(String token, String username){
         CreateChatReq  req = new CreateChatReq();
