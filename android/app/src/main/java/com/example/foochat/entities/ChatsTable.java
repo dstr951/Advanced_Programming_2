@@ -13,8 +13,7 @@ import androidx.room.PrimaryKey;
 
 public class ChatsTable {
     @PrimaryKey
-    @NonNull
-    private int ChatID;
+    private int chatID;
 
 
     @NonNull
@@ -22,17 +21,16 @@ public class ChatsTable {
 
 
     public ChatsTable(int chatID, @NonNull String username) {
-        ChatID = chatID;
+        this.chatID = chatID;
         this.username = username;
-
     }
 
     public int getChatID() {
-        return ChatID;
+        return chatID;
     }
 
     public void setChatID(int chatID) {
-        ChatID = chatID;
+        this.chatID = chatID;
     }
 
     @NonNull

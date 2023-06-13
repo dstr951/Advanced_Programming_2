@@ -3,6 +3,8 @@ package com.example.foochat.entities;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
 
@@ -26,6 +28,7 @@ public class MessagesTable {
     private String sender;
 
     private String content;
+    @TypeConverters(DateConverter.class)
     private Date created;
 
     public MessagesTable(int messageID, int chatID, String sender, String content, Date created) {
@@ -74,5 +77,17 @@ public class MessagesTable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public static class DateConverter {
+        @TypeConverter
+        public static Date fromTimestamp(Long value) {
+            return value == null ? null : new Date(value);
+        }
+
+        @TypeConverter
+        public static Long dateToTimestamp(Date date) {
+            return date == null ? null : date.getTime();
+        }
     }
 }

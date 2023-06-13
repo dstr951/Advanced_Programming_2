@@ -10,13 +10,11 @@ public class PersonTable {
     @NonNull
     private String username;
     private String displayName;
-    private String password;
     private int profilePic;
 
-    public PersonTable(@NonNull String username, String displayName, String password, int profilePic) {
+    public PersonTable(@NonNull String username, String displayName,  int profilePic) {
         this.username = username;
         this.displayName = displayName;
-        this.password = password;
         this.profilePic = profilePic;
     }
 
@@ -35,14 +33,6 @@ public class PersonTable {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public int getProfilePic() {
