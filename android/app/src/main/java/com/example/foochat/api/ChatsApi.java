@@ -2,27 +2,19 @@ package com.example.foochat.api;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.foochat.LiveDataTypes.ChatsData;
+import com.example.foochat.converters.DB_DataToLiveData;
+import com.example.foochat.converters.ResponseToDB_Data;
 import com.example.foochat.entities.ChatsDao;
 import com.example.foochat.entities.ChatsTable;
+import com.example.foochat.entities.PersonDao;
 import com.example.foochat.entities.PersonTable;
-import com.example.foochat.entities.UserDao;
-import com.example.foochat.entities.UserTable;
 import com.example.foochat.requestObjects.CreateChatReq;
-import com.example.foochat.requestObjects.LoginUserReq;
-import com.example.foochat.requestObjects.RegisterUserReq;
-import com.example.foochat.requestObjects.SendMessageReq;
 import com.example.foochat.responseObjects.CreateChatRes;
 import com.example.foochat.responseObjects.GetAllChatsRes;
-import com.example.foochat.responseObjects.GetAllMessagesRes;
 import com.example.foochat.responseObjects.GetChatRes;
-import com.example.foochat.responseObjects.GetUserInfoRes;
-import com.example.foochat.responseObjects.SendMessageToChatRes;
-import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -37,8 +29,9 @@ public class ChatsApi {
     WebServiceApi webServiceApi;
 
     private ChatsDao chatsDao;
+    private PersonDao personDao;
 
-    public ChatsApi(ChatsDao chatsDao) {
+    public ChatsApi(ChatsDao chatsDao, PersonDao personDao) {
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:3001/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -46,12 +39,12 @@ public class ChatsApi {
         webServiceApi = retrofit.create(WebServiceApi.class);
 
         this.chatsDao = chatsDao;
+        this.personDao = personDao;
 
     }
 
     public void createChat(String token, String username,
-                           MutableLiveData<List<PersonTable>> persons,
-                           MutableLiveData<List<ChatsTable>> chats){
+                           MutableLiveData<List<ChatsData>> chats){
         CreateChatReq  req = new CreateChatReq();
         req.setUsername(username);
         Call<CreateChatRes> call = webServiceApi.createChat("Bearer "+token, req);
@@ -59,8 +52,18 @@ public class ChatsApi {
             @Override
             public void onResponse(Call<CreateChatRes> call, Response<CreateChatRes> response) {
                 if(response.isSuccessful()){
+                    //get the response body from the server
                     CreateChatRes res = response.body();
-                    //rest of logic with the res
+                    //convert the response to a row in personTable, chatsTable
+                    PersonTable tempPerson = ResponseToDB_Data.convertToPerson(res);
+                    ChatsTable tempChat = ResponseToDB_Data.convertToChat(res);
+                    // insert the new created chat and person to the local db.
+                    personDao.insert(tempPerson);
+                    chatsDao.insert(tempChat);
+                    // update the live data
+                    List<ChatsData> tempChats = chats.getValue();
+                    tempChats.add(DB_DataToLiveData.toChatData(tempPerson,tempChat));
+                    chats.postValue(tempChats);
                 }
                 else{
                     //logic when an error happens
