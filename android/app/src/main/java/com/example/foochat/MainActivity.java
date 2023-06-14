@@ -5,10 +5,7 @@ import androidx.room.Room;
 
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.foochat.api.ChatsApi;
-import com.example.foochat.api.UserApi;
 import com.example.foochat.entities.AppDB;
 import com.example.foochat.entities.ChatsDao;
 import com.example.foochat.entities.ChatsTable;
@@ -47,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         messagesDao.clearTable();
         // create userTable row element
         UserTable user1 = new UserTable("user1","steve","Asdf1234",1,null,"");
-        PersonTable person1 = new PersonTable(user1.getUsername(), user1.getDisplayName(),user1.getProfilePic());
-        PersonTable person2 = new PersonTable("user2", "steve2", 1);
+        PersonTable person1 = new PersonTable(user1.getUsername(), user1.getDisplayName(),"base64");
+        PersonTable person2 = new PersonTable("user2", "steve2", "base64");
 
         userDao.insert(user1);
         personDao.insert(person1);
@@ -59,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         messagesDao.insert(new MessagesTable(2,1,person2.getUsername(),"hello to you too!",new Date()));
         List<MessagesTable> messages = messagesDao.getAllMessagesOfChat(1);
         //checking that if a chat is deleted than all messages corosponding to that chat are 'automatically' deleted as well
-        chatsDao.delete(chatsDao.getChat(1));
+        chatsDao.delete(chatsDao.getChatByID(1));
         messages = messagesDao.getAllMessagesOfChat(1);
 
 
