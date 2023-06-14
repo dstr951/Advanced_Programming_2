@@ -122,45 +122,6 @@ public class ChatsApi {
         });
     }
 
-    public void sendMessageToChat(String token, int id, String msg){
-        Call<SendMessageToChatRes> call = webServiceApi.sendMessageToChat("Bearer "+token,id, new SendMessageReq(msg));
-        call.enqueue(new Callback<SendMessageToChatRes>() {
-            @Override
-            public void onResponse(Call<SendMessageToChatRes> call, Response<SendMessageToChatRes> response) {
-                if (response.isSuccessful()){
-                    SendMessageToChatRes sentMessageRes = response.body();
-                }
-                else {
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SendMessageToChatRes> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void getAllMessages(String token, int id){
-        Call<List<GetAllMessagesRes>> call = webServiceApi.getAllMessages("Bearer "+token, id);
-        call.enqueue(new Callback<List<GetAllMessagesRes>>() {
-            @Override
-            public void onResponse(Call<List<GetAllMessagesRes>> call, Response<List<GetAllMessagesRes>> response) {
-                if(response.isSuccessful()){
-                    List<GetAllMessagesRes> allMessagesRes = response.body();
-                }
-                else{
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<GetAllMessagesRes>> call, Throwable t) {
-
-            }
-        });
-    }
 
 
 
