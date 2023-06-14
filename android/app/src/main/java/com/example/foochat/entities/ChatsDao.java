@@ -14,8 +14,10 @@ public interface ChatsDao {
     List<ChatsTable> getAllChats();
 
     @Query("SELECT * FROM chats WHERE chatID = :chatID\n")
-    ChatsTable getChat(int chatID);
+    ChatsTable getChatByID(int chatID);
 
+    @Query("SELECT * FROM chats WHERE username =:username\n")
+    ChatsTable getChatByUsername(String username);
     @Insert
     void insert(ChatsTable... chat);
 
