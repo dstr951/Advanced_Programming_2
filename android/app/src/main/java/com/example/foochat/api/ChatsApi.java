@@ -1,5 +1,10 @@
 package com.example.foochat.api;
 
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.foochat.entities.ChatsDao;
+import com.example.foochat.entities.ChatsTable;
+import com.example.foochat.entities.PersonTable;
 import com.example.foochat.entities.UserDao;
 import com.example.foochat.entities.UserTable;
 import com.example.foochat.requestObjects.CreateChatReq;
@@ -31,15 +36,22 @@ public class ChatsApi {
     Retrofit retrofit;
     WebServiceApi webServiceApi;
 
-    public ChatsApi() {
+    private ChatsDao chatsDao;
+
+    public ChatsApi(ChatsDao chatsDao) {
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:3001/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         webServiceApi = retrofit.create(WebServiceApi.class);
+
+        this.chatsDao = chatsDao;
+
     }
 
-    public void createChat(String token, String username){
+    public void createChat(String token, String username,
+                           MutableLiveData<List<PersonTable>> persons,
+                           MutableLiveData<List<ChatsTable>> chats){
         CreateChatReq  req = new CreateChatReq();
         req.setUsername(username);
         Call<CreateChatRes> call = webServiceApi.createChat("Bearer "+token, req);
