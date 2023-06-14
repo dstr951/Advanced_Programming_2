@@ -44,9 +44,8 @@ public class MainActivity extends AppCompatActivity {
         chatsDao = db.chatsDao();
         messagesDao = db.messagesDao();
         userDao.clearAll();
-        personDao.clearTable();
-        chatsDao.clearTable();
-        chatsDao.insert(new ChatsTable(2, "sdfgsdf"));
+        //personDao.clearTable();
+        //chatsDao.clearTable();
         messagesDao.clearTable();
         ChatsRepo chatsRepo = new ChatsRepo(new ChatsApi(), chatsDao);
         String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaWF0IjoxNjg2NTE1OTQxfQ.JA9a7kngkxppbt4emNT2fTAoM7inQ3KnLjPLSGyT8LM";
@@ -55,10 +54,13 @@ public class MainActivity extends AppCompatActivity {
             if(!allChats.isEmpty()) {
                 for (GetAllChatsRes chat: allChats
                      ) {
-                    ChatsTable temp = new ChatsTable(chat.getId(),chat.getUser().getUsername());
-                    chatsDao.insert(temp);
+                    try {
+                        personDao.insert(new PersonTable(chat.getUser().getUsername(), chat.getUser().getDisplayName(), 3));
+                        ChatsTable temp = new ChatsTable(chat.getId(), chat.getUser().getUsername());
+                        chatsDao.insert(temp);
+                    } catch (Exception e) {
+                    }
                 }
-                int x = allChats.get(0).getId();
             }
         });
 

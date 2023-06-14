@@ -30,6 +30,7 @@ public class ChatsRepo {
         for (ChatsTable i: temp) {
             GetAllChatsRes chatRes = new GetAllChatsRes();
             chatRes.setId(i.getChatID());
+            localDB.add(chatRes);
         }
         chats.setValue(localDB);
         chatsApi.getAllChats(token, chats);
