@@ -1,5 +1,7 @@
 package com.example.foochat.api;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.foochat.entities.UserDao;
 import com.example.foochat.entities.UserTable;
 import com.example.foochat.requestObjects.CreateChatReq;
@@ -63,7 +65,7 @@ public class ChatsApi {
         });
     }
 
-    public void getAllChats(String token){
+    public void getAllChats(String token,  MutableLiveData<List<GetAllChatsRes>> chats){
         Call<List<GetAllChatsRes>> call = webServiceApi.getAllChats("Bearer "+token);
         call.enqueue(new Callback<List<GetAllChatsRes>>() {
             @Override
@@ -71,6 +73,7 @@ public class ChatsApi {
 
                 if(response.isSuccessful()){
                     List<GetAllChatsRes> allChatsRes = response.body();
+                    chats.setValue(allChatsRes);
                     //rest of logic with array of chats
                 }
                 else{
