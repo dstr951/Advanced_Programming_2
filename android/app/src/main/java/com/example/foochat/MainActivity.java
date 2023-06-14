@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         userDao.insert(user1);
         personDao.insert(person1);
         personDao.insert(person2);
-        chatsDao.insert(new ChatsTable(1,person2.getUsername()));
+        chatsDao.insert(new ChatsTable(1,person2.getUsername(),null));
 
         messagesDao.insert(new MessagesTable(1,1,person1.getUsername(),"hello friend!",new Date()));
         messagesDao.insert(new MessagesTable(2,1,person2.getUsername(),"hello to you too!",new Date()));

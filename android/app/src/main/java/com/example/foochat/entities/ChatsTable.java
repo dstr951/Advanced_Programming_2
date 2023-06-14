@@ -19,10 +19,21 @@ public class ChatsTable {
     @NonNull
     private String username;
 
+    private String lastMessage;
 
-    public ChatsTable(int chatID, @NonNull String username) {
+
+    public ChatsTable(int chatID, @NonNull String username, String lastMessage) {
         this.chatID = chatID;
         this.username = username;
+        this.lastMessage = lastMessage;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
     }
 
     public int getChatID() {
