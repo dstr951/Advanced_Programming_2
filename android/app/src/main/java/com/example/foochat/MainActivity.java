@@ -18,6 +18,8 @@ import com.example.foochat.entities.PersonDao;
 import com.example.foochat.entities.PersonTable;
 import com.example.foochat.entities.UserDao;
 import com.example.foochat.entities.UserTable;
+import com.example.foochat.repositories.ChatsRepo;
+import com.example.foochat.responseObjects.GetAllChatsRes;
 
 import java.util.Date;
 import java.util.List;
@@ -44,39 +46,22 @@ public class MainActivity extends AppCompatActivity {
         userDao.clearAll();
         personDao.clearTable();
         chatsDao.clearTable();
+        chatsDao.insert(new ChatsTable(2, "sdfgsdf"));
         messagesDao.clearTable();
-        // create userTable row element
-        UserTable user1 = new UserTable("user1","steve","Asdf1234",1,null,"");
-        PersonTable person1 = new PersonTable(user1.getUsername(), user1.getDisplayName(),user1.getProfilePic());
-        PersonTable person2 = new PersonTable("user2", "steve2", 1);
+        ChatsRepo chatsRepo = new ChatsRepo(new ChatsApi(), chatsDao);
+        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaWF0IjoxNjg2NTE1OTQxfQ.JA9a7kngkxppbt4emNT2fTAoM7inQ3KnLjPLSGyT8LM";
+        chatsRepo.getAllChats(token).observe(this, allChats ->{
 
-        userDao.insert(user1);
-        personDao.insert(person1);
-        personDao.insert(person2);
-        chatsDao.insert(new ChatsTable(1,person2.getUsername()));
+            if(!allChats.isEmpty()) {
+                for (GetAllChatsRes chat: allChats
+                     ) {
+                    ChatsTable temp = new ChatsTable(chat.getId(),chat.getUser().getUsername());
+                    chatsDao.insert(temp);
+                }
+                int x = allChats.get(0).getId();
+            }
+        });
 
-        messagesDao.insert(new MessagesTable(1,1,person1.getUsername(),"hello friend!",new Date()));
-        messagesDao.insert(new MessagesTable(2,1,person2.getUsername(),"hello to you too!",new Date()));
-        List<MessagesTable> messages = messagesDao.getAllMessagesOfChat(1);
-        //checking that if a chat is deleted than all messages corosponding to that chat are 'automatically' deleted as well
-        chatsDao.delete(chatsDao.getChat(1));
-        messages = messagesDao.getAllMessagesOfChat(1);
-
-
-        userDao.delete(user1);
-        UserTable temp = userDao.index();
-        userDao.insert(user1);
-
-        try {
-            userDao.insert(user1);
-        } catch (SQLiteConstraintException e) {
-            e.getCause();
-            // Handle the exception (e.g., display an error message)
-        }
-        temp = userDao.index();
-        userDao.updateServerToken("user1", "sdfbsts");
-        temp =  userDao.index();
-       String token = temp.getServerToken();
 
     }
 
