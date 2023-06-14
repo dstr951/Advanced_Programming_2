@@ -10,9 +10,9 @@ public class PersonTable {
     @NonNull
     private String username;
     private String displayName;
-    private int profilePic;
+    private String profilePic;
 
-    public PersonTable(@NonNull String username, String displayName,  int profilePic) {
+    public PersonTable(@NonNull String username, String displayName,  String profilePic) {
         this.username = username;
         this.displayName = displayName;
         this.profilePic = profilePic;
@@ -35,11 +35,11 @@ public class PersonTable {
         this.displayName = displayName;
     }
 
-    public int getProfilePic() {
+    public String getProfilePic() {
         return profilePic;
     }
 
-    public void setProfilePic(int profilePic) {
+    public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
     }
 }
