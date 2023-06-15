@@ -10,3 +10,5 @@ local.properties
 app/build
 ../final
 ../final.zip
+.gradle/8.0/checksums
+/.gradle/
