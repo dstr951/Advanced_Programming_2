@@ -9,11 +9,12 @@ import com.example.foochat.entities.ChatsDao;
 import com.example.foochat.entities.ChatsTable;
 import com.example.foochat.entities.PersonDao;
 import com.example.foochat.entities.PersonTable;
-import com.example.foochat.requestObjects.CreateChatReq;
 import com.example.foochat.responseObjects.CreateChatRes;
 import com.example.foochat.responseObjects.GetAllChatsRes;
+import com.example.foochat.requestObjects.CreateChatReq;
 import com.example.foochat.responseObjects.GetChatRes;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -45,7 +46,7 @@ public class ChatsApi {
 
     public void createChat(String token, String username,
                            MutableLiveData<List<ChatsData>> chats){
-        CreateChatReq  req = new CreateChatReq();
+        CreateChatReq req = new CreateChatReq();
         req.setUsername(username);
         Call<CreateChatRes> call = webServiceApi.createChat("Bearer "+token, req);
         call.enqueue(new Callback<CreateChatRes>() {
@@ -78,7 +79,7 @@ public class ChatsApi {
         });
     }
 
-    public void getAllChats(String token){
+    public void getAllChats(String token, MutableLiveData<List<ChatsData>> chats){
         Call<List<GetAllChatsRes>> call = webServiceApi.getAllChats("Bearer "+token);
         call.enqueue(new Callback<List<GetAllChatsRes>>() {
             @Override
@@ -86,7 +87,17 @@ public class ChatsApi {
 
                 if(response.isSuccessful()){
                     List<GetAllChatsRes> allChatsRes = response.body();
-                    //rest of logic with array of chats
+                    chatsDao.clearTable();
+                    personDao.clearTable();
+                    List<ChatsData> updatedChatList = new LinkedList<>();
+                    for (GetAllChatsRes res: allChatsRes) {
+                        PersonTable tempPerson = ResponseToDB_Data.convertToPerson(res);
+                        ChatsTable tempChat = ResponseToDB_Data.convertToChat(res);
+                        personDao.insert(tempPerson);
+                        chatsDao.insert(tempChat);
+                        updatedChatList.add(DB_DataToLiveData.toChatData(tempPerson,tempChat));
+                    }
+                    chats.postValue(updatedChatList);
                 }
                 else{
 

@@ -12,7 +12,6 @@ public class PersonData {
     public PersonData(String username, String displayName, String base64Img) {
         this.username = username;
         this.displayName = displayName;
-        //TODO check if working
         base64Img = base64Img.substring(base64Img.indexOf(",") + 1);
         byte[] imageBytes = Base64.decode(base64Img, Base64.DEFAULT);
         this.profilePic = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);;

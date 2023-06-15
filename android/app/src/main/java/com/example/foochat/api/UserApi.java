@@ -1,11 +1,9 @@
 package com.example.foochat.api;
 
 import com.example.foochat.entities.UserDao;
-import com.example.foochat.entities.UserTable;
 import com.example.foochat.requestObjects.LoginUserReq;
 import com.example.foochat.requestObjects.RegisterUserReq;
 import com.example.foochat.responseObjects.GetUserInfoRes;
-import com.example.foochat.responseObjects.LoginUserRes;
 import com.google.gson.Gson;
 
 import java.io.IOException;
