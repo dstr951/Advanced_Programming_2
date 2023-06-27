@@ -5,6 +5,15 @@ class FirebaseTokens {
     this.tokens = []
   }
   addFirebaseToken(token, username) {
+    const existingToken = this.tokens.filter((firebaseToken) => firebaseToken.token === token)
+    if(0 > existingToken.length) {
+        if (debugFirebase) {
+            console.log(
+              `token already exists, token: ${token}, username: ${username}`
+            )
+          }
+          return {status: 200}
+    }
     if (debugFirebase) {
       console.log(
         `adding new firebase token, token: ${token}, username: ${username}`
