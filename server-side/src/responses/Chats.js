@@ -127,8 +127,6 @@ async function getAllMessages(fromDB){
             return getUserFromUsername(fromDB.body[message].sender)
                 .then(sender => {
                     fromDB.body[message].sender = sender;
-                    console.log("Updated sender:");
-                    console.log(fromDB.body[message].sender);
                 })
                 .catch(error => {
                     // Handle any errors that occur during the promise resolution

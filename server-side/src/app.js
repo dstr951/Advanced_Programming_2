@@ -11,6 +11,8 @@ const app = express()
 const http = require('http')
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const firebase = require("firebase-admin")
+const secretFirebase = require("../secret-firebase.json")
 const socketEvents = require("./services/SocketEvents")
 const io = new Server(server, {
 	cors: {
@@ -38,4 +40,7 @@ app.use('/api/Tokens',routerToken)
 app.use(express.static('server-side/src/public'))
 socketEvents.setIO(io)
 socketEvents.setupEvents()
+firebase.initializeApp({
+  credential: firebase.credential.cert(secretFirebase)
+})
 server.listen(3001)

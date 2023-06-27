@@ -1,18 +1,21 @@
-const debugFirebase = false
+const { getMessaging } = require("firebase-admin/messaging")
+
 
 class FirebaseTokens {
   constructor() {
     this.tokens = []
   }
   addFirebaseToken(token, username) {
-    const existingToken = this.tokens.filter((firebaseToken) => firebaseToken.token === token)
-    if(0 > existingToken.length) {
-        if (debugFirebase) {
-            console.log(
-              `token already exists, token: ${token}, username: ${username}`
-            )
-          }
-          return {status: 200}
+    const existingToken = this.tokens.filter(
+      (firebaseToken) => firebaseToken.token === token
+    )
+    if (0 > existingToken.length) {
+      if (debugFirebase) {
+        console.log(
+          `token already exists, token: ${token}, username: ${username}`
+        )
+      }
+      return {status: 200}
     }
     if (debugFirebase) {
       console.log(
@@ -46,19 +49,13 @@ class FirebaseTokens {
     if (debugFirebase) {
       console.log(`searching for tokens for username: ${username}`)
     }
-    tokens = this.tokens
+    const tokens = this.tokens
       .filter((firebaseToken) => username === firebaseToken.username)
       .map((firebaseToken) => firebaseToken.token)
     if (debugFirebase) {
       console.log(`result: ${tokens}`)
     }
     return tokens
-  }
-  //events
-  newMessageUpdate(username) {
-    if (debugFirebase) {
-      console.log(`update new message for username: ${username}`)
-    }
   }
   newContactUpdate(username) {
     if (debugFirebase) {
@@ -76,8 +73,37 @@ function loginAndroid(token, username) {
 function logoutAndroid(token) {
   return firebaseEvents.removeFirebaseToken(token)
 }
+function newMessageFirebase(usernames, senderUsername, chatId, message) {
+  const tokens = []
+  for (username of usernames) {
+    const newTokens = firebaseEvents.findTokensWithUsername(username)
+    for (token of newTokens) {
+      tokens.push(token)
+    }
+  }
+  if(tokens.length === 0) {
+    if (debugFirebase) {
+        console.log(`there no one to send to`)
+    }
+    return;
+  }
+  if (debugFirebase) {
+    console.log(`sending message to tokens: ${tokens}`)
+  }
+  const notificationData = {
+    data: {senderUsername, chatId, messageContent: message.content},
+    tokens,
+  }
+
+  getMessaging()
+    .sendEachForMulticast(notificationData)
+    .then((response) => {
+      console.log(response.successCount + " messages were sent successfully")
+    })
+}
 
 module.exports = {
   loginAndroid,
   logoutAndroid,
+  newMessageFirebase,
 }
