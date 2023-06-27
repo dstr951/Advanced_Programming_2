@@ -26,7 +26,7 @@ function androidLogin(req, res) {
 }
 
 function androidLogout(req, res) {
-  const {token} = req.body
+  const {token} = req.params
   const result = FirebaseService.logoutAndroid(token)
   if (200 === result.status) {
     res.status(200).send()

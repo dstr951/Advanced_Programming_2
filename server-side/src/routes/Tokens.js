@@ -3,6 +3,6 @@ const TokenController = require('../controllers/Tokens')
 const router = express.Router();
 router.post('/',TokenController.processLogin)
 router.post('/android',TokenController.androidLogin)
-router.delete('/android',TokenController.androidLogout)
+router.delete('/android/:token',TokenController.androidLogout)
 
 module.exports = router
