@@ -14,6 +14,7 @@ class FirebaseTokens {
       token,
       username,
     })
+    return {status: 200}
   }
   removeFirebaseToken(token) {
     const oldTokensLength = this.tokens.length
@@ -25,11 +26,12 @@ class FirebaseTokens {
       if (debugFirebase) {
         console.log(`couldn't find someone with token: ${token}`)
       }
-      return
+      return {status: 404, body: {message: "couldn't find this token"}}
     }
     if (debugFirebase) {
       console.log(`removed firebase token succesfully, token: ${token}`)
     }
+    return {status: 200}
   }
   findTokensWithUsername(username) {
     if (debugFirebase) {
@@ -59,11 +61,11 @@ class FirebaseTokens {
 const firebaseEvents = new FirebaseTokens()
 
 function loginAndroid(token, username) {
-  firebaseEvents.addFirebaseToken(token, username)
+  return firebaseEvents.addFirebaseToken(token, username)
 }
 
 function logoutAndroid(token) {
-  firebaseEvents.removeFirebaseToken(token)
+  return firebaseEvents.removeFirebaseToken(token)
 }
 
 module.exports = {
