@@ -3,19 +3,22 @@ const {extractUserName} = require("../services/Tokens");
 const {getUserInfo} = require("../services/Users");
 const responseChat = require("../responses/Chats")
 const socketEvents = require("../services/SocketEvents")
-const {newMessageFirebase} = require("../services/FirebaseEvents")
+const {newMessageFirebase, newContactFirebase} = require("../services/FirebaseEvents")
 const TokenService = require("../services/Tokens");
 
 
 
 async function createChat(req,res){
+    const contactUsername = req.body.username
 	const currentUsername = extractUserName(req)
-    const temp = await ChatsServices.createChat(currentUsername, req.body.username)
+    const temp = await ChatsServices.createChat(currentUsername, contactUsername)
     const response = await responseChat.createChat(temp)
     res.status(response.status).send(response.body)
 	if(200 === response.status){
 		const usersToUpdate = [response.body.user.username]
-		socketEvents.updateUsersMessage(usersToUpdate, response.body.id)
+        const newChatId = response.body.id
+		socketEvents.updateUsersMessage(usersToUpdate, newChatId)
+        newContactFirebase(usersToUpdate, contactUsername, newChatId)
 	}
 
 }

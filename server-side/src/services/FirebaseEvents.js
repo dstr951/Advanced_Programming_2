@@ -1,5 +1,11 @@
-const { getMessaging } = require("firebase-admin/messaging")
+const {getMessaging} = require("firebase-admin/messaging")
 
+const debugFirebase = false
+
+const EVENTS = {
+  NEW_MESSAGE: "NEW_MESSAGE",
+  NEW_CONTACT: "NEW_CONTACT",
+}
 
 class FirebaseTokens {
   constructor() {
@@ -57,11 +63,6 @@ class FirebaseTokens {
     }
     return tokens
   }
-  newContactUpdate(username) {
-    if (debugFirebase) {
-      console.log(`add conversation for username: ${username}`)
-    }
-  }
 }
 
 const firebaseEvents = new FirebaseTokens()
@@ -73,7 +74,7 @@ function loginAndroid(token, username) {
 function logoutAndroid(token) {
   return firebaseEvents.removeFirebaseToken(token)
 }
-function newMessageFirebase(usernames, senderUsername, chatId, message) {
+function newMessageFirebase(usernames, senderUsername, chatId, messageServer) {
   const tokens = []
   for (username of usernames) {
     const newTokens = firebaseEvents.findTokensWithUsername(username)
@@ -81,29 +82,71 @@ function newMessageFirebase(usernames, senderUsername, chatId, message) {
       tokens.push(token)
     }
   }
-  if(tokens.length === 0) {
+  if (tokens.length === 0) {
     if (debugFirebase) {
-        console.log(`there no one to send to`)
+      console.log(`there no one to send to`)
     }
-    return;
+    return
   }
   if (debugFirebase) {
     console.log(`sending message to tokens: ${tokens}`)
   }
-  const notificationData = {
-    data: {senderUsername, chatId, messageContent: message.content},
-    tokens,
-  }
+  for (token of tokens) {
+    const message = {
+      data: {
+        senderUsername: senderUsername,
+        chatId: chatId,
+        messageContent: messageServer.content,
+        event: EVENTS.NEW_MESSAGE,
+      },
+      token: token,
+    }
 
-  getMessaging()
-    .sendEachForMulticast(notificationData)
-    .then((response) => {
-      console.log(response.successCount + " messages were sent successfully")
-    })
+    getMessaging()
+      .send(message)
+      .then((response) => {
+        console.log(response.successCount + " messages were sent successfully")
+      })
+  }
+}
+function newContactFirebase(usernames, contactUsername, chatId) {
+  const tokens = []
+  for (username of usernames) {
+    const newTokens = firebaseEvents.findTokensWithUsername(username)
+    for (token of newTokens) {
+      tokens.push(token)
+    }
+  }
+  if (tokens.length === 0) {
+    if (debugFirebase) {
+      console.log(`there no one to send to`)
+    }
+    return
+  }
+  if (debugFirebase) {
+    console.log(`adding contact to tokens: ${tokens}`)
+  }
+  for (token of tokens) {
+    const message = {
+      data: {
+        contactUsername: contactUsername,
+        chatId: chatId.toString(),
+        event: EVENTS.NEW_CONTACT,
+      },
+      token: token,
+    }
+
+    getMessaging()
+      .send(message)
+      .then((response) => {
+        console.log(`contact was added succefully in token: ${token}`)
+      })
+  }
 }
 
 module.exports = {
   loginAndroid,
   logoutAndroid,
   newMessageFirebase,
+  newContactFirebase,
 }
