@@ -23,6 +23,7 @@ async function getAllChats(myUsername) {
                 id: chat.id,
                 user: user,
                 messages: chat.messages,
+                created:chat.created
             };
         });
         return {
