@@ -81,7 +81,11 @@ const ChatSchema = new Schema({
     messages: [{
         type:Number,
         required:true,
-    }]
+    }],
+    created:{
+        type:Date,
+        default: Date.now
+    }
 
 })
 ChatSchema.pre('save', async function (next) {

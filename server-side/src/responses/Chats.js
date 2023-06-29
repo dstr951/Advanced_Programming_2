@@ -12,7 +12,8 @@ async function createChat(fromDB){
                     username: user.username,
                     displayName: user.displayName,
                     profilePic: user.profilePic
-                }
+                },
+                created: fromDB.body.created
             }
         }
     }
@@ -48,7 +49,8 @@ async function getAllUsers(fromDB){
                     displayName:user.displayName,
                     profilePic:user.profilePic
                 },
-                lastMessage: lastMessage
+                lastMessage: lastMessage,
+                created:chat.created
             });
         }
     }
